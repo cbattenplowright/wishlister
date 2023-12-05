@@ -1,10 +1,73 @@
 # Wishlister
 
-Wish list application for users to create wishlists
+## Table Of Contents
+
+- [Description](#description)
+- [MVP](#mvp)
+- [Diagrams](#diagrams)
+- [API Contract](#api-contract)
+    * [Wishlist Endpoints](#wishlist-endpoints)
+
+## Description
+WishLister is a user-friendly wishlist management application designed to make your gifting experience delightful and stress-free. Whether you're creating a wishlist for yourself or collaborating with friends and family, WishLister has you covered.
+
+Key Features
+
+  - Create Wishlists: Easily craft wishlists for any occasion, from birthdays to holidays.
+  - Share and Collaborate: Share your wishlists with others and collaborate in real-time.
+  - Customize Products: Add vivid details, images, and priority levels to personalize your wishlist items.
+  - Stay Informed: Receive notifications for shared lists, new additions, and comments.
+  - Explore Inspiration: Discover new gift ideas and explore wishlists from your inner circle.
+
+
+## MVP
+The MVP of this project is to allow users to create and share their christmas wishlists with their friends and family.
+
+User Management:
+  
+  - User registration: Allow users to create accounts.
+  - User authentication: Enable users to log in securely.
+
+List Management:
+  
+  - Create a new list: Users can create a wishlist.
+  - View lists: Users can see their own lists.
+  - Delete a list: Users can remove a list they no longer need.
+
+Product Management:
+  
+  - Add a product: Users can add new products to their wishlist.
+  - View products: Users can see a list of products in their wishlist.
+  - Edit product details: Allow users to update product information.
+
+List-Product Relationship:
+  
+  - Add product to a list: Users can associate products with specific wishlists.
+  - View products in a list: Users can see the products associated with a specific wishlist.
+
+List Sharing:
+  
+  - Share a list: Users can share their wishlist with other users.
+  - View shared lists: Users can see lists shared with them.
+
+Basic User Profile:
+  
+  - Display user profile information: Show basic user details.
+
+## Diagrams
+
+### ERD
+<img src = "./diagrams/wishlister-erd.png" alt = "entity relationship diagram for wishlister application"/>
+
+### Class Diagrams
+<img src = "./diagrams/wishlister-class-diagram.png" alt = "class diagram for wishlister application"/>
+
+### API layers
+<img src = "./diagrams/wishlister-api-layers.png" alt = "api layers for wishlister application"/>
 
 ## API Contract
 
-## List Endpoints
+## Wishlist Endpoints
 
 ### INDEX
 
