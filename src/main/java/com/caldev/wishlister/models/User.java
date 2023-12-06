@@ -12,19 +12,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private Long userId;
 
-    @Column
+    @Column(nullable = false)
     private String username;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "date_of_birth")
+    @Column(name = "date_of_birth", nullable = false)
     private Date dateOfBirth;
 
     @Column
+    @OneToMany(mappedBy = "user")
     private List<Wishlist> wishlists;
 
     public void User(){
