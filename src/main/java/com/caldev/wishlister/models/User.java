@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -11,7 +12,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private Long userId;
+    private UUID userId;
 
     @Column(nullable = false)
     private String username;
@@ -32,7 +33,7 @@ public class User {
     public void User(){
     }
 
-    public User(Long userId, String username, String password, String email, Date dateOfBirth, List<Wishlist> wishlists) {
+    public User(UUID userId, String username, String password, String email, Date dateOfBirth, List<Wishlist> wishlists) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -43,7 +44,7 @@ public class User {
 
     // GETTERS AND SETTERS
 
-    public Long getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
@@ -67,7 +68,7 @@ public class User {
         return wishlists;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
