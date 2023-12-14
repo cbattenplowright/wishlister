@@ -20,7 +20,7 @@ public class Wishlist {
     )
     private User user;
 
-    public void Wishlist() {}
+    public Wishlist() {}
 
     public Wishlist(Long wishlistId, String wishlistName, User user) {
         this.wishlistId = wishlistId;

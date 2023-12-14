@@ -15,7 +15,7 @@ public class User {
     @Column(name = "user_id")
     private UUID userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -31,7 +31,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Wishlist> wishlists;
 
-    public void User(){
+    public User(){
     }
 
     public User(UUID userId, String username, String password, String email, Date dateOfBirth, List<Wishlist> wishlists) {
@@ -91,5 +91,17 @@ public class User {
 
     public void setWishlists(List<Wishlist> wishlists) {
         this.wishlists = wishlists;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", wishlists=" + wishlists +
+                '}';
     }
 }

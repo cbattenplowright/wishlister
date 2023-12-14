@@ -16,10 +16,10 @@ public class WishlistTests {
     TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnAWishlistWhenUserCreatesAWishlist() {
+    void shouldReturnAWishlistWhenUserRequestsOneWishlistAndIsOwnerOfWishlist() {
         ResponseEntity<String> response = restTemplate
                 .withBasicAuth("bob123", "abc123")
-                .getForEntity("/wishlists/1", String.class);
+                .getForEntity("/wishlists/6", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 

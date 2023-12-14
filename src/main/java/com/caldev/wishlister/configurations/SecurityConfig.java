@@ -19,8 +19,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/wishlists/**")
-                        .hasRole("USER"))
+                        .requestMatchers("/wishlists/**"))
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
@@ -31,19 +30,17 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    UserDetailsService testOnlyUsers(PasswordEncoder passwordEncoder) {
-        User.UserBuilder users = User.builder();
-        UserDetails bob = users
-                .username("bob123")
-                .password(passwordEncoder.encode("abc123"))
-                .roles("USER")
-                .build();
-        UserDetails karen = users
-                .username("karen321")
-                .password(passwordEncoder.encode("blah456"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(bob, karen);
-    }
+//    @Bean
+//    UserDetailsService testOnlyUsers(PasswordEncoder passwordEncoder) {
+//        User.UserBuilder users = User.builder();
+//        UserDetails bob = users
+//                .username("bob123")
+//                .password(passwordEncoder.encode("abc123"))
+//                .build();
+//        UserDetails karen = users
+//                .username("karen321")
+//                .password(passwordEncoder.encode("blah456"))
+//                .build();
+//        return new InMemoryUserDetailsManager(bob, karen);
+//    }
 }

@@ -23,7 +23,7 @@ public class WishlistController {
     public ResponseEntity<Optional<Wishlist>> getWishlistById(@PathVariable Long wishlistId){
 
         Optional<Wishlist> foundWishlist = wishlistService.findWishlistById(wishlistId);
-        if (wishlistId != null) {
+        if (foundWishlist.isPresent()) {
             return ResponseEntity.ok(foundWishlist);
         } else {
             return ResponseEntity.notFound().build();
