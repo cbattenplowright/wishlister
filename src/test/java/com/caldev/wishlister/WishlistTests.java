@@ -20,7 +20,17 @@ public class WishlistTests {
         ResponseEntity<String> response = restTemplate
                 .withBasicAuth("bob123", "abc123")
                 .getForEntity("/wishlists/1", String.class);
-        System.out.println("Response body: " + response.getStatusCode());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
+
+    @Test
+    void unauthorizedUserCannotCreateWishlist(){
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("fright456","rab321")
+                .getForEntity("/wishlists/1", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    void shouldReturnNoWishlistIfForbidden(){}
 }
