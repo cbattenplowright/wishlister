@@ -16,13 +16,12 @@ public class WishlistTests {
     TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnAWishlistWhenUserRequestsOneWishlistAndIsOwnerOfWishlist() {
+    void returnWishlistWhenUserIsOwner() {
         ResponseEntity<String> response = restTemplate
                 .withBasicAuth("Bob123", "abc123")
                 .getForEntity("/wishlists/9", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
-
     @Test
     void unauthorizedUserCannotCreateWishlist(){
         ResponseEntity<String> response = restTemplate
@@ -30,12 +29,18 @@ public class WishlistTests {
                 .getForEntity("/wishlists/1", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
-
     @Test
-    void shouldReturnNoWishlistIfUserIsAuthenticatedButDoesNotOwnTheWishList(){
+    void returnNoWishlistForNonOwnerAuthenticatedUser(){
         ResponseEntity<String> response = restTemplate
-                .withBasicAuth("karen321", "blah456")
-                .getForEntity("/wishlists/1", String.class);
+                .withBasicAuth("Alice456", "xyz789")
+                .getForEntity("/wishlists/9", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+    @Test
+    void return404IfWishlistDoesNotExist() {
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Bob123", "abc123")
+                .getForEntity("/wishlists/1", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }
