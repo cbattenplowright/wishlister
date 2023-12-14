@@ -1,6 +1,9 @@
 package com.caldev.wishlister.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.Optional;
 
 @Entity
 @Table(name = "wishlists")
@@ -8,6 +11,7 @@ public class Wishlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "wishlist_id")
     private Long wishlistId;
 
     @Column(name = "wishlist_name")
@@ -18,12 +22,12 @@ public class Wishlist {
             name = "user_id",
             nullable = false
     )
+    @JsonIgnoreProperties("{wishlists}")
     private User user;
 
     public Wishlist() {}
 
-    public Wishlist(Long wishlistId, String wishlistName, User user) {
-        this.wishlistId = wishlistId;
+    public Wishlist(String wishlistName, User user) {
         this.wishlistName = wishlistName;
         this.user = user;
     }
