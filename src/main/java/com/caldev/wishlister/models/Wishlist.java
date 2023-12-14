@@ -1,5 +1,6 @@
 package com.caldev.wishlister.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class Wishlist {
             name = "user_id",
             nullable = false
     )
+    @JsonIgnoreProperties("{wishlists}")
     private User user;
 
     public Wishlist() {}

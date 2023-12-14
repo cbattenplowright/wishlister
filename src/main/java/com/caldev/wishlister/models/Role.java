@@ -1,5 +1,6 @@
 package com.caldev.wishlister.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class Role {
     private String role;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnoreProperties({"roles"})
     private List<User> users;
 
     public Role() {

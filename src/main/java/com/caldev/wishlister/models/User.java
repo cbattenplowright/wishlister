@@ -1,11 +1,10 @@
 package com.caldev.wishlister.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -33,6 +32,7 @@ public class User {
 
     @Column
     @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties({"user"})
     private List<Wishlist> wishlists;
 
     @ManyToMany(fetch = FetchType.EAGER) // Eager fetch to load roles eagerly
@@ -40,7 +40,8 @@ public class User {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    @JsonIgnoreProperties({"users"})
+    private Set<Role> roles;
 
 
     public User(){
@@ -52,6 +53,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.roles = new HashSet<Role>();
     }
 
     // GETTERS AND SETTERS
@@ -113,11 +115,11 @@ public class User {
         this.wishlists = wishlists;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
