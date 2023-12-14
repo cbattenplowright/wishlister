@@ -2,6 +2,8 @@ package com.caldev.wishlister.models;
 
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 @Entity
 @Table(name = "wishlists")
 public class Wishlist {
@@ -22,8 +24,7 @@ public class Wishlist {
 
     public Wishlist() {}
 
-    public Wishlist(Long wishlistId, String wishlistName, User user) {
-        this.wishlistId = wishlistId;
+    public Wishlist(String wishlistName, User user) {
         this.wishlistName = wishlistName;
         this.user = user;
     }

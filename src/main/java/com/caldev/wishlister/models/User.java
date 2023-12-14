@@ -2,6 +2,7 @@ package com.caldev.wishlister.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -22,10 +23,13 @@ public class User {
     private String password;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String email;
 
     @Column(name = "date_of_birth", nullable = false)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column
     @OneToMany(mappedBy = "user")
@@ -34,13 +38,12 @@ public class User {
     public User(){
     }
 
-    public User(UUID userId, String username, String password, String email, Date dateOfBirth, List<Wishlist> wishlists) {
-        this.userId = userId;
+    public User(String username, String password, String name, String email,LocalDate dateOfBirth) {
         this.username = username;
         this.password = password;
+        this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.wishlists = wishlists;
     }
 
     // GETTERS AND SETTERS
@@ -57,11 +60,15 @@ public class User {
         return password;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -81,11 +88,15 @@ public class User {
         this.password = password;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -99,6 +110,7 @@ public class User {
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", wishlists=" + wishlists +
