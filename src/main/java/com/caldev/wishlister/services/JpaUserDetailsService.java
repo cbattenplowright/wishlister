@@ -1,11 +1,14 @@
 package com.caldev.wishlister.services;
 
-import com.caldev.wishlister.models.SecurityUser;
+import com.caldev.wishlister.models.SecurityUserDetails;
+import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
@@ -18,9 +21,13 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository
-                .findByUsername(username)
-                .map(SecurityUser::new)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
+
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (!user.isPresent()){
+            throw new UsernameNotFoundException("Could not find user");
+        }
+
+        return new SecurityUserDetails(user.get());
     }
 }
