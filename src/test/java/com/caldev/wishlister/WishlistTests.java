@@ -32,5 +32,10 @@ public class WishlistTests {
     }
 
     @Test
-    void shouldReturnNoWishlistIfForbidden(){}
+    void shouldReturnNoWishlistIfUserIsAuthenticatedButDoesNotOwnTheWishList(){
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("karen321", "blah456")
+                .getForEntity("/wishlists/1", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
 }
