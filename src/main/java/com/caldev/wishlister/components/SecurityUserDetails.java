@@ -1,5 +1,7 @@
-package com.caldev.wishlister.models;
+package com.caldev.wishlister.components;
 
+import com.caldev.wishlister.models.Role;
+import com.caldev.wishlister.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +13,7 @@ import java.util.Set;
 
 public class SecurityUserDetails implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public SecurityUserDetails(User user) {
         this.user = user;
