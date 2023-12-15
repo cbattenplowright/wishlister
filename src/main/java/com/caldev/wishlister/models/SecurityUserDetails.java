@@ -1,4 +1,4 @@
-package com.caldev.wishlister.components;
+package com.caldev.wishlister.models;
 
 import com.caldev.wishlister.models.Role;
 import com.caldev.wishlister.models.User;

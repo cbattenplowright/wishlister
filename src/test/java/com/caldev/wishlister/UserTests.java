@@ -27,6 +27,14 @@ public class UserTests {
     }
 
     @Test
+    void shouldReturn403IfUserIsNotUserRequestIsBeingMadeFor() {
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Alice456", "xyz789")
+                .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
     void shouldReturn404IfUserDoesNotExist(){
         ResponseEntity<String> response = restTemplate
                 .withBasicAuth("David012", "ghi789")

@@ -1,7 +1,7 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.models.User;
-import com.caldev.wishlister.components.SecurityUserDetails;
+import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
