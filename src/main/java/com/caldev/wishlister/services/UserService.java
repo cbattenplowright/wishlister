@@ -5,8 +5,11 @@ import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.repositories.RoleRepository;
 import com.caldev.wishlister.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -23,14 +26,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // Work out how you will send back the User or ResponseEntity codes!!
+
     public Optional<User> findUserById(UUID userId) {
         Optional<User> foundUser = userRepository.findByUserId(userId);
-        if (isAuthenticatedToViewUserDetails(foundUser.get(), userId)) {
-            return foundUser;
-        } else {
-            return null;
-        }
-
+        return foundUser.filter(user -> isAuthenticatedToViewUserDetails(user, userId));
     }
 
     public boolean isAuthenticatedToViewUserDetails(User user, UUID requestedUserId) {
@@ -44,10 +44,31 @@ public class UserService {
         Role userRole = roleRepository.getReferenceById(1L);
         if (roles.contains(adminRole)) {
             return true;
-        } else if (roles.contains(userRole) && (user.getUserId() == requestedUserId)) {
-            return true;
-        } else {
-            return false;
+        } else return roles.contains(userRole) && (user.getUserId() == requestedUserId);
+    }
+
+//    public UUID retrieveAuthenticatedUserId(Principal principal) {
+//        return principal.
+//    }
+
+
+    public boolean isAuthenticatedToViewUserDetails(UUID requestedUserId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            User authenticatedUser = (User) authentication.getPrincipal();
+
+            Set<Role> roles = authenticatedUser.getRoles();
+            Role adminRole = roleRepository.getReferenceById(2L);
+            Role userRole = roleRepository.getReferenceById(1L);
+
+            if (roles.contains(adminRole)) {
+                return true; // Admin has authorization to view user details
+            } else if (roles.contains(userRole) && (authenticatedUser.getUserId() == requestedUserId)) {
+                return true; // User has authorization to view their own details
+            }
         }
+
+        return false; // User does not have authorization to view user details
     }
 }
