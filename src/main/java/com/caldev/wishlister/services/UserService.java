@@ -1,6 +1,7 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.models.Role;
+import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.repositories.RoleRepository;
 import com.caldev.wishlister.repositories.UserRepository;
@@ -39,15 +40,16 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
-            User authenticatedUser = (User) authentication.getPrincipal();
+            SecurityUserDetails authenticatedUser = (SecurityUserDetails) authentication.getPrincipal();
+            User user = authenticatedUser.getUser();
 
-            Set<Role> roles = authenticatedUser.getRoles();
+            Set<Role> roles = user.getRoles();
             Role adminRole = roleRepository.getReferenceById(2L);
             Role userRole = roleRepository.getReferenceById(1L);
 
             if (roles.contains(adminRole)) {
                 return true; // Admin is authorized to view any user details
-            } else if (roles.contains(userRole) && (authenticatedUser.getUserId() == requestedUserId)) {
+            } else if (roles.contains(userRole) && (user.getUserId() == requestedUserId)) {
                 return true; // User is authorized to view their own user details
             }
         }
