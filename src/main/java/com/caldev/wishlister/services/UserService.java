@@ -5,6 +5,7 @@ import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.repositories.RoleRepository;
 import com.caldev.wishlister.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +36,7 @@ public class UserService {
         return foundUser.orElse(null);
     }
 
+    @Transactional
     public boolean isAuthorizedToViewUserDetails(UUID requestedUserId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,12 +46,12 @@ public class UserService {
             User user = authenticatedUser.getUser();
 
             Set<Role> roles = user.getRoles();
-            Role adminRole = roleRepository.getReferenceById(2L);
-            Role userRole = roleRepository.getReferenceById(1L);
+            long adminId = 2;
+            long userId = 1;
 
-            if (roles.contains(adminRole)) {
+            if (roles.stream().anyMatch(role -> role.getRoleId() == adminId)) {
                 return true; // Admin is authorized to view any user details
-            } else if (roles.contains(userRole) && (user.getUserId() == requestedUserId)) {
+            } else if (roles.stream().anyMatch(role -> role.getRoleId() == userId) && (user.getUserId().equals(requestedUserId))) {
                 return true; // User is authorized to view their own user details
             }
         }

@@ -33,7 +33,7 @@ public class User {
     private LocalDate dateOfBirth;
 
     @Column
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"user"})
     private List<Wishlist> wishlists;
 

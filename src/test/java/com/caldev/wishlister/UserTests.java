@@ -1,6 +1,7 @@
 package com.caldev.wishlister;
 
 import com.caldev.wishlister.models.User;
+import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
