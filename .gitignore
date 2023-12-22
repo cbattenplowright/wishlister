@@ -33,7 +33,8 @@ build/
 .vscode/
 
 ### .env files ###
-src/main/resources/.env.development
+src/main/resources/.env.development.cloud
+src/main/resources/.env.development.local
 
 htmlReport/
 

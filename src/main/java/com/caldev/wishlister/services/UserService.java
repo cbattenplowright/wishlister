@@ -55,7 +55,6 @@ public class UserService {
                 return true; // User is authorized to view their own user details
             }
         }
-
         return false; // User is not authorized to view user details
     }
 }
