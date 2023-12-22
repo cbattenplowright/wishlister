@@ -28,31 +28,14 @@ public class UserService {
 
     // Work out how you will send back the User or ResponseEntity codes!!
 
-    public Optional<User> findUserById(UUID userId) {
+    public User findUserById(UUID userId) {
+
         Optional<User> foundUser = userRepository.findByUserId(userId);
-        return foundUser.filter(user -> isAuthenticatedToViewUserDetails(user, userId));
+        return foundUser.orElse(null);
     }
 
-    public boolean isAuthenticatedToViewUserDetails(User user, UUID requestedUserId) {
-        // Check if User has User or Admin privileges
-        // If user has Admin can view user details
-        // if user is user and userId matches the userId specified view user
-        // else FORBIDDEN
+    public boolean isAuthorizedToViewUserDetails(UUID requestedUserId) {
 
-        Set<Role> roles = user.getRoles();
-        Role adminRole = roleRepository.getReferenceById(2L);
-        Role userRole = roleRepository.getReferenceById(1L);
-        if (roles.contains(adminRole)) {
-            return true;
-        } else return roles.contains(userRole) && (user.getUserId() == requestedUserId);
-    }
-
-//    public UUID retrieveAuthenticatedUserId(Principal principal) {
-//        return principal.
-//    }
-
-
-    public boolean isAuthenticatedToViewUserDetails(UUID requestedUserId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
@@ -63,12 +46,12 @@ public class UserService {
             Role userRole = roleRepository.getReferenceById(1L);
 
             if (roles.contains(adminRole)) {
-                return true; // Admin has authorization to view user details
+                return true; // Admin is authorized to view any user details
             } else if (roles.contains(userRole) && (authenticatedUser.getUserId() == requestedUserId)) {
-                return true; // User has authorization to view their own details
+                return true; // User is authorized to view their own user details
             }
         }
 
-        return false; // User does not have authorization to view user details
+        return false; // User is not authorized to view user details
     }
 }

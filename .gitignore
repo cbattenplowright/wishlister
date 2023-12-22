@@ -36,3 +36,5 @@ build/
 src/main/resources/.env.development
 
 htmlReport/
+
+.DS_Store

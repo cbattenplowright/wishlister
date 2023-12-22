@@ -3,6 +3,7 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.repositories.UserRepository;
 import com.caldev.wishlister.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,22 +26,26 @@ public class UserController {
     }
 
     @GetMapping(value = "/{usernameId}")
-    public ResponseEntity<Optional<User>> getUserById(@PathVariable("usernameId") UUID userId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public ResponseEntity<User> getUserById(@PathVariable("usernameId") UUID userId) {
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            // Print or log the principal information
-            System.out.println("Principal: " + authentication.getPrincipal());
-            System.out.println(("UserID") + authentication.getDetails());
-        } else {
-            System.out.println("No authenticated principal found.");
-        }
+        /* Pseudo code for this method:
+            If user authorised
+                If find user
+                    return 200 and user
+                else
+                    return 404 not found
+            else 403 forbidden
+         */
 
-        Optional<User> foundUser = userService.findUserById(userId);
-        if (foundUser.isPresent()) {
-            return ResponseEntity.ok(foundUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        if (userService.isAuthorizedToViewUserDetails(userId)) {
+            User foundUser = userService.findUserById(userId);
+            if (foundUser != null) {
+                return ResponseEntity.ok(foundUser);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+
 }
