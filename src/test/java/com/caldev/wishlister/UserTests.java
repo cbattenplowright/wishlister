@@ -1,6 +1,7 @@
 package com.caldev.wishlister;
 
 import com.caldev.wishlister.models.User;
+import com.caldev.wishlister.models.UserDTO;
 import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
 import org.junit.jupiter.api.Nested;
