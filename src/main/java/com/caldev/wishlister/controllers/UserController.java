@@ -1,5 +1,6 @@
 package com.caldev.wishlister.controllers;
 
+import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.repositories.UserRepository;
 import com.caldev.wishlister.services.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +25,18 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<User>> getUsers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SecurityUserDetails authenticatedUser = (SecurityUserDetails) authentication.getPrincipal();
+        User user = authenticatedUser.getUser();
+
+        if (userService.isAuthorizedToViewUserDetails(user.getUserId())) {
+            List<User> users = userService.findAllUsers();
+            return ResponseEntity.ok(users);
+        } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @GetMapping(value = "/{usernameId}")

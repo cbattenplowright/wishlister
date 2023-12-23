@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -34,6 +35,10 @@ public class UserService {
 
         Optional<User> foundUser = userRepository.findByUserId(userId);
         return foundUser.orElse(null);
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
     @Transactional
