@@ -51,4 +51,12 @@ public class UserTests {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getName()).isEqualTo("Bob");
     }
+
+    @Test
+    void shouldReturnCollectionOfUsersIfAdmin(){
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("David012", "ghi789")
+                .getForEntity("/users", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 }
