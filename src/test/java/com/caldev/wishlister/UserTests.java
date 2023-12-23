@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -39,7 +40,7 @@ public class UserTests {
         }
 
         @Test
-        void shouldReturn404IfUserDoesNotExist(){
+        void shouldReturn404IfUserDoesNotExist() {
             ResponseEntity<String> response = restTemplate
                     .withBasicAuth("David012", "ghi789")
                     .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74688", String.class);
@@ -47,7 +48,7 @@ public class UserTests {
         }
 
         @Test
-        void shouldReturnUserIfUserIsAdmin(){
+        void shouldReturnUserIfUserIsAdmin() {
             ResponseEntity<User> response = restTemplate
                     .withBasicAuth("David012", "ghi789")
                     .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", User.class);
@@ -57,9 +58,9 @@ public class UserTests {
     }
 
     @Nested
-    class indexUserTests{
+    class indexUserTests {
         @Test
-        void shouldReturnCollectionOfUsersIfAdmin(){
+        void shouldReturnCollectionOfUsersIfAdmin() {
             ResponseEntity<String> response = restTemplate
                     .withBasicAuth("David012", "ghi789")
                     .getForEntity("/users", String.class);
@@ -67,7 +68,7 @@ public class UserTests {
         }
 
         @Test
-        void shouldReturn403IfUserIsNotAuthorizedToViewAllUsers(){
+        void shouldReturn403IfUserIsNotAuthorizedToViewAllUsers() {
             ResponseEntity<String> response = restTemplate
                     .withBasicAuth("Alice456", "xyz789")
                     .getForEntity("/users", String.class);
@@ -75,11 +76,23 @@ public class UserTests {
         }
 
         @Test
-        void shouldReturn401IfUserIsNotAuthenticatedToViewAllUsers(){
+        void shouldReturn401IfUserIsNotAuthenticatedToViewAllUsers() {
             ResponseEntity<String> response = restTemplate
                     .getForEntity("/users", String.class);
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         }
     }
 
+    @Nested
+    class createUserTests {
+        @Test
+        void shouldReturn201WhenUserIsCreated() {
+
+            HttpEntity<UserDTO> requestBody = new HttpEntity<>(new UserDTO("Sid894", "password", "Sid", "Sid@gmail.com", "2000-01-01"));
+
+            ResponseEntity<String> response = restTemplate
+                    .postForEntity("/users", requestBody, String.class);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        }
+    }
 }
