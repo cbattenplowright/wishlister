@@ -59,4 +59,19 @@ public class UserTests {
                 .getForEntity("/users", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
+
+    @Test
+    void shouldReturn403IfUserIsNotAuthorizedToViewAllUsers(){
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Alice456", "xyz789")
+                .getForEntity("/users", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void shouldReturn401IfUserIsNotAuthenticatedToViewAllUsers(){
+        ResponseEntity<String> response = restTemplate
+                .getForEntity("/users", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
 }
