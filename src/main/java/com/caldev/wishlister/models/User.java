@@ -55,6 +55,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        // TODO: Add role enum and attribute this in the database and the users
         this.roles = new HashSet<Role>();
     }
 

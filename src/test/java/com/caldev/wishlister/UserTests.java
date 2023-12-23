@@ -2,16 +2,17 @@ package com.caldev.wishlister;
 
 import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.models.UserDTO;
-import jakarta.transaction.Transactional;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -89,11 +90,20 @@ public class UserTests {
         @Test
         void shouldReturn201WhenUserIsCreated() {
 
-            HttpEntity<UserDTO> requestBody = new HttpEntity<>(new UserDTO("Sid894", "password", "Sid", "Sid@gmail.com", "2000-01-01"));
+            HttpEntity<UserDTO> requestBody = new HttpEntity<>(new UserDTO("Sid894", "password", "Sid", "Sid@gmail.com", LocalDate.of(2000, 01, 01)));
 
-            ResponseEntity<String> response = restTemplate
-                    .postForEntity("/users", requestBody, String.class);
+            ResponseEntity<User> response = restTemplate
+                    .postForEntity("/users", requestBody, User.class);
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+
+            // Generate code to delete user after test
+            // write an assertion that checks the user was deleted and another assertion that checks the deleted users ID against the ID returned in the response when the user was created
+
+            ResponseEntity<String> response2 = restTemplate
+                    .exchange("/users/9886bb64-a584-46f0-aca4-10e3dec74458", HttpMethod.DELETE, null, String.class);
+            assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response2.getBody()).isEqualTo(response.getBody().getUserId().toString());
         }
     }
 }

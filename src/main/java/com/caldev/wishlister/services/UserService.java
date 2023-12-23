@@ -3,6 +3,7 @@ package com.caldev.wishlister.services;
 import com.caldev.wishlister.models.Role;
 import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
+import com.caldev.wishlister.models.UserDTO;
 import com.caldev.wishlister.repositories.RoleRepository;
 import com.caldev.wishlister.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -61,5 +62,20 @@ public class UserService {
             }
         }
         return false; // User is not authorized to view user details
+    }
+
+    public User createUser(UserDTO userDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = new User(
+                userDTO.getUsername(),
+                userDTO.getPassword(),
+                userDTO.getName(),
+                userDTO.getEmail(),
+                userDTO.getDateOfBirth()
+        );
+//        TODO: Check if user is admin and add role accordingly by default user should be user by default
+        return userRepository.save(user);
+
     }
 }

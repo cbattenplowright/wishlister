@@ -1,17 +1,21 @@
 package com.caldev.wishlister.models;
 
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
+
 public class UserDTO {
 
     private String username;
     private String password;
     private String name;
     private String email;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
     public UserDTO() {
     }
 
-    public UserDTO(String username, String password, String name, String email, String dateOfBirth) {
+    public UserDTO(String username, String password, String name, String email, LocalDate dateOfBirth) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -51,11 +55,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
