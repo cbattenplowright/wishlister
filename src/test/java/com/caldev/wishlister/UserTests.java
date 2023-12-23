@@ -19,7 +19,7 @@ public class UserTests {
     TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnUser() {
+    void shouldReturnUserIfUserIsAuthenticatedAndOwner() {
         ResponseEntity<User> response = restTemplate
                 .withBasicAuth("Bob123", "abc123")
                 .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", User.class);
@@ -28,7 +28,7 @@ public class UserTests {
     }
 
     @Test
-    void shouldReturn403IfUserIsNotUserRequestIsBeingMadeFor() {
+    void shouldReturn403IfUserIsAuthenticatedAndNotOwner() {
         ResponseEntity<String> response = restTemplate
                 .withBasicAuth("Alice456", "xyz789")
                 .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", String.class);
@@ -41,5 +41,14 @@ public class UserTests {
                 .withBasicAuth("David012", "ghi789")
                 .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74688", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void shouldReturnUserIfUserIsAdmin(){
+        ResponseEntity<User> response = restTemplate
+                .withBasicAuth("David012", "ghi789")
+                .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", User.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getName()).isEqualTo("Bob");
     }
 }
