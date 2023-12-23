@@ -1,6 +1,8 @@
 package com.caldev.wishlister;
 
 import com.caldev.wishlister.models.User;
+import jakarta.transaction.Transactional;
+import org.apache.coyote.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +22,24 @@ public class UserTests {
     void shouldReturnUser() {
         ResponseEntity<User> response = restTemplate
                 .withBasicAuth("Bob123", "abc123")
-                .getForEntity("/users/Bob123", User.class);
+                .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", User.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getName()).isEqualTo("Bob");
+    }
+
+    @Test
+    void shouldReturn403IfUserIsNotUserRequestIsBeingMadeFor() {
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("Alice456", "xyz789")
+                .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void shouldReturn404IfUserDoesNotExist(){
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("David012", "ghi789")
+                .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74688", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

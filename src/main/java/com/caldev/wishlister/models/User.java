@@ -2,6 +2,8 @@ package com.caldev.wishlister.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Bean;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -31,7 +33,7 @@ public class User {
     private LocalDate dateOfBirth;
 
     @Column
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"user"})
     private List<Wishlist> wishlists;
 

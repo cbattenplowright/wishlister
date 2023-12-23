@@ -1,35 +1,51 @@
 package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.models.User;
-import com.caldev.wishlister.models.Wishlist;
 import com.caldev.wishlister.repositories.UserRepository;
-import com.caldev.wishlister.services.WishlistService;
+import com.caldev.wishlister.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping(value = "/{username}")
-    public ResponseEntity<Optional<User>> getWishlistById(@PathVariable("username") String username){
+    @GetMapping(value = "/{usernameId}")
+    public ResponseEntity<User> getUserById(@PathVariable("usernameId") UUID userId) {
 
-        Optional<User> foundUser = userRepository.findByUsername(username);
-        if (foundUser.isPresent()) {
-            return ResponseEntity.ok(foundUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        /* Pseudo code for this method:
+            If user authorised
+                If find user
+                    return 200 and user
+                else
+                    return 404 not found
+            else 403 forbidden
+         */
+
+
+        if (userService.isAuthorizedToViewUserDetails(userId)) {
+            User foundUser = userService.findUserById(userId);
+            if (foundUser != null) {
+                return ResponseEntity.ok(foundUser);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+
 }
