@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -100,8 +101,11 @@ public class UserTests {
             // Generate code to delete user after test
             // write an assertion that checks the user was deleted and another assertion that checks the deleted users ID against the ID returned in the response when the user was created
 
+            UUID userId = response.getBody().getUserId();
+
             ResponseEntity<String> response2 = restTemplate
-                    .exchange("/users/9886bb64-a584-46f0-aca4-10e3dec74458", HttpMethod.DELETE, null, String.class);
+                    .withBasicAuth("Sid894", "password")
+                    .exchange("/users/" + userId, HttpMethod.DELETE, null, String.class);
             assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(response2.getBody()).isEqualTo(response.getBody().getUserId().toString());
         }
