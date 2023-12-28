@@ -78,4 +78,15 @@ public class UserService {
         return userRepository.save(user);
 
     }
+
+    public UUID deleteUser(UUID userId) {
+
+        Optional<User> foundUser = userRepository.findByUserId(userId);
+        if (foundUser.isPresent()) {
+            userRepository.delete(foundUser.get());
+            return userId;
+        } else {
+            return null;
+        }
+    }
 }

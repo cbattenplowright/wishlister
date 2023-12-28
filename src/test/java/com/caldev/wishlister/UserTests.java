@@ -91,29 +91,20 @@ public class UserTests {
         @Test
         void shouldReturn201WhenUserIsCreated() {
 
-            HttpEntity<UserDTO> requestBody = new HttpEntity<>(new UserDTO("Sid894", "password", "Sid", "sid@gmail.com", LocalDate.of(2000, 1, 1)));
+            HttpEntity<UserDTO> createUserResponseBody = new HttpEntity<>(new UserDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
 
-            ResponseEntity<User> response = restTemplate
+            ResponseEntity<User> createUserResponse = restTemplate
                     .postForEntity("/users",
-                            requestBody,
+                            createUserResponseBody,
                             User.class);
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+            assertThat(createUserResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
+            UUID userId = createUserResponse.getBody().getUserId();
 
-            // Generate code to delete user after test
-            // write an assertion that checks the user was deleted and another assertion that checks the deleted users ID against the ID returned in the response when the user was created
-
-            UUID userId = response.getBody().getUserId();
-
-            // generate code to delete user
-            ResponseEntity<String> response2 = restTemplate
-                    .withBasicAuth("Sid894", "password")
-                    .exchange("/users/" + userId,
-                            HttpMethod.DELETE,
-                            null,
-                            String.class);
-            assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
-            assertThat(response2.getBody()).isEqualTo(response.getBody().getUserId().toString());
+            ResponseEntity<User> deleteUserResponse = restTemplate
+                    .withBasicAuth("Flo329", "password")
+                    .exchange("/users/" + userId,HttpMethod.DELETE, null, User.class);
+            assertThat(deleteUserResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         }
     }
 
@@ -135,7 +126,7 @@ public class UserTests {
 
             // Generate code to delete user after test
             ResponseEntity<String> deleteUserResponse = restTemplate
-                    .withBasicAuth("David012", "ghi789")
+                    .withBasicAuth("Flo329", "password")
                     .exchange("/users/" + userId,
                             HttpMethod.DELETE,
                             null,

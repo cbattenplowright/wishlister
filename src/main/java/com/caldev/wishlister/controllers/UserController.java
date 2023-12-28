@@ -65,4 +65,28 @@ public class UserController {
         User createdUser = userService.createUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
+
+    @DeleteMapping(value = "/{usernameId}")
+    public ResponseEntity<UUID> deleteUser(@PathVariable("usernameId") UUID userId) {
+
+        /* Pseudo code for this method:
+            If user authorised
+                If find user
+                    delete user
+                    return 200 and user id
+                else
+                    return 404 not found
+            else 403 forbidden
+         */
+
+        if (userService.isAuthorizedToViewUserDetails(userId)) {
+            User foundUser = userService.findUserById(userId);
+            if (foundUser != null) {
+                UUID deletedUserId = userService.deleteUser(userId);
+                return ResponseEntity.ok(deletedUserId);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 }
