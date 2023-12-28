@@ -2,7 +2,6 @@ package com.caldev.wishlister.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Bean;
 
 
 import java.time.LocalDate;
@@ -56,7 +55,7 @@ public class User {
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         // TODO: Add role enum and attribute this in the database and the users
-        this.roles = new HashSet<Role>();
+        this.roles = new HashSet<>();
     }
 
     // GETTERS AND SETTERS

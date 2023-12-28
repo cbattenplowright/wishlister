@@ -1,7 +1,5 @@
 package com.caldev.wishlister.models;
 
-import com.caldev.wishlister.models.Role;
-import com.caldev.wishlister.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

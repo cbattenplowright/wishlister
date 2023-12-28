@@ -3,8 +3,6 @@ package com.caldev.wishlister.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.util.Optional;
-
 @Entity
 @Table(name = "wishlists")
 public class Wishlist {

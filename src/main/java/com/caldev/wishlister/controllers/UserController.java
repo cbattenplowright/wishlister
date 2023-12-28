@@ -3,7 +3,6 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.models.UserDTO;
-import com.caldev.wishlister.repositories.UserRepository;
 import com.caldev.wishlister.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

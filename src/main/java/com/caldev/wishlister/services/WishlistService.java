@@ -1,6 +1,5 @@
 package com.caldev.wishlister.services;
 
-import com.caldev.wishlister.controllers.WishlistController;
 import com.caldev.wishlister.models.Wishlist;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,7 @@ public class WishlistService {
 
     public Optional<Wishlist> findWishlistById(Long wishlistId) {
 
-        Optional<Wishlist> wishlist = wishlistRepository.findById(wishlistId);
-        return wishlist;
+        return wishlistRepository.findById(wishlistId);
     }
 
 }
