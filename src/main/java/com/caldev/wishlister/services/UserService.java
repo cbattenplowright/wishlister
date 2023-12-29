@@ -60,6 +60,9 @@ public class UserService {
     public User createUser(UserDTO userDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        // Create the user object from the userDTO that was passed in from the controller
+        // Give it the default role of USER
+        // Save the user to the database
         User user = new User(
                 userDTO.getUsername(),
                 userDTO.getPassword(),
@@ -67,7 +70,7 @@ public class UserService {
                 userDTO.getEmail(),
                 userDTO.getDateOfBirth()
         );
-//        TODO: Check if user is admin and add role accordingly by default user should be user by default
+
         return userRepository.save(user);
 
     }

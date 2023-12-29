@@ -91,7 +91,8 @@ public class UserTests {
         @Test
         void shouldReturn201WhenUserIsCreated() {
 
-            HttpEntity<UserDTO> createUserResponseBody = new HttpEntity<>(new UserDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
+            HttpEntity<UserDTO> createUserResponseBody = new HttpEntity<>(
+                    new UserDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
 
             ResponseEntity<User> createUserResponse = restTemplate
                     .postForEntity("/users",
@@ -103,7 +104,7 @@ public class UserTests {
 
             ResponseEntity<User> deleteUserResponse = restTemplate
                     .withBasicAuth("Flo329", "password")
-                    .exchange("/users/" + userId,HttpMethod.DELETE, null, User.class);
+                    .exchange("/users/" + userId, HttpMethod.DELETE, null, User.class);
             assertThat(deleteUserResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         }
     }
@@ -114,7 +115,8 @@ public class UserTests {
         @Test
         void shouldReturn200WhenUserIsDeleted() {
 
-            HttpEntity<UserDTO> createUserResponseBody = new HttpEntity<>(new UserDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
+            HttpEntity<UserDTO> createUserResponseBody = new HttpEntity<>(
+                    new UserDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
 
             ResponseEntity<User> createUserResponse = restTemplate
                     .postForEntity("/users",

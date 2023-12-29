@@ -55,7 +55,8 @@ public class User {
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         // TODO: Add role enum and attribute this in the database and the users
-        this.roles = new HashSet<>();
+        // make any new user a USER by default
+        this.roles = new HashSet<>(Collections.singletonList(new Role("USER")));
     }
 
     // GETTERS AND SETTERS
