@@ -48,7 +48,7 @@ public class User {
     public User(){
     }
 
-    public User(String username, String password, String name, String email,LocalDate dateOfBirth) {
+    public User(String username, String password, String name, String email,LocalDate dateOfBirth, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -56,7 +56,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         // TODO: Add role enum and attribute this in the database and the users
         // make any new user a USER by default
-        this.roles = new HashSet<>(Collections.singletonList(new Role("USER")));
+        this.roles = roles;
     }
 
     // GETTERS AND SETTERS
