@@ -1,5 +1,6 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.enums.RoleName;
 import com.caldev.wishlister.models.Role;
 import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
@@ -10,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,8 +22,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final RoleService roleService;
+
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
     }
 
     // Work out how you will send back the User or ResponseEntity codes!!
@@ -58,17 +63,23 @@ public class UserService {
     }
 
     public User createUser(UserDTO userDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // Create the user object from the userDTO that was passed in from the controller
         // Give it the default role of USER
         // Save the user to the database
+
+        Role userRole = roleService.findByRoleName(RoleName.ROLE_USER);
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
+
         User user = new User(
                 userDTO.getUsername(),
                 userDTO.getPassword(),
                 userDTO.getName(),
                 userDTO.getEmail(),
-                userDTO.getDateOfBirth()
+                userDTO.getDateOfBirth(),
+                roles
         );
 
         return userRepository.save(user);
