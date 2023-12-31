@@ -20,7 +20,7 @@ public class Role {
     private RoleName roleName;
 
     @ManyToMany(mappedBy = "roles")
-    @JsonIgnoreProperties({"roles"})
+    @JsonIgnoreProperties({ "roles" })
     private List<User> users;
 
     public Role() {
@@ -52,5 +52,13 @@ public class Role {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName=" + roleName +
+                '}';
     }
 }
