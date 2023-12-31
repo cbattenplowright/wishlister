@@ -1,7 +1,5 @@
-package com.caldev.wishlister.unitTests.models;
+package com.caldev.wishlister.models;
 
-import com.caldev.wishlister.models.SecurityUserDetails;
-import com.caldev.wishlister.models.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +7,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SecurityUserDetailsUnitTestsEntity {
+class SecurityUserDetailsUnitTests {
 
     private SecurityUserDetails securityUserDetails;
     private UserEntity userEntity;

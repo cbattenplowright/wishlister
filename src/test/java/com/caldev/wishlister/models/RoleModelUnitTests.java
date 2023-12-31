@@ -1,11 +1,9 @@
-package com.caldev.wishlister.unitTests.models;
+package com.caldev.wishlister.models;
 
-import com.caldev.wishlister.models.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.caldev.wishlister.enums.RoleName;
-import com.caldev.wishlister.models.Role;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

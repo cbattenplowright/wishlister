@@ -1,4 +1,4 @@
-package com.caldev.wishlister.unitTests.models;
+package com.caldev.wishlister.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -6,8 +6,6 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.caldev.wishlister.models.UserEntityDTO;
 
 class UserEntityDTOUnitTests {
 

@@ -1,12 +1,9 @@
-package com.caldev.wishlister.unitTests.models;
+package com.caldev.wishlister.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.caldev.wishlister.enums.RoleName;
-import com.caldev.wishlister.models.Role;
-import com.caldev.wishlister.models.UserEntity;
-import com.caldev.wishlister.models.Wishlist;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
