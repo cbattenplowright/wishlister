@@ -21,13 +21,13 @@ public class Wishlist {
             nullable = false
     )
     @JsonIgnoreProperties("{wishlists}")
-    private User user;
+    private UserEntity userEntity;
 
     public Wishlist() {}
 
-    public Wishlist(String wishlistName, User user) {
+    public Wishlist(String wishlistName, UserEntity userEntity) {
         this.wishlistName = wishlistName;
-        this.user = user;
+        this.userEntity = userEntity;
     }
 
     public Long getWishlistId() {
@@ -38,8 +38,8 @@ public class Wishlist {
         return wishlistName;
     }
 
-    public User getUser() {
-        return user;
+    public UserEntity getUser() {
+        return userEntity;
     }
 
     public void setWishlistId(Long wishlistId) {
@@ -50,7 +50,7 @@ public class Wishlist {
         this.wishlistName = wishlistName;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 }

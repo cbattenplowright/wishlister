@@ -1,11 +1,9 @@
-package com.caldev.wishlister.unitTests.models;
+package com.caldev.wishlister.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.caldev.wishlister.enums.RoleName;
-import com.caldev.wishlister.models.Role;
-import com.caldev.wishlister.models.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,11 +36,11 @@ class RoleModelUnitTests {
         role.setRole(RoleName.ROLE_USER);
         assertEquals(RoleName.ROLE_USER, role.getRole());
 
-        List<User> users = new ArrayList<>();
-        users.add(new User("Bill23", "password123", "Bill", "bill@gmail.com", LocalDate.of(1934, 5, 7)));
-        users.add(new User("Sally45", "password123", "Sally", "sally@gmail.com", LocalDate.of(1945, 3, 12)));
-        role.setUsers(users);
-        assertEquals(users, role.getUsers());
+        List<UserEntity> userEntities = new ArrayList<>();
+        userEntities.add(new UserEntity("Bill23", "password123", "Bill", "bill@gmail.com", LocalDate.of(1934, 5, 7)));
+        userEntities.add(new UserEntity("Sally45", "password123", "Sally", "sally@gmail.com", LocalDate.of(1945, 3, 12)));
+        role.setUsers(userEntities);
+        assertEquals(userEntities, role.getUsers());
     }
 
     @Test

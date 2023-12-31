@@ -9,7 +9,7 @@
     * [Wishlist Endpoints](#wishlist-endpoints)
 
 ## Description
-WishLister is a user-friendly wishlist management application designed to make your gifting experience delightful and stress-free. Whether you're creating a wishlist for yourself or collaborating with friends and family, WishLister has you covered.
+WishLister is a userEntity-friendly wishlist management application designed to make your gifting experience delightful and stress-free. Whether you're creating a wishlist for yourself or collaborating with friends and family, WishLister has you covered.
 
 Key Features
 
@@ -21,12 +21,12 @@ Key Features
 
 
 ## MVP
-The MVP of this project is to allow users to create and share their christmas wishlists with their friends and family.
+The MVP of this project is to allow userEntities to create and share their christmas wishlists with their friends and family.
 
 User Management:
   
-  - User registration: Allow users to create accounts.
-  - User authentication: Enable users to log in securely.
+  - User registration: Allow userEntities to create accounts.
+  - User authentication: Enable userEntities to log in securely.
 
 List Management:
   
@@ -38,7 +38,7 @@ Product Management:
   
   - Add a product: Users can add new products to their wishlist.
   - View products: Users can see a list of products in their wishlist.
-  - Edit product details: Allow users to update product information.
+  - Edit product details: Allow userEntities to update product information.
 
 List-Product Relationship:
   
@@ -47,12 +47,12 @@ List-Product Relationship:
 
 List Sharing:
   
-  - Share a list: Users can share their wishlist with other users.
+  - Share a list: Users can share their wishlist with other userEntities.
   - View shared lists: Users can see lists shared with them.
 
 Basic User Profile:
   
-  - Display user profile information: Show basic user details.
+  - Display userEntity profile information: Show basic userEntity details.
 
 ## Diagrams
 
@@ -76,17 +76,17 @@ Request
   URI: /wishlists
   HTTP Verb: GET
   Body: None
-  Authorization: Only the list owner or users with whom the list has been shared should be allowed.
+  Authorization: Only the list owner or userEntities with whom the list has been shared should be allowed.
 
 Authorization Principles:
-  List Owner Access: The authenticated user must be the owner of the requested list.
-  Shared User Access: The authenticated user must be one of the users with whom the list has been shared.
+  List Owner Access: The authenticated userEntity must be the owner of the requested list.
+  Shared User Access: The authenticated userEntity must be one of the userEntities with whom the list has been shared.
 
 Response:
   HTTP Status:
-    200 OK if the user is authorized and the lists were successfully retrieved
-    403 FORBIDDEN if the user is unauthenticated or unauthorized
-    404 NOT FOUND if the user is authenticated and authorized but the lists cannot be found
+    200 OK if the userEntity is authorized and the lists were successfully retrieved
+    403 FORBIDDEN if the userEntity is unauthenticated or unauthorized
+    404 NOT FOUND if the userEntity is authenticated and authorized but the lists cannot be found
   Response Body Type: JSON
   Example Response Body:
   [
@@ -141,17 +141,17 @@ Request
   URI: /wishlists/{wishlistId}
   HTTP Verb: GET
   Body: None
-  Authorization: Only the list owner or users with whom the list has been shared should be allowed.
+  Authorization: Only the list owner or userEntities with whom the list has been shared should be allowed.
 
 Authorization Principles:
-  List Owner Access: The authenticated user must be the owner of the requested list.
-  Shared User Access: The authenticated user must be one of the users with whom the list has been shared.
+  List Owner Access: The authenticated userEntity must be the owner of the requested list.
+  Shared User Access: The authenticated userEntity must be one of the userEntities with whom the list has been shared.
 
 Response:
   HTTP Status:
-    200 OK if the user is authorized and the list was successfully retrieved
-    403 FORBIDDEN if the user is unauthenticated or unauthorized
-    404 NOT FOUND if the user is authenticated and authorized but the list cannot be found
+    200 OK if the userEntity is authorized and the list was successfully retrieved
+    403 FORBIDDEN if the userEntity is unauthenticated or unauthorized
+    404 NOT FOUND if the userEntity is authenticated and authorized but the list cannot be found
   Response Body Type: JSON
   Example Response Body:
     {
@@ -193,20 +193,20 @@ Response:
 Request
   URI: /wishlists
   HTTP Verb: POST
-  Authorization: Only the list owner or users with whom the list has been shared should be allowed.
+  Authorization: Only the list owner or userEntities with whom the list has been shared should be allowed.
     Authorization Principles:
-      List Owner Access: The authenticated user must be the owner of the requested list.
-      Shared User Access: The authenticated user must be one of the users with whom the list has been shared.
+      List Owner Access: The authenticated userEntity must be the owner of the requested list.
+      Shared User Access: The authenticated userEntity must be one of the userEntities with whom the list has been shared.
   Example Request Body: {
       "wishlistName": "24th Birthday"
     }
 
 Response:
   HTTP Status:
-    201 CREATED if the user is authorized and the list was successfully created
+    201 CREATED if the userEntity is authorized and the list was successfully created
     400 BAD REQUEST if the client's request is malformed or missing required parameters.
-    403 FORBIDDEN if the user is unauthenticated or unauthorized
-    404 NOT FOUND if the user is authenticated and authorized but the wishlist cannot be found
+    403 FORBIDDEN if the userEntity is unauthenticated or unauthorized
+    404 NOT FOUND if the userEntity is authenticated and authorized but the wishlist cannot be found
 
   Response Body Type: JSON
   Header: Location=/wishlists/42
@@ -227,8 +227,8 @@ Response:
         200 OK if the wishlist has successfully been updated
         204 NO CONTENT if the wishlist has successfully been updated and no data needs to be sent back
         400 BAD REQUEST if the client's request is malformed of missing required parameters
-        403 FORBIDDEN if the user is unauthenticated of unauthorized
-        404 NOT FOUND if the user is authenticated and authorized but the wishlist cannot be found
+        403 FORBIDDEN if the userEntity is unauthenticated of unauthorized
+        404 NOT FOUND if the userEntity is authenticated and authorized but the wishlist cannot be found
         422 UNPROCESSABLE ENTITY if the request is well-formed but is unable to be followed because of semantic errors
         
     Response Body Type: JSON
@@ -246,7 +246,7 @@ Response:
 ### UPDATE
 ```
 Request:
-    URI: /wishlists/{wishlistId}/shared-users
+    URI: /wishlists/{wishlistId}/shared-userEntities
     HTTP verb: PATCH
     Example Request Body:
     {
@@ -256,14 +256,14 @@ Request:
 
 Response:
     HTTP Status:
-        200 OK if the shared user list is updated
-        404 NOT FOUND if the resource be that the shared user list is not found
-        409 CONFLICT if a user specified for removal doesn't exist in the current shared users list
+        200 OK if the shared userEntity list is updated
+        404 NOT FOUND if the resource be that the shared userEntity list is not found
+        409 CONFLICT if a userEntity specified for removal doesn't exist in the current shared userEntities list
         422 UNPROCESSABLE ENTITY
     Examples Response Body:
     {
       "status": "success",
-      "message": "Shared users list updated successfully",
+      "message": "Shared userEntities list updated successfully",
       "data": {
         "wishlistId": 1,
         "updatedAt": "2023-11-30T12:34:56Z"

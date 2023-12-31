@@ -1,14 +1,10 @@
 package com.caldev.wishlister.components;
 
-import com.caldev.wishlister.enums.RoleName;
-import com.caldev.wishlister.models.Role;
-import com.caldev.wishlister.models.User;
+import com.caldev.wishlister.models.UserEntity;
 import com.caldev.wishlister.models.Wishlist;
 import com.caldev.wishlister.repositories.UserRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
 
-import java.util.HashSet;
-import java.util.Set;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,17 +39,17 @@ public class DataLoader implements ApplicationRunner {
 //            adminRole.add(new Role(RoleName.ROLE_ADMIN));
 //            adminRole.add(new Role(RoleName.ROLE_USER));
 
-            List<User> users = Arrays.asList(
-                    new User ("Bob123", encoder.encode("abc123"), "Bob", "bob@gmail.com", LocalDate.of(1973, 12, 10)),
-                    new User ("Alice456", encoder.encode("xyz789"), "Alice", "alice@gmail.com", LocalDate.of(2001, 4, 28)),
-                    new User ("Charlie789", encoder.encode("def456"),"Charlie", "charlie@gmail.com", LocalDate.of(1995,11,3)),
-                    new User ("David012", encoder.encode("ghi789"),"David", "david@gmail.com", LocalDate.of(1998,12,5))
+            List<UserEntity> userEntities = Arrays.asList(
+                    new UserEntity("Bob123", encoder.encode("abc123"), "Bob", "bob@gmail.com", LocalDate.of(1973, 12, 10)),
+                    new UserEntity("Alice456", encoder.encode("xyz789"), "Alice", "alice@gmail.com", LocalDate.of(2001, 4, 28)),
+                    new UserEntity("Charlie789", encoder.encode("def456"),"Charlie", "charlie@gmail.com", LocalDate.of(1995,11,3)),
+                    new UserEntity("David012", encoder.encode("ghi789"),"David", "david@gmail.com", LocalDate.of(1998,12,5))
             );
 
-            userRepository.saveAll(users);
+            userRepository.saveAll(userEntities);
         }
         if (wishlistRepository.count() == 0) {
-            Optional<User> user1 = userRepository.findByUsername("Bob123");
+            Optional<UserEntity> user1 = userRepository.findByUsername("Bob123");
             if (user1.isPresent()) {
                 List<Wishlist> wishlists = Arrays.asList(
                         new Wishlist("Tech Gadgets", user1.get()),

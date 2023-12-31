@@ -11,19 +11,19 @@ import java.util.Set;
 
 public class SecurityUserDetails implements UserDetails {
 
-    private final User user;
+    private final UserEntity userEntity;
 
-    public SecurityUserDetails(User user) {
-        this.user = user;
+    public SecurityUserDetails(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
-    public User getUser() {
-        return user;
+    public UserEntity getUser() {
+        return userEntity;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = user.getRoles();
+        Set<Role> roles = userEntity.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getRole().toString()));
@@ -34,12 +34,12 @@ public class SecurityUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return userEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return userEntity.getUsername();
     }
 
     @Override

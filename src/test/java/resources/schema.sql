@@ -1,4 +1,4 @@
-CREATE TABLE users
+CREATE TABLE userEntities
 (
     user_id SERIAL NOT NULL UNIQUE PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE products
     priority VARCHAR(255),
     description VARCHAR(255),
     date_added DATE DEFAULT CURRENT_DATE,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES userEntities(user_id)
 );
 
 CREATE TABLE lists
@@ -26,7 +26,7 @@ CREATE TABLE lists
     list_id SERIAL NOT NULL UNIQUE PRIMARY KEY,
     user_id BIGINT,
     name VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES userEntities(user_id)
 );
 
 CREATE TABLE shared_user_lists
@@ -35,7 +35,7 @@ CREATE TABLE shared_user_lists
     list_id BIGINT,
     shared_user_id BIGINT,
     FOREIGN KEY (list_id) REFERENCES lists(list_id),
-    FOREIGN KEY (shared_user_id) REFERENCES users(user_id)
+    FOREIGN KEY (shared_user_id) REFERENCES userEntities(user_id)
 );
 
 CREATE TABLE list_products

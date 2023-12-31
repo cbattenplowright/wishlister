@@ -10,7 +10,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -46,16 +46,15 @@ public class User {
     private Set<Role> roles;
 
 
-    public User(){
+    public UserEntity(){
     }
 
-    public User(String username, String password, String name, String email,LocalDate dateOfBirth) {
+    public UserEntity(String username, String password, String name, String email, LocalDate dateOfBirth) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-        // TODO: Add role enum and attribute this in the database and the users
         // make any new user a USER by default
         this.roles = new HashSet<>(Collections.singleton(new Role(RoleName.ROLE_USER)));
     }
