@@ -23,24 +23,21 @@ class RoleModelUnitTests {
     }
 
     @Test
-    void testGetRoleId() {
+    void testGettersAndSetters() {
+
+        // Test getters
+        assertEquals(null, role.getRoleId());
+        assertEquals(RoleName.ROLE_ADMIN, role.getRole());
+        assertEquals(null, role.getUsers());
+
+        // Test setters
+
         role.setRoleId(1L);
         assertEquals(1L, role.getRoleId());
-    }
 
-    @Test
-    void testGetRoleName() {
-        assertEquals(RoleName.ROLE_ADMIN, role.getRole());
-    }
-
-    @Test
-    void testSetRoleName() {
         role.setRole(RoleName.ROLE_USER);
         assertEquals(RoleName.ROLE_USER, role.getRole());
-    }
 
-    @Test
-    void testGetUsers() {
         List<User> users = new ArrayList<>();
         users.add(new User("Bill23", "password123", "Bill", "bill@gmail.com", LocalDate.of(1934, 5, 7), null));
         users.add(new User("Sally45", "password123", "Sally", "sally@gmail.com", LocalDate.of(1945, 3, 12), null));
