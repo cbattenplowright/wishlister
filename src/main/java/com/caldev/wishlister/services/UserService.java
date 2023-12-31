@@ -1,17 +1,17 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.enums.RoleName;
 import com.caldev.wishlister.models.Role;
 import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
-import com.caldev.wishlister.repositories.RoleRepository;
+import com.caldev.wishlister.models.UserDTO;
 import com.caldev.wishlister.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,11 +22,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
+    private final RoleService roleService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
     }
 
     // Work out how you will send back the User or ResponseEntity codes!!
@@ -54,12 +54,41 @@ public class UserService {
             long adminId = 2;
             long userId = 1;
 
-            if (roles.stream().anyMatch(role -> role.getRoleId() == adminId)) {
-                return true; // Admin is authorized to view any user details
-            } else if (roles.stream().anyMatch(role -> role.getRoleId() == userId) && (user.getUserId().equals(requestedUserId))) {
-                return true; // User is authorized to view their own user details
+            if (roles.stream().anyMatch(role -> role.getRoleId() == adminId) ||
+                    (roles.stream().anyMatch(role -> role.getRoleId() == userId) && user.getUserId().equals(requestedUserId))) {
+                return true; // Admin is authorized to view any user details, User is authorized to view their own user details
             }
         }
         return false; // User is not authorized to view user details
+    }
+
+    public User createUser(UserDTO userDTO) {
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Create the user object from the userDTO that was passed in from the controller
+        // Give it the default role of USER
+        // Save the user to the database
+
+        User user = new User(
+                userDTO.getUsername(),
+                userDTO.getPassword(),
+                userDTO.getName(),
+                userDTO.getEmail(),
+                userDTO.getDateOfBirth()
+        );
+
+        return userRepository.save(user);
+
+    }
+
+    public UUID deleteUser(UUID userId) {
+
+        Optional<User> foundUser = userRepository.findByUserId(userId);
+        if (foundUser.isPresent()) {
+            userRepository.delete(foundUser.get());
+            return userId;
+        } else {
+            return null;
+        }
     }
 }

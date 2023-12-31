@@ -1,5 +1,6 @@
 package com.caldev.wishlister.models;
 
+import com.caldev.wishlister.enums.RoleName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -13,17 +14,20 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
     private Long roleId;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_name", nullable = false, unique = true)
+    private RoleName roleName;
 
     @ManyToMany(mappedBy = "roles")
-    @JsonIgnoreProperties({"roles"})
+    @JsonIgnoreProperties({ "roles" })
     private List<User> users;
 
     public Role() {
     }
 
-    public Role(String role) {
-        this.role = role;
+    public Role(RoleName roleName) {
+        this.roleName = roleName;
     }
 
     public Long getRoleId() {
@@ -34,12 +38,12 @@ public class Role {
         this.roleId = roleId;
     }
 
-    public String getRole() {
-        return role;
+    public RoleName getRole() {
+        return roleName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(RoleName roleName) {
+        this.roleName = roleName;
     }
 
     public List<User> getUsers() {
@@ -48,5 +52,13 @@ public class Role {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName=" + roleName +
+                '}';
     }
 }

@@ -1,8 +1,8 @@
 package com.caldev.wishlister.models;
 
+import com.caldev.wishlister.enums.RoleName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Bean;
 
 
 import java.time.LocalDate;
@@ -55,7 +55,9 @@ public class User {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.roles = new HashSet<Role>();
+        // TODO: Add role enum and attribute this in the database and the users
+        // make any new user a USER by default
+        this.roles = new HashSet<>(Collections.singleton(new Role(RoleName.ROLE_USER)));
     }
 
     // GETTERS AND SETTERS

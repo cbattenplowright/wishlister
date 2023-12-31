@@ -2,19 +2,15 @@ package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.User;
-import com.caldev.wishlister.repositories.UserRepository;
+import com.caldev.wishlister.models.UserDTO;
 import com.caldev.wishlister.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -62,4 +58,33 @@ public class UserController {
         } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
+        User createdUser = userService.createUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    @DeleteMapping(value = "/{usernameId}")
+    public ResponseEntity<UUID> deleteUser(@PathVariable("usernameId") UUID userId) {
+
+        /* Pseudo code for this method:
+            If user authorised
+                If find user
+                    delete user
+                    return 200 and user id
+                else
+                    return 404 not found
+            else 403 forbidden
+         */
+
+        if (userService.isAuthorizedToViewUserDetails(userId)) {
+            User foundUser = userService.findUserById(userId);
+            if (foundUser != null) {
+                UUID deletedUserId = userService.deleteUser(userId);
+                return ResponseEntity.ok(deletedUserId);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 }
