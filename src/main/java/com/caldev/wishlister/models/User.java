@@ -1,5 +1,6 @@
 package com.caldev.wishlister.models;
 
+import com.caldev.wishlister.enums.RoleName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -48,7 +49,7 @@ public class User {
     public User(){
     }
 
-    public User(String username, String password, String name, String email,LocalDate dateOfBirth, Set<Role> roles) {
+    public User(String username, String password, String name, String email,LocalDate dateOfBirth) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -56,7 +57,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         // TODO: Add role enum and attribute this in the database and the users
         // make any new user a USER by default
-        this.roles = roles;
+        this.roles = new HashSet<>(Collections.singleton(new Role(RoleName.ROLE_USER)));
     }
 
     // GETTERS AND SETTERS
