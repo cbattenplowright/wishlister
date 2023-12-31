@@ -9,6 +9,7 @@ import com.caldev.wishlister.models.User;
 import com.caldev.wishlister.models.Wishlist;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -23,22 +24,20 @@ class UserModelUnitTests {
     @BeforeEach
     public void setUp() {
         // Create a sample user for testing
-        Set<Role> roles = new HashSet<>();
-        roles.add(new Role(RoleName.ROLE_USER));
         user = new User("john_doe", "password123", "John Doe", "john.doe@example.com",
-                LocalDate.of(1990, 1, 1), roles);
+                LocalDate.of(1990, 1, 1));
     }
 
     @Test
     void testGettersAndSetters() {
         // Test getters
-        assertEquals(null, user.getUserId());
+        assertNull(user.getUserId());
         assertEquals("john_doe", user.getUsername());
         assertEquals("password123", user.getPassword());
         assertEquals("John Doe", user.getName());
         assertEquals("john.doe@example.com", user.getEmail());
         assertEquals(LocalDate.of(1990, 1, 1), user.getDateOfBirth());
-        assertEquals(null, user.getWishlists());
+        assertNull(user.getWishlists());
         assertEquals(1, user.getRoles().size());
         assertEquals(RoleName.ROLE_USER, user.getRoles().iterator().next().getRole());
 
