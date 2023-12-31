@@ -1,4 +1,4 @@
-package com.caldev.wishlister.unitTests.user;
+package com.caldev.wishlister.unitTests.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

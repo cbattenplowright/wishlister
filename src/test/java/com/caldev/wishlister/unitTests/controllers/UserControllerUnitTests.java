@@ -1,4 +1,4 @@
-package com.caldev.wishlister.unitTests.user;
+package com.caldev.wishlister.unitTests.controllers;
 
 public class UserControllerUnitTests {
     
