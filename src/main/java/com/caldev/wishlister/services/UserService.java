@@ -69,17 +69,12 @@ public class UserService {
         // Give it the default role of USER
         // Save the user to the database
 
-        Role userRole = roleService.findByRoleName(RoleName.ROLE_USER);
-        Set<Role> roles = new HashSet<>();
-        roles.add(userRole);
-
         User user = new User(
                 userDTO.getUsername(),
                 userDTO.getPassword(),
                 userDTO.getName(),
                 userDTO.getEmail(),
-                userDTO.getDateOfBirth(),
-                roles
+                userDTO.getDateOfBirth()
         );
 
         return userRepository.save(user);
