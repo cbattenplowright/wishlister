@@ -36,18 +36,18 @@ public class DataLoader implements ApplicationRunner {
 
         if (userRepository.count() == 0) {
 
-            Set<Role> userRole = new HashSet<>();
-            userRole.add(new Role(RoleName.ROLE_USER));
-
-            Set<Role> adminRole = new HashSet<>();
-            adminRole.add(new Role(RoleName.ROLE_ADMIN));
-            adminRole.add(new Role(RoleName.ROLE_USER));
+//            Set<Role> userRole = new HashSet<>();
+//            userRole.add(new Role(RoleName.ROLE_USER));
+//
+//            Set<Role> adminRole = new HashSet<>();
+//            adminRole.add(new Role(RoleName.ROLE_ADMIN));
+//            adminRole.add(new Role(RoleName.ROLE_USER));
 
             List<User> users = Arrays.asList(
-                    new User ("Bob123", encoder.encode("abc123"), "Bob", "bob@gmail.com", LocalDate.of(1973, 12, 10), userRole),
-                    new User ("Alice456", encoder.encode("xyz789"), "Alice", "alice@gmail.com", LocalDate.of(2001, 4, 28), userRole),
-                    new User ("Charlie789", encoder.encode("def456"),"Charlie", "charlie@gmail.com", LocalDate.of(1995,11,3), userRole),
-                    new User ("David012", encoder.encode("ghi789"),"David", "david@gmail.com", LocalDate.of(1998,12,5), adminRole)
+                    new User ("Bob123", encoder.encode("abc123"), "Bob", "bob@gmail.com", LocalDate.of(1973, 12, 10)),
+                    new User ("Alice456", encoder.encode("xyz789"), "Alice", "alice@gmail.com", LocalDate.of(2001, 4, 28)),
+                    new User ("Charlie789", encoder.encode("def456"),"Charlie", "charlie@gmail.com", LocalDate.of(1995,11,3)),
+                    new User ("David012", encoder.encode("ghi789"),"David", "david@gmail.com", LocalDate.of(1998,12,5))
             );
 
             userRepository.saveAll(users);
