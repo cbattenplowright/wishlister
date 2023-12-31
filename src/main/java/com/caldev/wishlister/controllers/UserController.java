@@ -1,8 +1,8 @@
 package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.models.SecurityUserDetails;
-import com.caldev.wishlister.models.User;
-import com.caldev.wishlister.models.UserDTO;
+import com.caldev.wishlister.models.UserEntity;
+import com.caldev.wishlister.models.UserEntityDTO;
 import com.caldev.wishlister.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +24,19 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<UserEntity>> getUsers() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SecurityUserDetails authenticatedUser = (SecurityUserDetails) authentication.getPrincipal();
-        User user = authenticatedUser.getUser();
+        UserEntity userEntity = authenticatedUser.getUser();
 
-        if (userService.isAuthorizedToViewUserDetails(user.getUserId())) {
-            List<User> users = userService.findAllUsers();
-            return ResponseEntity.ok(users);
+        if (userService.isAuthorizedToViewUserDetails(userEntity.getUserId())) {
+            List<UserEntity> userEntities = userService.findAllUsers();
+            return ResponseEntity.ok(userEntities);
         } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @GetMapping(value = "/{usernameId}")
-    public ResponseEntity<User> getUserById(@PathVariable("usernameId") UUID userId) {
+    public ResponseEntity<UserEntity> getUserById(@PathVariable("usernameId") UUID userId) {
 
         /* Pseudo code for this method:
             If user authorised
@@ -49,9 +49,9 @@ public class UserController {
 
 
         if (userService.isAuthorizedToViewUserDetails(userId)) {
-            User foundUser = userService.findUserById(userId);
-            if (foundUser != null) {
-                return ResponseEntity.ok(foundUser);
+            UserEntity foundUserEntity = userService.findUserById(userId);
+            if (foundUserEntity != null) {
+                return ResponseEntity.ok(foundUserEntity);
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -59,9 +59,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
-        User createdUser = userService.createUser(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntityDTO userEntityDTO) {
+        UserEntity createdUserEntity = userService.createUser(userEntityDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserEntity);
     }
 
     @DeleteMapping(value = "/{usernameId}")
@@ -78,8 +78,8 @@ public class UserController {
          */
 
         if (userService.isAuthorizedToViewUserDetails(userId)) {
-            User foundUser = userService.findUserById(userId);
-            if (foundUser != null) {
+            UserEntity foundUserEntity = userService.findUserById(userId);
+            if (foundUserEntity != null) {
                 UUID deletedUserId = userService.deleteUser(userId);
                 return ResponseEntity.ok(deletedUserId);
             } else {

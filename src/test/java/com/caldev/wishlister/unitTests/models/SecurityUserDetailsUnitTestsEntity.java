@@ -1,7 +1,7 @@
 package com.caldev.wishlister.unitTests.models;
 
 import com.caldev.wishlister.models.SecurityUserDetails;
-import com.caldev.wishlister.models.User;
+import com.caldev.wishlister.models.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,22 +9,22 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SecurityUserDetailsUnitTests {
+class SecurityUserDetailsUnitTestsEntity {
 
     private SecurityUserDetails securityUserDetails;
-    private User user;
+    private UserEntity userEntity;
 
 
     @BeforeEach
     void setUp() {
-        user = new User("john_doe", "password123", "John Doe", "john.doe@example.com", LocalDate.of(1990, 1, 1));
-        securityUserDetails = new SecurityUserDetails(user);
+        userEntity = new UserEntity("john_doe", "password123", "John Doe", "john.doe@example.com", LocalDate.of(1990, 1, 1));
+        securityUserDetails = new SecurityUserDetails(userEntity);
     }
 
 
     @Test
     void getUser() {
-        assertEquals(user, securityUserDetails.getUser());
+        assertEquals(userEntity, securityUserDetails.getUser());
     }
 
     @Test

@@ -2,7 +2,7 @@ package com.caldev.wishlister.models;
 
 import java.time.LocalDate;
 
-public class UserDTO {
+public class UserEntityDTO {
 
     private String username;
     private String password;
@@ -10,10 +10,10 @@ public class UserDTO {
     private String email;
     private LocalDate dateOfBirth;
 
-    public UserDTO() {
+    public UserEntityDTO() {
     }
 
-    public UserDTO(String username, String password, String name, String email, LocalDate dateOfBirth) {
+    public UserEntityDTO(String username, String password, String name, String email, LocalDate dateOfBirth) {
         this.username = username;
         this.password = password;
         this.name = name;

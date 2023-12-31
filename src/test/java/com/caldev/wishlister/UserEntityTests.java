@@ -1,7 +1,7 @@
 package com.caldev.wishlister;
 
-import com.caldev.wishlister.models.User;
-import com.caldev.wishlister.models.UserDTO;
+import com.caldev.wishlister.models.UserEntity;
+import com.caldev.wishlister.models.UserEntityDTO;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +18,18 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserTests {
+public class UserEntityTests {
 
     @Autowired
     TestRestTemplate restTemplate;
 
     @Nested
-    class showUserTests {
+    class showUserTestsEntity {
         @Test
         void shouldReturnUserIfUserIsAuthenticatedAndOwner() {
-            ResponseEntity<User> response = restTemplate
+            ResponseEntity<UserEntity> response = restTemplate
                     .withBasicAuth("Bob123", "abc123")
-                    .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", User.class);
+                    .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", UserEntity.class);
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(response.getBody().getName()).isEqualTo("Bob");
         }
@@ -52,16 +52,16 @@ public class UserTests {
 
         @Test
         void shouldReturnUserIfUserIsAdmin() {
-            ResponseEntity<User> response = restTemplate
+            ResponseEntity<UserEntity> response = restTemplate
                     .withBasicAuth("David012", "ghi789")
-                    .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", User.class);
+                    .getForEntity("/users/9886bb64-a584-46f0-aca4-10e3dec74458", UserEntity.class);
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(response.getBody().getName()).isEqualTo("Bob");
         }
     }
 
     @Nested
-    class indexUserTests {
+    class indexUserTestsEntity {
         @Test
         void shouldReturnCollectionOfUsersIfAdmin() {
             ResponseEntity<String> response = restTemplate
@@ -87,41 +87,41 @@ public class UserTests {
     }
 
     @Nested
-    class createUserTests {
+    class createUserTestsEntity {
         @Test
         void shouldReturn201WhenUserIsCreated() {
 
-            HttpEntity<UserDTO> createUserResponseBody = new HttpEntity<>(
-                    new UserDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
+            HttpEntity<UserEntityDTO> createUserResponseBody = new HttpEntity<>(
+                    new UserEntityDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
 
-            ResponseEntity<User> createUserResponse = restTemplate
+            ResponseEntity<UserEntity> createUserResponse = restTemplate
                     .postForEntity("/users",
                             createUserResponseBody,
-                            User.class);
+                            UserEntity.class);
             assertThat(createUserResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
             UUID userId = createUserResponse.getBody().getUserId();
 
-            ResponseEntity<User> deleteUserResponse = restTemplate
+            ResponseEntity<UserEntity> deleteUserResponse = restTemplate
                     .withBasicAuth("Flo329", "password")
-                    .exchange("/users/" + userId, HttpMethod.DELETE, null, User.class);
+                    .exchange("/users/" + userId, HttpMethod.DELETE, null, UserEntity.class);
             assertThat(deleteUserResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         }
     }
 
     @Nested
-    class deleteUserTests {
+    class deleteUserTestsEntity {
 
         @Test
         void shouldReturn200WhenUserIsDeleted() {
 
-            HttpEntity<UserDTO> createUserResponseBody = new HttpEntity<>(
-                    new UserDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
+            HttpEntity<UserEntityDTO> createUserResponseBody = new HttpEntity<>(
+                    new UserEntityDTO("Flo329", "password", "Flo", "flo@gmail.com", LocalDate.of(1990, 1, 1)));
 
-            ResponseEntity<User> createUserResponse = restTemplate
+            ResponseEntity<UserEntity> createUserResponse = restTemplate
                     .postForEntity("/users",
                             createUserResponseBody,
-                            User.class);
+                            UserEntity.class);
             assertThat(createUserResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
             UUID userId = createUserResponse.getBody().getUserId();

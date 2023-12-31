@@ -1,6 +1,6 @@
 package com.caldev.wishlister.unitTests.models;
 
-import com.caldev.wishlister.models.User;
+import com.caldev.wishlister.models.UserEntity;
 import com.caldev.wishlister.models.Wishlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class WishlistModelUnitTests {
 
     private Wishlist wishlist;
-    private User user;
+    private UserEntity userEntity;
 
     @BeforeEach
     void setUp() {
         // Create a sample wishlist for testing
-        user = new User("john_doe", "password123", "John Doe", "john.doe@example.com", LocalDate.of(1990, 1, 1));
-        wishlist = new Wishlist("My Wishlist", user);
+        userEntity = new UserEntity("john_doe", "password123", "John Doe", "john.doe@example.com", LocalDate.of(1990, 1, 1));
+        wishlist = new Wishlist("My Wishlist", userEntity);
     }
 
     @Test
@@ -34,7 +34,7 @@ class WishlistModelUnitTests {
 
     @Test
     void getUser() {
-        assertEquals(user, wishlist.getUser());
+        assertEquals(userEntity, wishlist.getUser());
     }
 
     @Test
@@ -53,8 +53,8 @@ class WishlistModelUnitTests {
 
     @Test
     void setUser() {
-        User newUser = new User("jane_doe", "password123", "Jane Doe", "jane.doe@example.com", LocalDate.of(1995, 1, 1));
-        wishlist.setUser(newUser);
-        assertEquals(newUser, wishlist.getUser());
+        UserEntity newUserEntity = new UserEntity("jane_doe", "password123", "Jane Doe", "jane.doe@example.com", LocalDate.of(1995, 1, 1));
+        wishlist.setUser(newUserEntity);
+        assertEquals(newUserEntity, wishlist.getUser());
     }
 }

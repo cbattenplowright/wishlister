@@ -21,7 +21,7 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnoreProperties({ "roles" })
-    private List<User> users;
+    private List<UserEntity> userEntities;
 
     public Role() {
     }
@@ -46,12 +46,12 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<UserEntity> getUsers() {
+        return userEntities;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUsers(List<UserEntity> userEntities) {
+        this.userEntities = userEntities;
     }
 
     @Override
