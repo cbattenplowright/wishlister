@@ -39,8 +39,8 @@ class RoleModelUnitTests {
         assertEquals(RoleName.ROLE_USER, role.getRole());
 
         List<User> users = new ArrayList<>();
-        users.add(new User("Bill23", "password123", "Bill", "bill@gmail.com", LocalDate.of(1934, 5, 7), null));
-        users.add(new User("Sally45", "password123", "Sally", "sally@gmail.com", LocalDate.of(1945, 3, 12), null));
+        users.add(new User("Bill23", "password123", "Bill", "bill@gmail.com", LocalDate.of(1934, 5, 7)));
+        users.add(new User("Sally45", "password123", "Sally", "sally@gmail.com", LocalDate.of(1945, 3, 12)));
         role.setUsers(users);
         assertEquals(users, role.getUsers());
     }
