@@ -33,8 +33,8 @@ public class UserEntity {
     private LocalDate dateOfBirth;
 
     @Column
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"userEntity"})
     private List<Wishlist> wishlists;
 
     @ManyToMany(fetch = FetchType.EAGER) // Eager fetch to load roles eagerly
