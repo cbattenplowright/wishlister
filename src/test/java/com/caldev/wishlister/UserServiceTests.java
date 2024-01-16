@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserEntityTests {
+public class UserServiceTests {
 
     @Autowired
     TestRestTemplate restTemplate;
