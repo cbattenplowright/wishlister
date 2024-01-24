@@ -1,4 +1,4 @@
-package com.caldev.wishlister;
+package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.models.UserEntity;
 import com.caldev.wishlister.models.UserEntityDTO;

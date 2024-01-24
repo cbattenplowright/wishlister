@@ -1,4 +1,4 @@
-package com.caldev.wishlister;
+package com.caldev.wishlister.services;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
