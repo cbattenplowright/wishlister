@@ -1,4 +1,4 @@
-package com.caldev.wishlister;
+package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.models.UserEntity;
 import com.caldev.wishlister.models.UserEntityDTO;
@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserEntityTests {
+public class UserServiceTests {
 
     @Autowired
     TestRestTemplate restTemplate;

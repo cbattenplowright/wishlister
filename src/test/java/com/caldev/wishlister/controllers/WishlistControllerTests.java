@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WishlistUnitTests {
+class WishlistControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
