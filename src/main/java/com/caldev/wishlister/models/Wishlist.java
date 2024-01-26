@@ -53,4 +53,13 @@ public class Wishlist {
     public void setUser(UserEntity userEntity) {
         this.userEntity = userEntity;
     }
+
+    @Override
+    public String toString() {
+        return "Wishlist{" +
+                "wishlistId=" + wishlistId +
+                ", wishlistName='" + wishlistName + '\'' +
+                ", userEntity=" + userEntity +
+                '}';
+    }
 }
