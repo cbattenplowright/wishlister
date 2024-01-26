@@ -20,7 +20,7 @@ public class Wishlist {
             name = "user_id",
             nullable = false
     )
-    @JsonIgnoreProperties("{wishlists}")
+    @JsonIgnoreProperties({"wishlists"})
     private UserEntity userEntity;
 
     public Wishlist() {}
