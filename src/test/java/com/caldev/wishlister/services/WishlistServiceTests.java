@@ -36,10 +36,10 @@ public class WishlistServiceTests {
         when(wishlistRepository.findById(1L)).thenReturn(Optional.of(wishlist));
 
         // Act
-        Optional<Wishlist> foundWishlist = wishlistService.findWishlistById(1L);
+        Wishlist foundWishlist = wishlistService.findWishlistById(1L);
 
         // Assert
-        assertThat(foundWishlist).isEqualTo(Optional.of(wishlist));
+        assertThat(foundWishlist).isEqualTo(wishlist);
         Mockito.verify(wishlistRepository, Mockito.times(1)).findById(1L);
     }
 }

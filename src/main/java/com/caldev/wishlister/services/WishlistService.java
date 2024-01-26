@@ -15,9 +15,11 @@ public class WishlistService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public Optional<Wishlist> findWishlistById(Long wishlistId) {
+    public Wishlist findWishlistById(Long wishlistId) {
 
-        return wishlistRepository.findById(wishlistId);
+        Optional<Wishlist> foundWishlist = wishlistRepository.findById(wishlistId);
+
+        return foundWishlist.orElse(null);
     }
 
 }

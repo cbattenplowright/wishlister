@@ -31,7 +31,7 @@ public class UserService {
 
     public UserEntity findUserById(UUID userId) {
 
-        Optional<UserEntity> foundUser = userRepository.findByUserId(userId);
+        Optional<UserEntity> foundUser = userRepository.findById(userId);
         return foundUser.orElse(null);
     }
 
@@ -80,7 +80,7 @@ public class UserService {
 
     public UUID deleteUser(UUID userId) {
 
-        Optional<UserEntity> foundUser = userRepository.findByUserId(userId);
+        Optional<UserEntity> foundUser = userRepository.findById(userId);
         if (foundUser.isPresent()) {
             userRepository.delete(foundUser.get());
             return userId;

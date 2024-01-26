@@ -20,10 +20,10 @@ public class WishlistController {
         this.wishlistService = wishlistService;
     }
     @GetMapping(value = "/{wishlistId}")
-    public ResponseEntity<Optional<Wishlist>> getWishlistById(@PathVariable Long wishlistId){
+    public ResponseEntity<Wishlist> getWishlistById(@PathVariable Long wishlistId){
 
-        Optional<Wishlist> foundWishlist = wishlistService.findWishlistById(wishlistId);
-        if (foundWishlist.isPresent()) {
+        Wishlist foundWishlist = wishlistService.findWishlistById(wishlistId);
+        if (foundWishlist != null) {
             return ResponseEntity.ok(foundWishlist);
         } else {
             return ResponseEntity.notFound().build();
