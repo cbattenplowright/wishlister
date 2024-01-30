@@ -28,11 +28,6 @@ public class RoleServiceTests {
     @InjectMocks
     private RoleService roleService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        roleService = new RoleService(roleRepository);
-    }
 
     @Test
     void testFindByRoleName() {

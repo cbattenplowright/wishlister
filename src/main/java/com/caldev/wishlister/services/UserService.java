@@ -61,7 +61,6 @@ public class UserService {
     }
 
     public UserEntity createUser(UserEntityDTO userEntityDTO) {
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // Create the user object from the userDTO that was passed in from the controller
         // Give it the default role of USER
