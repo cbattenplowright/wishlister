@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,5 +42,27 @@ public class UserServiceTests {
         // Assert
         assertThat(foundUser).isEqualTo(userEntity);
         Mockito.verify(userRepository, Mockito.times(1)).findById(userId);
+    }
+
+    @Test
+    // TODO write test for findAlLUsers Service method
+    public void testFindAllUsers() {
+        // Arrange
+        UserEntity userEntity1 = new UserEntity("testUsername1", "testPassword1", "testName1", "test1@email.com", LocalDate.of(2024,1,1));
+        UserEntity userEntity2 = new UserEntity("testUsername2", "testPassword2", "testName2", "test2@email.com", LocalDate.of(2024,1,1));
+        UUID userId1 = UUID.randomUUID();
+        UUID userId2 = UUID.randomUUID();
+
+        userEntity1.setUserId(userId1);
+        userEntity2.setUserId(userId2);
+
+        when(userRepository.findAll()).thenReturn(List.of(userEntity1, userEntity2));
+
+        // Act
+        List<UserEntity> foundUsers = userService.findAllUsers();
+
+        // Assert
+        assertThat(foundUsers).isEqualTo(List.of(userEntity1, userEntity2));
+        Mockito.verify(userRepository, Mockito.times(1)).findAll();
     }
 }
