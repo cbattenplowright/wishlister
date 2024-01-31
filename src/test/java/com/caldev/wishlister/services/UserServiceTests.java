@@ -1,5 +1,8 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.enums.RoleName;
+import com.caldev.wishlister.models.Role;
+import com.caldev.wishlister.models.SecurityUserDetails;
 import com.caldev.wishlister.models.UserEntity;
 import com.caldev.wishlister.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -8,13 +11,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,5 +71,38 @@ public class UserServiceTests {
         // Assert
         assertThat(foundUsers).isEqualTo(List.of(userEntity1, userEntity2));
         Mockito.verify(userRepository, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    //TODO write test for isAuthorizedToViewUserDetails method if Admin
+    public void testIsAuthorizedToViewUserDetails_Admin() {
+        // Arrange
+        Set<Role> roles = new HashSet<>();
+        Role userRole = new Role(RoleName.ROLE_USER);
+        userRole.setRoleId(1L);
+        Role adminRole = new Role(RoleName.ROLE_ADMIN);
+        adminRole.setRoleId(2L);
+        roles.add(adminRole);
+        roles.add(userRole);
+
+
+        SecurityUserDetails userDetails = mock(SecurityUserDetails.class);
+        UserEntity userEntity = mock(UserEntity.class);
+        when(userEntity.getRoles()).thenReturn(roles);
+        when(userDetails.getUser()).thenReturn(userEntity);
+
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        // Act
+        boolean authorized = userService.isAuthorizedToAccessUserDetails(UUID.randomUUID());
+
+        // Assert
+        assertTrue(authorized);
     }
 }

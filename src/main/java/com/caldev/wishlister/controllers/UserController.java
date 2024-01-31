@@ -29,7 +29,7 @@ public class UserController {
         SecurityUserDetails authenticatedUser = (SecurityUserDetails) authentication.getPrincipal();
         UserEntity userEntity = authenticatedUser.getUser();
 
-        if (userService.isAuthorizedToViewUserDetails(userEntity.getUserId())) {
+        if (userService.isAuthorizedToAccessUserDetails(userEntity.getUserId())) {
             List<UserEntity> userEntities = userService.findAllUsers();
             return ResponseEntity.ok(userEntities);
         } else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -48,7 +48,7 @@ public class UserController {
          */
 
 
-        if (userService.isAuthorizedToViewUserDetails(userId)) {
+        if (userService.isAuthorizedToAccessUserDetails(userId)) {
             UserEntity foundUserEntity = userService.findUserById(userId);
             if (foundUserEntity != null) {
                 return ResponseEntity.ok(foundUserEntity);
@@ -77,7 +77,7 @@ public class UserController {
             else 403 forbidden
          */
 
-        if (userService.isAuthorizedToViewUserDetails(userId)) {
+        if (userService.isAuthorizedToAccessUserDetails(userId)) {
             UserEntity foundUserEntity = userService.findUserById(userId);
             if (foundUserEntity != null) {
                 UUID deletedUserId = userService.deleteUser(userId);

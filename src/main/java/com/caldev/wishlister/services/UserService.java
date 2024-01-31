@@ -40,7 +40,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean isAuthorizedToViewUserDetails(UUID requestedUserId) {
+    public boolean isAuthorizedToAccessUserDetails(UUID requestedUserId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
