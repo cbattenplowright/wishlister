@@ -74,8 +74,7 @@ public class UserServiceTests {
     }
 
     @Test
-    //TODO write test for isAuthorizedToViewUserDetails method if Admin
-    public void testIsAuthorizedToViewUserDetails_Admin() {
+    public void testIsAuthorizedToAccessUserDetails_Admin() {
         // Arrange
         Set<Role> roles = new HashSet<>();
         Role userRole = new Role(RoleName.ROLE_USER);
@@ -104,5 +103,43 @@ public class UserServiceTests {
 
         // Assert
         assertTrue(authorized);
+    }
+
+    @Test
+    public void testIsAuthorizedToAccessUserDetails_User() {
+        // Write test to access user details if user
+
+        //Arrange
+        Set<Role> roles = new HashSet<>();
+        Role userRole = new Role(RoleName.ROLE_USER);
+        userRole.setRoleId(1L);
+        roles.add(userRole);
+
+        SecurityUserDetails userDetails = mock(SecurityUserDetails.class);
+        UserEntity userEntity = mock(UserEntity.class);
+        when(userEntity.getUserId()).thenReturn(UUID.randomUUID());
+        when(userEntity.getRoles()).thenReturn(roles);
+        when(userDetails.getUser()).thenReturn(userEntity);
+
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        // Act
+        boolean isAuthorized = userService.isAuthorizedToAccessUserDetails(userEntity.getUserId());
+
+        //Assert
+        assertTrue(isAuthorized);
+
+        Mockito.verify(userEntity, Mockito.times(2)).getUserId();
+        Mockito.verify(userEntity, Mockito.times(1)).getRoles();
+        Mockito.verify(userDetails, Mockito.times(1)).getUser();
+        Mockito.verify(authentication, Mockito.times(1)).isAuthenticated();
+        Mockito.verify(authentication, Mockito.times(1)).getPrincipal();
+        Mockito.verify(securityContext, Mockito.times(1)).getAuthentication();
     }
 }
