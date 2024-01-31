@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +19,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
@@ -103,6 +102,12 @@ public class UserServiceTests {
 
         // Assert
         assertTrue(authorized);
+
+        verify(userEntity, Mockito.times(1)).getRoles();
+        verify(userDetails, Mockito.times(1)).getUser();
+        verify(authentication, Mockito.times(1)).isAuthenticated();
+        verify(authentication, Mockito.times(1)).getPrincipal();
+        verify(securityContext, Mockito.times(1)).getAuthentication();
     }
 
     @Test
@@ -135,11 +140,35 @@ public class UserServiceTests {
         //Assert
         assertTrue(isAuthorized);
 
-        Mockito.verify(userEntity, Mockito.times(2)).getUserId();
-        Mockito.verify(userEntity, Mockito.times(1)).getRoles();
-        Mockito.verify(userDetails, Mockito.times(1)).getUser();
-        Mockito.verify(authentication, Mockito.times(1)).isAuthenticated();
-        Mockito.verify(authentication, Mockito.times(1)).getPrincipal();
-        Mockito.verify(securityContext, Mockito.times(1)).getAuthentication();
+        verify(userEntity, Mockito.times(2)).getUserId();
+        verify(userEntity, Mockito.times(1)).getRoles();
+        verify(authentication, Mockito.times(1)).getPrincipal();
+        verify(securityContext, Mockito.times(1)).getAuthentication();
+    }
+
+    @Test
+    public void testIsAuthorizedToAccessUserDetails_NotAuthenticated() {
+        // Write test to access user details if user is not authenticated
+
+        //Arrange
+        SecurityUserDetails userDetails = mock(SecurityUserDetails.class);
+        UserEntity userEntity = mock(UserEntity.class);
+        when(userEntity.getUserId()).thenReturn(UUID.randomUUID());
+
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(false);
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        // Act
+        boolean isAuthorized = userService.isAuthorizedToAccessUserDetails(userEntity.getUserId());
+
+        // Assert
+        assertFalse(isAuthorized);
+
+        verify(userEntity, Mockito.times(1)).getUserId();
+        verify(userDetails, Mockito.times(0)).getUser();
     }
 }
