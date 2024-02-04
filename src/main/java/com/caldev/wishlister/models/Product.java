@@ -1,5 +1,6 @@
 package com.caldev.wishlister.models;
 
+import com.caldev.wishlister.enums.PrioritySelection;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
