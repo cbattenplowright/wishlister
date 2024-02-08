@@ -130,7 +130,7 @@ public class ProductModelUnitTests {
 
     @Test
     public void testToString() {
-        String expected = "Product{productId=1, user=User{userId=null, username='john_doe', password='password123', name='John Doe', email='john.doe@example.com', dateOfBirth=1990-01-01, wishlists=null, roles=[Role{roleId=null, roleName=ROLE_USER}]}, productName='Product 1', price=10, url='https://example.com/product1', imageUrl='image1.png', priority=NON_URGENT, description='Description 1', dateAdded=2024-02-04}";
+        String expected = String.format("Product{productId=1, user=User{userId=null, username='john_doe', password='password123', name='John Doe', email='john.doe@example.com', dateOfBirth=1990-01-01, wishlists=null, roles=[Role{roleId=null, roleName=ROLE_USER}]}, productName='Product 1', price=10, url='https://example.com/product1', imageUrl='image1.png', priority=NON_URGENT, description='Description 1', dateAdded=%s}", LocalDate.now());
         assertEquals(expected, product.toString());
     }
 }
