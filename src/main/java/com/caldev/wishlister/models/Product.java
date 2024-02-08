@@ -1,6 +1,7 @@
 package com.caldev.wishlister.models;
 
 import com.caldev.wishlister.enums.PrioritySelection;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -16,9 +17,13 @@ public class Product {
     @Column(name = "product_id")
     private Long productId;
 
-    @Column(nullable = false)
-    
-    private UserEntity user;
+    @ManyToOne
+    @JoinColumn(
+            name = "user_id",
+            nullable = false
+    )
+    @JsonIgnoreProperties({"products"})
+    private UserEntity userEntity;
 
     @Column(nullable = false)
     private String productName;
@@ -33,6 +38,7 @@ public class Product {
     private String imageUrl;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private PrioritySelection priority;
 
     @Column
@@ -44,8 +50,8 @@ public class Product {
     public Product(){
     }
 
-    public Product(UserEntity user, String productName, int price, String url, String imageUrl, PrioritySelection priority, String description) {
-        this.user = user;
+    public Product(UserEntity userEntity, String productName, int price, String url, String imageUrl, PrioritySelection priority, String description) {
+        this.userEntity = userEntity;
         this.productName = productName;
         this.price = price;
         this.url = url;
@@ -67,11 +73,11 @@ public class Product {
     }
 
     public UserEntity getUser() {
-        return user;
+        return userEntity;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     public String getProductName() {
@@ -134,7 +140,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "productId=" + productId +
-                ", user=" + user +
+                ", user=" + userEntity +
                 ", productName='" + productName + '\'' +
                 ", price=" + price +
                 ", url='" + url + '\'' +
