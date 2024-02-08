@@ -8,14 +8,16 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "products")
 public class Product {
-// TODO Product class
 
+
+//    Setup database relationships with the UserEntity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
 
     @Column(nullable = false)
+    
     private UserEntity user;
 
     @Column(nullable = false)
@@ -30,7 +32,6 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
-    //TODO create wishlist priority enum
     @Column
     private PrioritySelection priority;
 

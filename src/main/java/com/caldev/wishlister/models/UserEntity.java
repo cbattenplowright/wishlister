@@ -32,11 +32,6 @@ public class UserEntity {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column
-    @OneToMany(mappedBy = "userEntity", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"userEntity"})
-    private List<Wishlist> wishlists;
-
     @ManyToMany(fetch = FetchType.EAGER) // Eager fetch to load roles eagerly
     @JoinTable(
             name = "user_roles",
@@ -45,6 +40,13 @@ public class UserEntity {
     @JsonIgnoreProperties({"users"})
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"userEntity"})
+    private List<Wishlist> wishlists;
+
+    @OneToMany(mappedBy = "userEntity")
+    @JsonIgnoreProperties({"userEntity"})
+    private List<Product> products;
 
     public UserEntity(){
     }
@@ -124,6 +126,14 @@ public class UserEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
