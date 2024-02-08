@@ -47,4 +47,13 @@ public class SharedUserWishlist {
     public void setWishlist(Wishlist wishlist) {
         this.wishlist = wishlist;
     }
+
+    @Override
+    public String toString() {
+        return "SharedUserWishlist{" +
+                "sharedUserWishlistId=" + sharedUserWishlistId +
+                ", sharedUser=" + sharedUser +
+                ", wishlist=" + wishlist +
+                '}';
+    }
 }
