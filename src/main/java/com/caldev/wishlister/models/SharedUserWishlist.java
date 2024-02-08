@@ -2,6 +2,7 @@ package com.caldev.wishlister.models;
 
 import jakarta.persistence.*;
 
+@Entity
 @Table(name = "shared_user_wishlists")
 public class SharedUserWishlist {
 
@@ -10,10 +11,10 @@ public class SharedUserWishlist {
     @Column(name = "shared_user_wishlist_id")
     private Long sharedUserWishlistId;
 
-    @Column(name = "shared_user_id")
+    @Column(name = "shared_user_id", nullable = false)
     private UserEntity sharedUser;
 
-    @Column(name = "wishlist_id")
+    @Column(name = "wishlist_id", nullable = false)
     private Wishlist wishlist;
 
     public SharedUserWishlist() {
