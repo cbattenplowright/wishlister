@@ -2,9 +2,11 @@ package com.caldev.wishlister.models;
 
 import com.caldev.wishlister.enums.PrioritySelection;
 
+import java.util.UUID;
+
 public class ProductDTO {
 
-    private Long userEntityId;
+    private UUID userEntityId;
 
     private String productName;
 
