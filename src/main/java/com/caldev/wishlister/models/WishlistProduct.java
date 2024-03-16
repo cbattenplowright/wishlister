@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "wishlist_products")
 public class WishlistProduct {
 
+    // TODO Setup database relationships
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wishlist_product_id")
@@ -23,8 +24,7 @@ public class WishlistProduct {
     public WishlistProduct() {
     }
 
-    public WishlistProduct(Long wishlistProductId, Wishlist wishlist, Product product) {
-        this.wishlistProductId = wishlistProductId;
+    public WishlistProduct(Wishlist wishlist, Product product) {
         this.wishlist = wishlist;
         this.product = product;
         this.isPurchased = false;

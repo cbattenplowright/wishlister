@@ -21,7 +21,7 @@ class WishlistModelUnitTests {
     @Test
     void getWishlistId() {
         // Test getters
-        assertEquals(null, wishlist.getWishlistId());
+        assertNull(wishlist.getWishlistId());
     }
 
     @Test

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "shared_user_wishlists")
 public class SharedUserWishlist {
 
+    // TODO Setup database relationships
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shared_user_wishlist_id")
