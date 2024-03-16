@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WishlistProductModelUnitTests {
 
@@ -29,7 +29,49 @@ public class WishlistProductModelUnitTests {
     }
 
     @Test
-    void testGetWishlistProductId(){
+    void getWishlistProductId(){
         assertNull(wishlistProduct.getWishlistProductId());
+    }
+
+    @Test
+    void setWishlistProductId() {
+        Long newWishlistProductId = 1L;
+        wishlistProduct.setWishlistProductId(newWishlistProductId);
+        assertEquals(newWishlistProductId, wishlistProduct.getWishlistProductId());
+    }
+
+    @Test
+    void getWishlist(){
+        assertEquals(wishlist, wishlistProduct.getWishlist());
+    }
+
+    @Test
+    void setWishlist(){
+        Wishlist newWishlist = new Wishlist("newWishlist", userEntity);
+        wishlistProduct.setWishlist(newWishlist);
+        assertEquals(newWishlist, wishlistProduct.getWishlist());
+    }
+
+    @Test
+    void getProduct() {
+        assertEquals(product, wishlistProduct.getProduct());
+    }
+
+    @Test
+    void setProduct() {
+        Product newProduct = new Product(userEntity, "newProduct", 20, "URL", "imageURL", PrioritySelection.IMPORTANT, "description");
+        wishlistProduct.setProduct(newProduct);
+        assertEquals(newProduct, wishlistProduct.getProduct());
+    }
+
+    @Test
+    void isPurchased() {
+        assertFalse(wishlistProduct.isPurchased());
+    }
+
+    @Test
+    void setPurchased() {
+        wishlistProduct.setPurchased(true);
+        assertTrue(wishlistProduct.isPurchased());
     }
 }
