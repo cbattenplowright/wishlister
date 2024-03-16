@@ -26,7 +26,7 @@ public class ProductDTO {
 
     }
 
-    public ProductDTO(Long userEntityId, String productName, int price, String url, String imageUrl, PrioritySelection priority, String description) {
+    public ProductDTO(UUID userEntityId, String productName, int price, String url, String imageUrl, PrioritySelection priority, String description) {
         this.userEntityId = userEntityId;
         this.productName = productName;
         this.price = price;
@@ -36,11 +36,11 @@ public class ProductDTO {
         this.description = description;
     }
 
-    public Long getUserEntityId (){
+    public UUID getUserEntityId (){
         return userEntityId;
     }
 
-    public void setUserEntityId(Long userEntityId){
+    public void setUserEntityId(UUID userEntityId){
         this.userEntityId = userEntityId;
     }
 
