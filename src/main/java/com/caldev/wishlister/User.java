@@ -1,8 +1,11 @@
 package com.caldev.wishlister;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -22,16 +25,27 @@ public class User {
     private String email;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+    @JsonIgnoreProperties({"users"})
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
     protected User() {}
 
-    public User(String username, String password, String name, String email, LocalDate dateOfBirth) {
+    public User(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.roles = roles;
     }
+
+//    Getters and Setters
 
     public UUID getId() {
         return id;
@@ -75,5 +89,13 @@ public class User {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

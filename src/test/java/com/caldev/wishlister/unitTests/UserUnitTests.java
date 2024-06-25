@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class UserUnitTests {
 
@@ -15,7 +15,7 @@ public class UserUnitTests {
 
     @BeforeEach
     public void setUp() {
-        user = new User("username", "password", "name", "email@email.com", LocalDate.of(2022, 1, 1));
+        user = new User("username", "password", "name", "email@email.com", LocalDate.of(2022, 1, 1),null);
     }
 
     @Test
@@ -77,5 +77,16 @@ public class UserUnitTests {
     public void shouldSetDateOfBirthTest(){
         user.setDateOfBirth(LocalDate.of(2000, 1, 1));
         assertThat(user.getDateOfBirth()).isEqualTo(LocalDate.of(2000, 1, 1));
+    }
+
+    @Test
+    public void shouldGetRolesTest(){
+        assertNull(user.getRoles());
+    }
+
+    @Test
+    public void shouldSetRolesTest(){
+        user.setRoles(null);
+        assertNull(user.getRoles());
     }
 }
