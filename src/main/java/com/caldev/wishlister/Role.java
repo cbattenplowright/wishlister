@@ -10,7 +10,7 @@ import java.util.Set;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name", nullable = false)
     private String roleName;
@@ -34,7 +34,7 @@ public class Role {
         return roleName;
     }
 
-    public void setName(String name) {
+    public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
 }
