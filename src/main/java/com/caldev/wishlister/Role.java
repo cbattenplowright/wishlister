@@ -12,7 +12,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String roleName;
     @JsonIgnoreProperties({"roles"})
     @ManyToMany(mappedBy="roles")
