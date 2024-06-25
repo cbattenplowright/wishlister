@@ -1,7 +1,6 @@
 package com.caldev.wishlister.unitTests;
 
-import com.caldev.wishlister.Role;
-import org.aspectj.lang.annotation.Before;
+import com.caldev.wishlister.entities.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

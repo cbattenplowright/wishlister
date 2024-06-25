@@ -1,4 +1,4 @@
-package com.caldev.wishlister;
+package com.caldev.wishlister.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

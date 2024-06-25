@@ -1,10 +1,10 @@
-package com.caldev.wishlister;
+package com.caldev.wishlister.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,6 +33,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties({"user"})
+    private List<Wishlist> wishlists;
 
     protected User() {}
 
@@ -43,6 +46,7 @@ public class User {
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.roles = roles;
+        this.wishlists = null;
     }
 
 //    Getters and Setters
@@ -97,5 +101,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Wishlist> getWishlists() {
+        return wishlists;
+    }
+
+    public void setWishlists(List<Wishlist> wishlists) {
+        this.wishlists = wishlists;
     }
 }

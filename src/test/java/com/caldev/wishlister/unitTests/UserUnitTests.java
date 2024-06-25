@@ -1,6 +1,6 @@
 package com.caldev.wishlister.unitTests;
 
-import com.caldev.wishlister.User;
+import com.caldev.wishlister.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,6 @@
-package com.caldev.wishlister;
+package com.caldev.wishlister.repositories;
 
+import com.caldev.wishlister.entities.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
