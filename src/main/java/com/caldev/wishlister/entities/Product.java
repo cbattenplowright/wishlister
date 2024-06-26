@@ -28,14 +28,9 @@ public class Product {
     private PrioritySelections priority;
     @Column(name = "date_added", nullable = false)
     private LocalDate dateAdded;
-    @ManyToMany
-    @JoinTable(
-            name = "wishlist_products",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "wishlist_id")
-    )
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"products"})
-    private List<Wishlist> wishlist;
+    private List<WishlistProduct> wishlistProducts;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -45,7 +40,7 @@ public class Product {
     protected Product() {
     }
 
-    public Product(String productName, int price, URL url, URL imageUrl, String description, PrioritySelections priority, LocalDate dateAdded, List<Wishlist> wishlist, User user) {
+    public Product(String productName, int price, URL url, URL imageUrl, String description, PrioritySelections priority, LocalDate dateAdded, List<WishlistProduct> wishlistProducts, User user) {
         this.productName = productName;
         this.price = price;
         this.url = url;
@@ -53,7 +48,7 @@ public class Product {
         this.description = description;
         this.priority = priority;
         this.dateAdded = dateAdded;
-        this.wishlist = wishlist;
+        this.wishlistProducts = wishlistProducts;
         this.user = user;
     }
 
@@ -117,12 +112,12 @@ public class Product {
         this.dateAdded = dateAdded;
     }
 
-    public List<Wishlist> getWishlist() {
-        return wishlist;
+    public List<WishlistProduct> getWishlistProducts() {
+        return wishlistProducts;
     }
 
-    public void setWishlist(List<Wishlist> wishlist) {
-        this.wishlist = wishlist;
+    public void setWishlistProducts(List<WishlistProduct> wishlistProducts) {
+        this.wishlistProducts = wishlistProducts;
     }
 
     public User getUser() {
@@ -144,7 +139,7 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", priority=" + priority +
                 ", dateAdded=" + dateAdded +
-                ", wishlist=" + wishlist +
+                ", wishlistProducts=" + wishlistProducts +
                 ", user=" + user +
                 '}';
     }

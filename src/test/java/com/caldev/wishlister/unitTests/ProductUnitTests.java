@@ -70,7 +70,7 @@ public class ProductUnitTests {
 
     @Test
     public void shouldGetWishlist(){
-        assertThat(product.getWishlist()).isEqualTo(List.of(wishlist));
+        assertThat(product.getWishlists()).isEqualTo(List.of(wishlist));
     }
 
     @Test
@@ -123,8 +123,8 @@ public class ProductUnitTests {
     @Test
     public void shouldSetWishlist(){
         List<Wishlist> newWishlists = List.of(new Wishlist("newWishlistName", user));
-        product.setWishlist(newWishlists);
-        assertThat(product.getWishlist()).isEqualTo(newWishlists);
+        product.setWishlists(newWishlists);
+        assertThat(product.getWishlists()).isEqualTo(newWishlists);
     }
 
     @Test

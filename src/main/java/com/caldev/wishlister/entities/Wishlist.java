@@ -3,29 +3,36 @@ package com.caldev.wishlister.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "wishlists")
 public class Wishlist {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    private Long wishlistId;
     @Column(nullable = false)
     private String wishlistName;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"wishlists"})
     private User user;
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"wishlist"})
+    private List<WishlistProduct> wishlistProducts;
 
     protected Wishlist(){}
 
-    public Wishlist(String wishlistName, User user) {
+    public Wishlist(String wishlistName, User user, List<WishlistProduct> wishlistProducts) {
         this.wishlistName = wishlistName;
         this.user = user;
+        this.wishlistProducts = wishlistProducts;
+//TODO edit the unit tests to accomodated the WishlistProduct
     }
 
     public Long getId() {
-        return id;
+        return wishlistId;
     }
 
     public String getWishlistName() {
@@ -44,10 +51,18 @@ public class Wishlist {
         this.user = user;
     }
 
+    public List<WishlistProduct> getWishlistProducts() {
+        return wishlistProducts;
+    }
+
+    public void setWishlistProducts(List<WishlistProduct> wishlistProducts) {
+        this.wishlistProducts = wishlistProducts;
+    }
+
     @Override
     public String toString() {
         return "Wishlist{" +
-                "id=" + id +
+                "wishlistId=" + wishlistId +
                 ", wishlistName='" + wishlistName + '\'' +
                 ", user=" + user +
                 '}';
