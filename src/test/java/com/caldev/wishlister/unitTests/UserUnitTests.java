@@ -89,4 +89,9 @@ public class UserUnitTests {
         user.setRoles(null);
         assertNull(user.getRoles());
     }
+
+    @Test
+    public void shouldToStringTest(){
+        assertThat(user.toString()).isEqualTo("User{id=null, username='username', password='password', name='name', email='email@email.com', dateOfBirth=2022-01-01, roles=null, wishlists=null, products=null}");
+    }
 }

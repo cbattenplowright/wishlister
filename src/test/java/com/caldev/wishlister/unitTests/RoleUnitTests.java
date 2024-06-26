@@ -31,4 +31,9 @@ public class RoleUnitTests {
         role.setRoleName("ROLE_USER");
         assertThat(role.getRoleName()).isEqualTo("ROLE_USER");
     }
+
+    @Test
+    public void shouldToStringTest(){
+        assertThat(role.toString()).isEqualTo("Role{id=null, roleName='ROLE_ADMIN', users=null}");
+    }
 }
