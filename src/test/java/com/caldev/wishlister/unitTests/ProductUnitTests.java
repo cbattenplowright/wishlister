@@ -1,9 +1,6 @@
 package com.caldev.wishlister.unitTests;
 
-import com.caldev.wishlister.entities.PrioritySelections;
-import com.caldev.wishlister.entities.Product;
-import com.caldev.wishlister.entities.User;
-import com.caldev.wishlister.entities.Wishlist;
+import com.caldev.wishlister.entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +21,8 @@ public class ProductUnitTests {
     @BeforeEach
     public void setUp() throws MalformedURLException {
         user = new User("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
-        wishlist = new Wishlist("wishlistName", user);
-        product = new Product("productName", 100, new URL("https://url"), new URL("https://imageUrl"), "description", PrioritySelections.NON_URGENT, LocalDate.now(), List.of(wishlist), user);
+        wishlist = new Wishlist("wishlistName", user, null);
+        product = new Product("productName", 100, new URL("https://url"), new URL("https://imageUrl"), "description", PrioritySelections.NON_URGENT, LocalDate.now(), null, user);
     }
 
     @Test
@@ -69,8 +66,8 @@ public class ProductUnitTests {
     }
 
     @Test
-    public void shouldGetWishlist(){
-        assertThat(product.getWishlists()).isEqualTo(List.of(wishlist));
+    public void shouldGetWishlistProducts(){
+        assertNull(product.getWishlistProducts());
     }
 
     @Test
@@ -121,10 +118,10 @@ public class ProductUnitTests {
     }
 
     @Test
-    public void shouldSetWishlist(){
-        List<Wishlist> newWishlists = List.of(new Wishlist("newWishlistName", user));
-        product.setWishlists(newWishlists);
-        assertThat(product.getWishlists()).isEqualTo(newWishlists);
+    public void shouldSetWishlistProducts(){
+        List<WishlistProduct> newWishlistProducts = null;
+        product.setWishlistProducts(newWishlistProducts);
+        assertNull(product.getWishlistProducts());
     }
 
     @Test

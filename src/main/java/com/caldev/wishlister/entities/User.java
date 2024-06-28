@@ -50,6 +50,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.roles = roles;
         this.wishlists = null;
+        this.products = null;
     }
 
 //    Getters and Setters
@@ -112,6 +113,14 @@ public class User {
 
     public void setWishlists(List<Wishlist> wishlists) {
         this.wishlists = wishlists;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override

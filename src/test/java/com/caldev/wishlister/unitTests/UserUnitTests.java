@@ -91,6 +91,28 @@ public class UserUnitTests {
     }
 
     @Test
+    public void shouldGetWishlistsTest(){
+        assertNull(user.getWishlists());
+    }
+
+    @Test
+    public void shouldSetWishlistsTest(){
+        user.setWishlists(null);
+        assertNull(user.getWishlists());
+    }
+
+    @Test
+    public void shouldGetProductsTest(){
+        assertNull(user.getProducts());
+    }
+
+    @Test
+    public void shouldSetProductsTest(){
+        user.setProducts(null);
+        assertNull(user.getProducts());
+    }
+
+    @Test
     public void shouldToStringTest(){
         assertThat(user.toString()).isEqualTo("User{id=null, username='username', password='password', name='name', email='email@email.com', dateOfBirth=2022-01-01, roles=null, wishlists=null, products=null}");
     }

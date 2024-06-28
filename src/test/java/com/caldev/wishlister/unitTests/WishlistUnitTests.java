@@ -18,7 +18,7 @@ public class WishlistUnitTests {
     @BeforeEach
     public void setUp(){
         user = new User("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
-        wishlist = new Wishlist("wishlistName", user);
+        wishlist = new Wishlist("wishlistName", user, null);
     }
 
     @Test
@@ -40,6 +40,17 @@ public class WishlistUnitTests {
     public void shouldSetWishlistName(){
         wishlist.setWishlistName("newWishlistName");
         assertThat(wishlist.getWishlistName()).isEqualTo("newWishlistName");
+    }
+
+    @Test
+    public void shouldGetWishlistProducts(){
+        assertNull(wishlist.getWishlistProducts());
+    }
+
+    @Test
+    public void shouldSetWishlistProducts(){
+        wishlist.setWishlistProducts(null);
+        assertNull(wishlist.getWishlistProducts());
     }
 
     @Test
