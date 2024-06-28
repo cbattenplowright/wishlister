@@ -8,6 +8,7 @@ public class WishlistProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "wishlist_product_id")
     private Long wishlistProductId;
 
     @ManyToOne
