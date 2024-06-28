@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private HashSet<Role> roles;
     @OneToMany(mappedBy = "user")
     @JsonIgnoreProperties({"user"})
     private List<Wishlist> wishlists;
@@ -42,7 +43,7 @@ public class User {
 
     protected User() {}
 
-    public User(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Role> roles) {
+    public User(String username, String password, String name, String email, LocalDate dateOfBirth, HashSet<Role> roles) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -103,7 +104,7 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(HashSet<Role> roles) {
         this.roles = roles;
     }
 
