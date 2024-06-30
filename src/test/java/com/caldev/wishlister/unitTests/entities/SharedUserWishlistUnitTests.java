@@ -1,4 +1,4 @@
-package com.caldev.wishlister.unitTests;
+package com.caldev.wishlister.unitTests.entities;
 
 import com.caldev.wishlister.entities.SharedUserWishlist;
 import com.caldev.wishlister.entities.User;
