@@ -14,6 +14,10 @@ public class UserDto {
     private ArrayList<Long> wishlistIds;
     private ArrayList<Long> productIds;
 
+    public UserDto() {
+
+    }
+
     public UserDto(String username, String password, String name, String email, LocalDate dateOfBirth, ArrayList<Long> roleIds, ArrayList<Long> wishlistIds, ArrayList<Long> productIds) {
         this.username = username;
         this.password = password;

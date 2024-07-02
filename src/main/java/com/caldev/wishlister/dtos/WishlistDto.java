@@ -7,6 +7,9 @@ public class WishlistDto {
     private UUID userId;
     private String wishlistName;
 
+    public WishlistDto() {
+    }
+
     public WishlistDto(UUID userId, String wishlistName) {
         this.userId = userId;
         this.wishlistName = wishlistName;

@@ -6,6 +6,10 @@ public class WishlistProductDto {
     private Long productId;
     private boolean isPurchased;
 
+    public WishlistProductDto() {
+
+    }
+
     public WishlistProductDto(Long wishlistId, Long productId, boolean isPurchased) {
         this.wishlistId = wishlistId;
         this.productId = productId;

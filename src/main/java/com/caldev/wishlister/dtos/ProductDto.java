@@ -17,6 +17,9 @@ public class ProductDto {
     private String description;
     private LocalDate dateAdded;
 
+    public ProductDto() {
+    }
+
     public ProductDto(String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded) {
         this.productName = productName;
         this.userId = userId;
