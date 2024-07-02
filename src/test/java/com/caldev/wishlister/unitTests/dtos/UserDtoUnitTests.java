@@ -1,4 +1,4 @@
-package com.caldev.wishlister.unitTests;
+package com.caldev.wishlister.unitTests.dtos;
 
 import com.caldev.wishlister.dtos.UserDto;
 import org.junit.jupiter.api.BeforeEach;

@@ -22,7 +22,7 @@ public class ProductUnitTests {
     public void setUp() throws MalformedURLException {
         user = new User("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
         wishlist = new Wishlist("wishlistName", user, null);
-        product = new Product("productName", 100, new URL("https://url"), new URL("https://imageUrl"), "description", PrioritySelections.NON_URGENT, LocalDate.now(), null, user);
+        product = new Product("productName", 100, new URL("https://url"), new URL("https://imageUrl"), "description", PrioritySelection.NON_URGENT, LocalDate.now(), null, user);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ProductUnitTests {
 
     @Test
     public void shouldGetPriority(){
-        assertThat(product.getPriority()).isEqualTo(PrioritySelections.NON_URGENT);
+        assertThat(product.getPriority()).isEqualTo(PrioritySelection.NON_URGENT);
     }
 
     @Test
@@ -107,8 +107,8 @@ public class ProductUnitTests {
 
     @Test
     public void shouldSetPriority(){
-        product.setPriority(PrioritySelections.DESIRABLE);
-        assertThat(product.getPriority()).isEqualTo(PrioritySelections.DESIRABLE);
+        product.setPriority(PrioritySelection.DESIRABLE);
+        assertThat(product.getPriority()).isEqualTo(PrioritySelection.DESIRABLE);
     }
 
     @Test

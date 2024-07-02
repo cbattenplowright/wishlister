@@ -25,7 +25,7 @@ public class Product {
     @Column
     private String description;
     @Column
-    private PrioritySelections priority;
+    private PrioritySelection priority;
     @Column(name = "date_added", nullable = false)
     private LocalDate dateAdded;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -40,7 +40,7 @@ public class Product {
     protected Product() {
     }
 
-    public Product(String productName, int price, URL url, URL imageUrl, String description, PrioritySelections priority, LocalDate dateAdded, List<WishlistProduct> wishlistProducts, User user) {
+    public Product(String productName, int price, URL url, URL imageUrl, String description, PrioritySelection priority, LocalDate dateAdded, List<WishlistProduct> wishlistProducts, User user) {
         this.productName = productName;
         this.price = price;
         this.url = url;
@@ -96,11 +96,11 @@ public class Product {
         this.description = description;
     }
 
-    public PrioritySelections getPriority() {
+    public PrioritySelection getPriority() {
         return priority;
     }
 
-    public void setPriority(PrioritySelections priority) {
+    public void setPriority(PrioritySelection priority) {
         this.priority = priority;
     }
 

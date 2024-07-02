@@ -1,6 +1,6 @@
 package com.caldev.wishlister.entities;
 
-public enum PrioritySelections {
+public enum PrioritySelection {
     NON_URGENT,
     DESIRABLE,
     NICE_TO_HAVE,
