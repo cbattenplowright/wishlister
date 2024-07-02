@@ -88,4 +88,18 @@ public class UserDto {
     public void setProductIds(ArrayList<Long> productIds) {
         this.productIds = productIds;
     }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", roleIds=" + roleIds +
+                ", wishlistIds=" + wishlistIds +
+                ", productIds=" + productIds +
+                '}';
+    }
 }
