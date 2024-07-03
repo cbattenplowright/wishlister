@@ -133,6 +133,6 @@ public class ProductUnitTests {
 
     @Test
     public void shouldToString(){
-        assertThat(product.toString()).isEqualTo("Product{productId=null, productName='productName', price=100, url=https://url, imageUrl=https://imageUrl, description='description', priority=NON_URGENT, dateAdded=" + LocalDate.now() + ", wishlist=[Wishlist{id=null, wishlistName='wishlistName', user=" + user + "}], user=" + user + "}");
+        assertThat(product.toString()).isEqualTo("Product{productId=null, productName='productName', price=100, url=https://url, imageUrl=https://imageUrl, description='description', priority=NON_URGENT, dateAdded=" + LocalDate.now() + ", wishlistProducts=null, user=" + user + "}");
     }
 }
