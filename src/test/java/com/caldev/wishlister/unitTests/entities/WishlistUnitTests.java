@@ -62,6 +62,6 @@ public class WishlistUnitTests {
 
     @Test
     public void shouldToString(){
-        assertThat(wishlist.toString()).isEqualTo("Wishlist{id=null, wishlistName='wishlistName', user=" + user + "}");
+        assertThat(wishlist.toString()).isEqualTo("Wishlist{wishlistId=null, wishlistName='wishlistName', user=" + user + "}");
     }
 }
