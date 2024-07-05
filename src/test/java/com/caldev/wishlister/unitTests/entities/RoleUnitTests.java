@@ -13,7 +13,7 @@ public class RoleUnitTests {
 
     @BeforeEach
     public void setUp() {
-        role = new Role("ROLE_ADMIN");
+        role = new Role("ROLE_ADMIN", null);
     }
 
     @Test
