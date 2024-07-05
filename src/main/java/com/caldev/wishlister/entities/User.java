@@ -33,7 +33,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private HashSet<Role> roles;
+    private Set<Role> roles;
     @OneToMany(mappedBy = "user")
     @JsonIgnoreProperties({"user"})
     private List<Wishlist> wishlists;
@@ -43,7 +43,7 @@ public class User {
 
     protected User() {}
 
-    public User(String username, String password, String name, String email, LocalDate dateOfBirth, HashSet<Role> roles) {
+    public User(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -104,7 +104,7 @@ public class User {
         return roles;
     }
 
-    public void setRoles(HashSet<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

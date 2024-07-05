@@ -20,8 +20,9 @@ public class Role {
 
     protected Role() {}
 
-    public Role(String roleName) {
+    public Role(String roleName, Set<User> users) {
         this.roleName = roleName;
+        this.users = users;
     }
 
 //    Getters and Setters
