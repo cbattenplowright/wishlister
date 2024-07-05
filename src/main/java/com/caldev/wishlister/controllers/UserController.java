@@ -36,4 +36,11 @@ public class UserController {
         User newUser = userService.createUser(newUserDto);
         return ResponseEntity.ok(newUser);
     }
+
+//    DELETE User
+    @DeleteMapping("/{requestedId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID requestedId){
+        userService.deleteUser(requestedId);
+        return ResponseEntity.ok().build();
+    }
 }
