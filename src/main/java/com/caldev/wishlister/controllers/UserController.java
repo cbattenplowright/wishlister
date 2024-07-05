@@ -1,5 +1,6 @@
 package com.caldev.wishlister.controllers;
 
+import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.dtos.UserDto;
 import com.caldev.wishlister.services.UserService;
 import com.caldev.wishlister.entities.User;
@@ -31,8 +32,8 @@ public class UserController {
 
 //    CREATE User
     @PostMapping("/new")
-    public ResponseEntity<User> createUser(@RequestBody UserDto userDto){
-        User user = userService.createUser(userDto);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<User> createUser(@RequestBody NewUserDto newUserDto){
+        User newUser = userService.createUser(newUserDto);
+        return ResponseEntity.ok(newUser);
     }
 }
