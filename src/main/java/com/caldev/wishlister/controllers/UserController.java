@@ -23,4 +23,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    @GetMapping("/{requestedId}")
+    public ResponseEntity<User> getUserById(Long requestedId){
+        return ResponseEntity.ok(userService.getUserById(requestedId));
+    }
 }
