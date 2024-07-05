@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public User createUser(NewUserDto newUserDto){
-        Set<Role> userRole = new HashSet<Role>(List.of(roleRepository.findByRoleName("ROLE_USER")));
+        Set<Role> userRole = new HashSet<>(List.of(roleRepository.findByRoleName("ROLE_USER")));
 
         User newUser = new User(
                 newUserDto.getUsername(),
