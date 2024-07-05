@@ -5,6 +5,7 @@ import com.caldev.wishlister.dtos.UserDto;
 import com.caldev.wishlister.services.UserService;
 import com.caldev.wishlister.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,26 +22,33 @@ public class UserController {
 //    INDEX Users
     @GetMapping()
     public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok(userService.getAllUsers());
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 //    SHOW User
     @GetMapping("/{requestedId}")
     public ResponseEntity<User> getUserById(@PathVariable UUID requestedId){
-        return ResponseEntity.ok(userService.getUserById(requestedId));
+        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
     }
 
 //    CREATE User
     @PostMapping("/new")
     public ResponseEntity<User> createUser(@RequestBody NewUserDto newUserDto){
         User newUser = userService.createUser(newUserDto);
-        return ResponseEntity.ok(newUser);
+        return new ResponseEntity<>(
+                newUser,
+                HttpStatus.CREATED);
     }
 
 //    DELETE User
     @DeleteMapping("/{requestedId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID requestedId){
+    public ResponseEntity<UUID> deleteUser(@PathVariable UUID requestedId){
+        // Delete products associated with user
+        // Delete wishlists associated with user
+        // Delete user
         userService.deleteUser(requestedId);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(
+                requestedId,
+                HttpStatus.OK);
     }
 }
