@@ -30,7 +30,7 @@ public class UserControllerUnitTests {
     @MockBean User user;
 
     @Test
-    void whenValidRequest_thenReturn200() throws Exception {
+    void whenValidRequestAndUsersExist_thenReturn200() throws Exception {
         when(userService.getAllUsers()).thenReturn(List.of(user));
 
         mockMvc.perform(get("/api/users")
