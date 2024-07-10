@@ -35,12 +35,12 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"products"})
-    private User user;
+    private UserAccount userAccount;
 
     protected Product() {
     }
 
-    public Product(String productName, int price, URL url, URL imageUrl, String description, PrioritySelection priority, LocalDate dateAdded, List<WishlistProduct> wishlistProducts, User user) {
+    public Product(String productName, int price, URL url, URL imageUrl, String description, PrioritySelection priority, LocalDate dateAdded, List<WishlistProduct> wishlistProducts, UserAccount userAccount) {
         this.productName = productName;
         this.price = price;
         this.url = url;
@@ -49,7 +49,7 @@ public class Product {
         this.priority = priority;
         this.dateAdded = dateAdded;
         this.wishlistProducts = wishlistProducts;
-        this.user = user;
+        this.userAccount = userAccount;
     }
 
     public Long getProductId() {
@@ -120,12 +120,12 @@ public class Product {
         this.wishlistProducts = wishlistProducts;
     }
 
-    public User getUser() {
-        return user;
+    public UserAccount getUser() {
+        return userAccount;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class Product {
                 ", priority=" + priority +
                 ", dateAdded=" + dateAdded +
                 ", wishlistProducts=" + wishlistProducts +
-                ", user=" + user +
+                ", user=" + userAccount +
                 '}';
     }
 }

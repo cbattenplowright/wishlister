@@ -2,16 +2,18 @@ package com.caldev.wishlister.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,30 +28,24 @@ public class User {
     private String email;
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
-    @JsonIgnoreProperties({"users"})
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
-    @OneToMany(mappedBy = "user")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<GrantedAuthority> authorities = new ArrayList();
+    @OneToMany(mappedBy = "userAccount")
     @JsonIgnoreProperties({"user"})
     private List<Wishlist> wishlists;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userAccount")
     @JsonIgnoreProperties({"user"})
     private List<Product> products;
 
-    protected User() {}
+    protected UserAccount() {}
 
-    public User(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Role> roles) {
+    public UserAccount(String username, String password, String name, String email, LocalDate dateOfBirth, ArrayList<GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.roles = roles;
+        this.authorities.addAll(authorities);
         this.wishlists = null;
         this.products = null;
     }
@@ -100,12 +96,13 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+
+    public List<GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setAuthorities(List<GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     public List<Wishlist> getWishlists() {
@@ -126,14 +123,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserAccount{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", roles=" + roles +
+                ", authorities=" + authorities +
                 ", wishlists=" + wishlists +
                 ", products=" + products +
                 '}';

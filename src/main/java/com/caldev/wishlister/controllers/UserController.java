@@ -1,9 +1,8 @@
 package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.dtos.NewUserDto;
-import com.caldev.wishlister.dtos.UserDto;
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.services.UserService;
-import com.caldev.wishlister.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +20,22 @@ public class UserController {
 
 //    INDEX Users
     @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<UserAccount>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 //    SHOW User
     @GetMapping("/{requestedId}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID requestedId){
+    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId){
         return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
     }
 
 //    CREATE User
     @PostMapping("/new")
-    public ResponseEntity<User> createUser(@RequestBody NewUserDto newUserDto){
-        User newUser = userService.createUser(newUserDto);
+    public ResponseEntity<UserAccount> createUser(@RequestBody NewUserDto newUserDto){
+        UserAccount newUserAccount = userService.createUser(newUserDto);
         return new ResponseEntity<>(
-                newUser,
+                newUserAccount,
                 HttpStatus.CREATED);
     }
 

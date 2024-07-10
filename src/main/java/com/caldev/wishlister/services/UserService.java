@@ -1,49 +1,50 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.dtos.NewUserDto;
-import com.caldev.wishlister.entities.Role;
-import com.caldev.wishlister.entities.User;
-import com.caldev.wishlister.repositories.RoleRepository;
+//import com.caldev.wishlister.entities.Role;
+import com.caldev.wishlister.entities.UserAccount;
+//import com.caldev.wishlister.repositories.RoleRepository;
 import com.caldev.wishlister.repositories.UserManagementRepository;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
 
-    private final RoleRepository roleRepository;
+//    private final RoleRepository roleRepository;
 
     private final UserManagementRepository userManagementRepository;
 
-    public UserService(UserManagementRepository userManagementRepository, RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
+    public UserService(UserManagementRepository userManagementRepository
+//                       RoleRepository roleRepository
+                       ) {
+//        this.roleRepository = roleRepository;
         this.userManagementRepository = userManagementRepository;
     }
 
-    public List<User> getAllUsers(){
+    public List<UserAccount> getAllUsers(){
         return userManagementRepository.findAll();
     }
 
-    public User getUserById(UUID requestedId){
+    public UserAccount getUserById(UUID requestedId){
         return userManagementRepository.findById(requestedId).orElse(null);
     }
 
-    public User createUser(NewUserDto newUserDto){
-        Set<Role> userRole = new HashSet<>(List.of(roleRepository.findByRoleName("ROLE_USER")));
+    public UserAccount createUser(NewUserDto newUserDto){
+        ArrayList<GrantedAuthority> userRoles = new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
-        User newUser = new User(
+        UserAccount newUserAccount = new UserAccount(
                 newUserDto.getUsername(),
                 newUserDto.getPassword(),
                 newUserDto.getName(),
                 newUserDto.getEmail(),
                 newUserDto.getDateOfBirth(),
-                userRole
+                userRoles
                 );
-        return userManagementRepository.save(newUser);
+        return userManagementRepository.save(newUserAccount);
     }
 
     public void deleteUser(UUID requestedId){

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SharedUserWishlistDtoUnitTests {
+public class SharedUserWishlistDtoUnitTestsAccount {
 
     private SharedUserWishlistDto sharedUserWishlistDto;
     private UUID userId;

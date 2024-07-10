@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserDtoUnitTests {
+public class UserAccountDtoUnitTests {
 
     private UserDto userDto;
 

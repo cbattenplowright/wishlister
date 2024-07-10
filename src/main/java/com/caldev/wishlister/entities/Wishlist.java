@@ -17,16 +17,16 @@ public class Wishlist {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"wishlists"})
-    private User user;
+    private UserAccount userAccount;
     @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"wishlist"})
     private List<WishlistProduct> wishlistProducts;
 
     protected Wishlist(){}
 
-    public Wishlist(String wishlistName, User user, List<WishlistProduct> wishlistProducts) {
+    public Wishlist(String wishlistName, UserAccount userAccount, List<WishlistProduct> wishlistProducts) {
         this.wishlistName = wishlistName;
-        this.user = user;
+        this.userAccount = userAccount;
         this.wishlistProducts = wishlistProducts;
 //TODO edit the unit tests to accomodated the WishlistProduct
     }
@@ -43,12 +43,12 @@ public class Wishlist {
         this.wishlistName = wishlistName;
     }
 
-    public User getUser() {
-        return user;
+    public UserAccount getUser() {
+        return userAccount;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
     public List<WishlistProduct> getWishlistProducts() {
@@ -64,7 +64,7 @@ public class Wishlist {
         return "Wishlist{" +
                 "wishlistId=" + wishlistId +
                 ", wishlistName='" + wishlistName + '\'' +
-                ", user=" + user +
+                ", user=" + userAccount +
                 '}';
     }
 }

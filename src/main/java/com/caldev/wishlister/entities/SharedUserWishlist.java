@@ -13,7 +13,7 @@ public class SharedUserWishlist {
 
     @ManyToOne
     @JoinColumn(name="shared_user_id")
-    private User sharedUser;
+    private UserAccount sharedUserAccount;
 
     @ManyToOne
     @JoinColumn(name = "wishlist_id")
@@ -21,8 +21,8 @@ public class SharedUserWishlist {
 
     protected SharedUserWishlist() {}
 
-    public SharedUserWishlist(User sharedUser, Wishlist sharedWishlist) {
-        this.sharedUser = sharedUser;
+    public SharedUserWishlist(UserAccount sharedUserAccount, Wishlist sharedWishlist) {
+        this.sharedUserAccount = sharedUserAccount;
         this.sharedWishlist = sharedWishlist;
     }
 
@@ -30,12 +30,12 @@ public class SharedUserWishlist {
         return sharedUserWishlistId;
     }
 
-    public User getSharedUser() {
-        return sharedUser;
+    public UserAccount getSharedUser() {
+        return sharedUserAccount;
     }
 
-    public void setSharedUser(User sharedUser) {
-        this.sharedUser = sharedUser;
+    public void setSharedUser(UserAccount sharedUserAccount) {
+        this.sharedUserAccount = sharedUserAccount;
     }
 
     public Wishlist getSharedWishlist() {
@@ -50,7 +50,7 @@ public class SharedUserWishlist {
     public String toString() {
         return "SharedUserWishlist{" +
                 "sharedUserWishlistId=" + sharedUserWishlistId +
-                ", sharedUser=" + sharedUser +
+                ", sharedUser=" + sharedUserAccount +
                 ", sharedWishlist=" + sharedWishlist +
                 '}';
     }
