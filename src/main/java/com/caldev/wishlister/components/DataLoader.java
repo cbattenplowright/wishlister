@@ -3,7 +3,7 @@ package com.caldev.wishlister.components;
 import com.caldev.wishlister.entities.Role;
 import com.caldev.wishlister.entities.User;
 import com.caldev.wishlister.repositories.RoleRepository;
-import com.caldev.wishlister.repositories.UserRepository;
+import com.caldev.wishlister.repositories.UserManagementRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,11 @@ import java.util.Set;
 public class DataLoader implements ApplicationRunner {
 
     private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
+    private final UserManagementRepository userManagementRepository;
 
-    public DataLoader(RoleRepository roleRepository, UserRepository userRepository) {
+    public DataLoader(RoleRepository roleRepository, UserManagementRepository userManagementRepository) {
         this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
+        this.userManagementRepository = userManagementRepository;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DataLoader implements ApplicationRunner {
             roleRepository.saveAll(roles);
         }
 
-        if(userRepository.count() == 0){
+        if(userManagementRepository.count() == 0){
             Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN");
             Role userRole = roleRepository.findByRoleName("ROLE_USER");
             Set<Role> adminRoles = new HashSet<>(List.of(adminRole, userRole));
@@ -55,10 +55,10 @@ public class DataLoader implements ApplicationRunner {
                     LocalDate.of(2000, 1, 1),
                     userRoles);
 
-            userRepository.saveAll(Arrays.asList(user1, user2));
+            userManagementRepository.saveAll(Arrays.asList(user1, user2));
         }
 
-        if(userRepository.count() != 0 && roleRepository.count() != 0){
+        if(userManagementRepository.count() != 0 && roleRepository.count() != 0){
             System.out.println("Data loaded");
         }
     }

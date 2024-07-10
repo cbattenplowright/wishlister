@@ -4,7 +4,7 @@ import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.entities.Role;
 import com.caldev.wishlister.entities.User;
 import com.caldev.wishlister.repositories.RoleRepository;
-import com.caldev.wishlister.repositories.UserRepository;
+import com.caldev.wishlister.repositories.UserManagementRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,19 +17,19 @@ public class UserService {
 
     private final RoleRepository roleRepository;
 
-    private final UserRepository userRepository;
+    private final UserManagementRepository userManagementRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserManagementRepository userManagementRepository, RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
+        this.userManagementRepository = userManagementRepository;
     }
 
     public List<User> getAllUsers(){
-        return userRepository.findAll();
+        return userManagementRepository.findAll();
     }
 
     public User getUserById(UUID requestedId){
-        return userRepository.findById(requestedId).orElse(null);
+        return userManagementRepository.findById(requestedId).orElse(null);
     }
 
     public User createUser(NewUserDto newUserDto){
@@ -43,10 +43,10 @@ public class UserService {
                 newUserDto.getDateOfBirth(),
                 userRole
                 );
-        return userRepository.save(newUser);
+        return userManagementRepository.save(newUser);
     }
 
     public void deleteUser(UUID requestedId){
-        userRepository.deleteById(requestedId);
+        userManagementRepository.deleteById(requestedId);
     }
 }
