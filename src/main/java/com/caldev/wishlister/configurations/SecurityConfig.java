@@ -5,12 +5,14 @@ import com.caldev.wishlister.repositories.UserManagementRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +27,15 @@ public class SecurityConfig {
         userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
         userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("admin").password("password").roles("ADMIN").build());
         return userDetailsManager;
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests()
+                .requestMatchers("/api/users").hasRole("ADMIN")
+                .anyRequest().authenticated();
+        return http.build();
+
     }
 
     @Bean
