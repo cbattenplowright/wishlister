@@ -41,8 +41,8 @@ public class SecurityConfig {
         //Rules should apply to both CMD line and HTML tools
 
         http.authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated()
-                .anyRequest().denyAll()).httpBasic(withDefaults());
+                .anyRequest().denyAll()
+                .anyRequest().authenticated()).httpBasic(withDefaults());
         return http.build();
 
     }
