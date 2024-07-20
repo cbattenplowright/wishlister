@@ -32,31 +32,6 @@ public class DataLoader implements ApplicationRunner {
 //            roleRepository.saveAll(roles);
 //        }
 
-        if(userManagementRepository.count() == 0){
-//            Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN");
-//            Role userRole = roleRepository.findByRoleName("ROLE_USER");
-            ArrayList<GrantedAuthority> adminRoles = new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
-            ArrayList<GrantedAuthority> userRoles = new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")));
-
-            UserAccount userAccount1 = new UserAccount(
-                    "username",
-                    "password",
-                    "name",
-                    "email@email.com",
-                    LocalDate.of(2000, 1, 1),
-                    adminRoles
-                    );
-            UserAccount userAccount2 = new UserAccount(
-                    "username2",
-                    "password2",
-                    "name2",
-                    "email2@email.com",
-                    LocalDate.of(2000, 1, 1),
-                    userRoles);
-
-            userManagementRepository.saveAll(Arrays.asList(userAccount1, userAccount2));
-        }
-
         if(userManagementRepository.count() != 0
 //                && roleRepository.count() != 0
         ){

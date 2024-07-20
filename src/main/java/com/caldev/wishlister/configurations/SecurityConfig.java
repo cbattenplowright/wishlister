@@ -27,7 +27,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
         userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-        userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("admin").password("password").roles("ADMIN").build());
+        userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("admin2").password("password").roles("ADMIN").build());
         return userDetailsManager;
     }
 
@@ -41,8 +41,10 @@ public class SecurityConfig {
         //Rules should apply to both CMD line and HTML tools
 
         http.authorizeHttpRequests(auth -> auth
-                .anyRequest().denyAll()
-                .anyRequest().authenticated()).httpBasic(withDefaults());
+                .requestMatchers("api/login").permitAll()
+                .requestMatchers("api/register").permitAll()
+                .anyRequest().authenticated())
+                .httpBasic(withDefaults());
         return http.build();
 
     }
@@ -50,8 +52,10 @@ public class SecurityConfig {
     @Bean
     CommandLineRunner initUsers(UserManagementRepository userManagementRepository) {
         return args -> {
+            userManagementRepository.save(new UserAccount("alice", "password", "Alice", "alice@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
+            userManagementRepository.save(new UserAccount("bob", "password", "Bob", "bob@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
             userManagementRepository.save(new UserAccount("user", "password", "User", "user@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
-            userManagementRepository.save(new UserAccount("admin", "password", "Admin", "admin@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))));
+            userManagementRepository.save(new UserAccount("admin2", "password", "Admin", "admin@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))));
         };
     }
 }
