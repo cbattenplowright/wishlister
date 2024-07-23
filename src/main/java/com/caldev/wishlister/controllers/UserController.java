@@ -1,5 +1,6 @@
 package com.caldev.wishlister.controllers;
 
+import com.caldev.wishlister.dtos.MyUserPrincipal;
 import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.services.UserService;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -29,15 +31,14 @@ public class UserController {
     }
 
 //    SHOW User
-    @GetMapping("/{requestedUsername}")
-    @PreAuthorize("hasRole('USER') && #requestedUsername == authentication.name")
-    public ResponseEntity<UserAccount> getUserById(@PathVariable String requestedUsername, Principal principal, Authentication authentication){
+    @GetMapping("/{requestedId}")
+    @PreAuthorize("hasRole('USER') && #requestedId == authentication.principal.id || hasRole('ADMIN')")
+    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal MyUserPrincipal principal){
 
-        System.out.println(principal.getName());
-        System.out.println(authentication.getPrincipal());
-        System.out.println(authentication.getCredentials());
+        System.out.println(principal.getUsername());
+        System.out.println(principal.getPassword());
 
-        return new ResponseEntity<>(userService.getUserByUsername(requestedUsername), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
 //        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
     }
 

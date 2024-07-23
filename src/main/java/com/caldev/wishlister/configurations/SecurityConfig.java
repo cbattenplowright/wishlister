@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,13 +27,13 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-        userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-        userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("admin2").password("password").roles("ADMIN").build());
-        return userDetailsManager;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+//        userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
+//        userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("admin2").password("password").roles("ADMIN").build());
+//        return userDetailsManager;
+//    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -55,10 +56,15 @@ public class SecurityConfig {
     @Bean
     CommandLineRunner initUsers(UserManagementRepository userManagementRepository) {
         return args -> {
-            userManagementRepository.save(new UserAccount("alice", "password", "Alice", "alice@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
-            userManagementRepository.save(new UserAccount("bob", "password", "Bob", "bob@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
-            userManagementRepository.save(new UserAccount("user", "password", "User", "user@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
-            userManagementRepository.save(new UserAccount("admin", "password", "Admin", "admin@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))));
+            userManagementRepository.save(new UserAccount("alice", bCryptPasswordEncoder().encode("password"), "Alice", "alice@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
+            userManagementRepository.save(new UserAccount("bob", bCryptPasswordEncoder().encode("password"), "Bob", "bob@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
+            userManagementRepository.save(new UserAccount("user", bCryptPasswordEncoder().encode("password"), "User", "user@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
+            userManagementRepository.save(new UserAccount("admin", bCryptPasswordEncoder().encode("password"), "Admin", "admin@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))));
         };
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
