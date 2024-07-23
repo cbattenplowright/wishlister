@@ -33,6 +33,10 @@ public class UserService {
         return userManagementRepository.findById(requestedId).orElse(null);
     }
 
+    public UserAccount getUserByUsername(String username){
+        return userManagementRepository.findByUsername(username);
+    }
+
     public UserAccount createUser(NewUserDto newUserDto){
         ArrayList<GrantedAuthority> userRoles = new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")));
 

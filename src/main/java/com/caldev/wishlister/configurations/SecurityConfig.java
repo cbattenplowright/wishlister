@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +23,7 @@ import java.util.List;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Bean
@@ -44,7 +46,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("api/login").permitAll()
                 .requestMatchers("api/register").permitAll()
-                .anyRequest().authenticated())
+                .anyRequest().permitAll())
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(withDefaults());
         return http.build();
@@ -56,7 +58,7 @@ public class SecurityConfig {
             userManagementRepository.save(new UserAccount("alice", "password", "Alice", "alice@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
             userManagementRepository.save(new UserAccount("bob", "password", "Bob", "bob@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
             userManagementRepository.save(new UserAccount("user", "password", "User", "user@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")))));
-            userManagementRepository.save(new UserAccount("admin2", "password", "Admin", "admin@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))));
+            userManagementRepository.save(new UserAccount("admin", "password", "Admin", "admin@email.com", LocalDate.of(2000, 1, 1), new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_ADMIN")))));
         };
     }
 }

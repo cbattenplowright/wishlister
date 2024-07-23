@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,16 +23,22 @@ public class UserController {
 
 //    INDEX Users
     @GetMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserAccount>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 //    SHOW User
-    @GetMapping("/{requestedId}")
-    @PreAuthorize("(hasRole('USER') && #requestedId == authentication.principal.id) or (hasRole('ADMIN'))")
-    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId){
-        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
+    @GetMapping("/{requestedUsername}")
+    @PreAuthorize("hasRole('USER') && #requestedUsername == authentication.name")
+    public ResponseEntity<UserAccount> getUserById(@PathVariable String requestedUsername, Principal principal, Authentication authentication){
+
+        System.out.println(principal.getName());
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getCredentials());
+
+        return new ResponseEntity<>(userService.getUserByUsername(requestedUsername), HttpStatus.OK);
+//        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
     }
 
 //    CREATE User
