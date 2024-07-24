@@ -30,6 +30,8 @@ public class UserAccountControllerUnitTests {
     @MockBean
     UserAccount userAccount;
 
+
+//   INDEX User Endpoint Test
     @Test
     @WithMockUser // Annotation simulates the user logging in
     void whenValidRequestAndUsersExist_thenReturn200() throws Exception {
@@ -39,4 +41,6 @@ public class UserAccountControllerUnitTests {
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(result -> result.getResponse().getContentAsString().contains(userAccount.toString()));
     }
+
+//    SHOW User Endpoint Test
 }
