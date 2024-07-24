@@ -3,6 +3,7 @@ package com.caldev.wishlister.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -54,6 +55,10 @@ public class UserAccount {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID uuid) {
+        this.id = uuid;
     }
 
     public String getUsername() {
@@ -135,4 +140,6 @@ public class UserAccount {
                 ", products=" + products +
                 '}';
     }
+
+
 }

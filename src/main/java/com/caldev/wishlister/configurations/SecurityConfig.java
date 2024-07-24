@@ -2,11 +2,14 @@ package com.caldev.wishlister.configurations;
 
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.repositories.UserManagementRepository;
+import com.caldev.wishlister.services.CustomUserDetailsService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +28,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class SecurityConfig{
+
 
 //    @Bean
 //    public UserDetailsService userDetailsService() {
@@ -34,6 +38,17 @@ public class SecurityConfig {
 //        userDetailsManager.createUser(User.withDefaultPasswordEncoder().username("admin2").password("password").roles("ADMIN").build());
 //        return userDetailsManager;
 //    }
+
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return customUserDetailsService;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

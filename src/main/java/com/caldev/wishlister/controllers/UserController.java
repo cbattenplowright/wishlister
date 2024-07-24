@@ -33,10 +33,7 @@ public class UserController {
 //    SHOW User
     @GetMapping("/{requestedId}")
     @PreAuthorize("hasRole('USER') && #requestedId == authentication.principal.id || hasRole('ADMIN')")
-    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal MyUserPrincipal principal){
-
-        System.out.println(principal.getUsername());
-        System.out.println(principal.getPassword());
+    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId){
 
         return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
 //        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
