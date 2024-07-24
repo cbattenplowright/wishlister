@@ -25,7 +25,7 @@ public class UserController {
 
 //    INDEX Users
     @GetMapping()
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserAccount>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
@@ -53,6 +53,7 @@ public class UserController {
 
 //    DELETE User
     @DeleteMapping("/{requestedId}")
+    @PreAuthorize("hasRole('USER') && #requestedId == authentication.principal.id || hasRole('ADMIN')")
     public ResponseEntity<UUID> deleteUser(@PathVariable UUID requestedId){
         // Delete products associated with user
         // Delete wishlists associated with user

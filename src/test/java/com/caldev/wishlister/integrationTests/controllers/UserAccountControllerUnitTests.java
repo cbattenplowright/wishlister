@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class UserAccountControllerUnitTests {
     UserAccount userAccount;
 
     @Test
+    @WithMockUser // Annotation simulates the user logging in
     void whenValidRequestAndUsersExist_thenReturn200() throws Exception {
         when(userService.getAllUsers()).thenReturn(List.of(userAccount));
 
