@@ -20,6 +20,14 @@ public class NewUserDto {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -36,14 +44,6 @@ public class NewUserDto {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -55,7 +55,7 @@ public class NewUserDto {
     @Override
     public String toString() {
         return "NewUserDto{" +
-                ", email='" + email + '\'' +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
