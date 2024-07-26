@@ -1,12 +1,13 @@
 package com.caldev.wishlister.controllers;
 
-import com.caldev.wishlister.dtos.MyUserPrincipal;
 import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,14 +33,10 @@ public class UserController {
 
 //    SHOW User
     @GetMapping("/{requestedId}")
-    @PreAuthorize("hasRole('USER') && #requestedId == authentication.principal.id || hasRole('ADMIN')")
-    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal MyUserPrincipal principal){
-
-        System.out.println(principal.getUsername());
-        System.out.println(principal.getPassword());
-
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId ")
+    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
+        System.out.println(userAccount);
         return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
-//        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
     }
 
 //    CREATE User
@@ -53,7 +50,6 @@ public class UserController {
 
 //    DELETE User
     @DeleteMapping("/{requestedId}")
-    @PreAuthorize("hasRole('USER') && #requestedId == authentication.principal.id || hasRole('ADMIN')")
     public ResponseEntity<UUID> deleteUser(@PathVariable UUID requestedId){
         // Delete products associated with user
         // Delete wishlists associated with user

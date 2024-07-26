@@ -3,49 +3,52 @@ package com.caldev.wishlister.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class UserAccount {
+public class UserAccount implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(nullable = false)
-    private String username;
+    private String email;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private String email;
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<GrantedAuthority> authorities = new ArrayList();
-    @OneToMany(mappedBy = "userAccount")
-    @JsonIgnoreProperties({"user"})
+    @JsonIgnoreProperties({"users"})
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private Set<Authority> authorities;
+    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"userAccount"})
     private List<Wishlist> wishlists;
-    @OneToMany(mappedBy = "userAccount")
-    @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"userAccount"})
     private List<Product> products;
 
     protected UserAccount() {}
 
-    public UserAccount(String username, String password, String name, String email, LocalDate dateOfBirth, ArrayList<GrantedAuthority> authorities) {
-        this.username = username;
+    public UserAccount(String email, String password, String name, LocalDate dateOfBirth, Set<Authority> authorities) {
+        this.email = email;
         this.password = password;
         this.name = name;
-        this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.authorities.addAll(authorities);
+        this.authorities = authorities;
         this.wishlists = null;
         this.products = null;
     }
@@ -57,11 +60,7 @@ public class UserAccount {
     }
 
     public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        return email;
     }
 
     public String getPassword() {
@@ -96,12 +95,11 @@ public class UserAccount {
         this.dateOfBirth = dateOfBirth;
     }
 
-
-    public List<GrantedAuthority> getAuthorities() {
+    public Set<Authority> getRoles() {
         return authorities;
     }
 
-    public void setAuthorities(List<GrantedAuthority> authorities) {
+    public void setRoles(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 
@@ -125,14 +123,40 @@ public class UserAccount {
     public String toString() {
         return "UserAccount{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", authorities=" + authorities +
                 ", wishlists=" + wishlists +
                 ", products=" + products +
                 '}';
+    }
+
+//    Override methods of UserDetails
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 }

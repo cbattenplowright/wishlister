@@ -28,7 +28,7 @@ public class Wishlist {
         this.wishlistName = wishlistName;
         this.userAccount = userAccount;
         this.wishlistProducts = wishlistProducts;
-//TODO edit the unit tests to accomodated the WishlistProduct
+//TODO edit the unit tests to accommodated the WishlistProduct
     }
 
     public Long getId() {

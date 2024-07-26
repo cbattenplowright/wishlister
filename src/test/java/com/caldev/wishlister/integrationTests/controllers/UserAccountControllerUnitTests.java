@@ -24,6 +24,7 @@ public class UserAccountControllerUnitTests {
 
     @Autowired
     MockMvc mockMvc;
+
     @MockBean
     UserService userService;
 
@@ -33,6 +34,7 @@ public class UserAccountControllerUnitTests {
 
 //   INDEX User Endpoint Test
     @Test
+
     @WithMockUser // Annotation simulates the user logging in
     void whenValidRequestAndUsersExist_thenReturn200() throws Exception {
         when(userService.getAllUsers()).thenReturn(List.of(userAccount));

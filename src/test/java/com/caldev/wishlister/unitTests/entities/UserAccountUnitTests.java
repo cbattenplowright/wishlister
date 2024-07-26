@@ -3,11 +3,8 @@ package com.caldev.wishlister.unitTests.entities;
 import com.caldev.wishlister.entities.UserAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -18,6 +15,7 @@ public class UserAccountUnitTests {
 
     @BeforeEach
     public void setUp() {
+        userAccount = new UserAccount("username", "password", "name", "email@email.com", LocalDate.of(2022, 1, 1),null);
         userAccount = new UserAccount("username", "password", "name", "email@email.com", LocalDate.of(2022, 1, 1),new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER"))));
     }
 
@@ -83,6 +81,14 @@ public class UserAccountUnitTests {
     }
 
     @Test
+    public void shouldGetRolesTest(){
+        assertNull(userAccount.getRoles());
+    }
+
+    @Test
+    public void shouldSetRolesTest(){
+        userAccount.setRoles(null);
+        assertNull(userAccount.getRoles());
     public void shouldGetAuthoritiesTest(){
         assertThat(userAccount.getAuthorities()).isEqualTo(new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER"))));
     }
@@ -117,6 +123,6 @@ public class UserAccountUnitTests {
 
     @Test
     public void shouldToStringTest(){
-        assertThat(userAccount.toString()).isEqualTo("UserAccount{id=null, username='username', password='password', name='name', email='email@email.com', dateOfBirth=2022-01-01, authorities=[ROLE_USER], wishlists=null, products=null}");
+        assertThat(userAccount.toString()).isEqualTo("User{id=null, username='username', password='password', name='name', email='email@email.com', dateOfBirth=2022-01-01, roles=null, wishlists=null, products=null}");
     }
 }
