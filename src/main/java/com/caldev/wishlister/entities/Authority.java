@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "authorities")
 public class Authority implements GrantedAuthority {
 
     @Id
@@ -15,8 +15,8 @@ public class Authority implements GrantedAuthority {
     private Long id;
     @Column(name = "authority", nullable = false)
     private String authority;
-    @JsonIgnoreProperties({"roles"})
-    @ManyToMany(mappedBy="roles")
+    @JsonIgnoreProperties({"authorities"})
+    @ManyToMany(mappedBy="authorities", fetch = FetchType.EAGER)
     private Set<UserAccount> userAccounts;
 
     protected Authority() {}
@@ -46,7 +46,6 @@ public class Authority implements GrantedAuthority {
         return "Role{" +
                 "id=" + id +
                 ", roleName='" + authority + '\'' +
-                ", users=" + userAccounts +
                 '}';
     }
 }

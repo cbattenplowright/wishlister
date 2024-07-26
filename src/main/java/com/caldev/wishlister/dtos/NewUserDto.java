@@ -4,30 +4,21 @@ import java.time.LocalDate;
 
 public class NewUserDto {
 
-    private String username;
+    private String email;
+
     private String password;
     private String name;
-    private String email;
     private LocalDate dateOfBirth;
 
 
     public NewUserDto() {
     }
 
-    public NewUserDto(String username, String password, String name, String email, LocalDate dateOfBirth) {
-        this.username = username;
+    public NewUserDto(String email,String password, String name, LocalDate dateOfBirth) {
+        this.email = email;
         this.password = password;
         this.name = name;
-        this.email = email;
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -65,10 +56,9 @@ public class NewUserDto {
     @Override
     public String toString() {
         return "NewUserDto{" +
-                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 '}';
     }

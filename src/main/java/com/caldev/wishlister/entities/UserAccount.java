@@ -19,37 +19,34 @@ public class UserAccount implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(nullable = false)
-    private String username;
+    private String email;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private String email;
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
     @JsonIgnoreProperties({"users"})
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
+            name = "users_authorities",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
     )
     private Set<Authority> authorities;
-    @OneToMany(mappedBy = "userAccount")
+    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"userAccount"})
     private List<Wishlist> wishlists;
-    @OneToMany(mappedBy = "userAccount")
+    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"userAccount"})
     private List<Product> products;
 
     protected UserAccount() {}
 
-    public UserAccount(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Authority> authorities) {
-        this.username = username;
+    public UserAccount(String email, String password, String name, LocalDate dateOfBirth, Set<Authority> authorities) {
+        this.email = email;
         this.password = password;
         this.name = name;
-        this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.authorities = authorities;
         this.wishlists = null;
@@ -63,11 +60,7 @@ public class UserAccount implements UserDetails {
     }
 
     public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        return email;
     }
 
     public String getPassword() {
@@ -130,10 +123,9 @@ public class UserAccount implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", roles=" + authorities +
                 ", wishlists=" + wishlists +

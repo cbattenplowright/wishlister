@@ -4,7 +4,7 @@ import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.repositories.AuthorityRepository;
-import com.caldev.wishlister.repositories.UserRepository;
+import com.caldev.wishlister.repositories.UserManagementRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,36 +17,35 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    private final UserRepository userRepository;
+    private final UserManagementRepository userManagementRepository;
 
-    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository) {
+    public UserService(UserManagementRepository userManagementRepository, AuthorityRepository authorityRepository) {
         this.authorityRepository = authorityRepository;
-        this.userRepository = userRepository;
+        this.userManagementRepository = userManagementRepository;
     }
 
     public List<UserAccount> getAllUsers(){
-        return userRepository.findAll();
+        return userManagementRepository.findAll();
     }
 
     public UserAccount getUserById(UUID requestedId){
-        return userRepository.findById(requestedId).orElse(null);
+        return userManagementRepository.findById(requestedId).orElse(null);
     }
 
     public UserAccount createUser(NewUserDto newUserDto){
-        Set<Authority> userAuthority = new HashSet<>(List.of(authorityRepository.findByRoleName("ROLE_USER")));
+        Set<Authority> userAuthority = new HashSet<>(List.of(authorityRepository.findByAuthority("ROLE_USER")));
 
         UserAccount newUserAccount = new UserAccount(
-                newUserDto.getUsername(),
-                newUserDto.getPassword(),
-                newUserDto.getName(),
                 newUserDto.getEmail(),
+                newUserDto.getName(),
+                newUserDto.getPassword(),
                 newUserDto.getDateOfBirth(),
                 userAuthority
                 );
-        return userRepository.save(newUserAccount);
+        return userManagementRepository.save(newUserAccount);
     }
 
     public void deleteUser(UUID requestedId){
-        userRepository.deleteById(requestedId);
+        userManagementRepository.deleteById(requestedId);
     }
 }

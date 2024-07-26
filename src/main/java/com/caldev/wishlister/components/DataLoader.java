@@ -3,9 +3,11 @@ package com.caldev.wishlister.components;
 import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.repositories.AuthorityRepository;
-import com.caldev.wishlister.repositories.UserRepository;
+import com.caldev.wishlister.repositories.UserManagementRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,11 +20,14 @@ import java.util.Set;
 public class DataLoader implements ApplicationRunner {
 
     private final AuthorityRepository authorityRepository;
-    private final UserRepository userRepository;
+    private final UserManagementRepository userManagementRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataLoader(AuthorityRepository authorityRepository, UserRepository userRepository) {
+
+    public DataLoader(AuthorityRepository authorityRepository, UserManagementRepository userManagementRepository, PasswordEncoder passwordEncoder) {
         this.authorityRepository = authorityRepository;
-        this.userRepository = userRepository;
+        this.userManagementRepository = userManagementRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -33,32 +38,36 @@ public class DataLoader implements ApplicationRunner {
             authorityRepository.saveAll(authorities);
         }
 
-        if(userRepository.count() == 0){
-            Authority adminAuthority = authorityRepository.findByRoleName("ROLE_ADMIN");
-            Authority userAuthority = authorityRepository.findByRoleName("ROLE_USER");
+        if(userManagementRepository.count() == 0){
+            Authority adminAuthority = authorityRepository.findByAuthority("ROLE_ADMIN");
+            Authority userAuthority = authorityRepository.findByAuthority("ROLE_USER");
             Set<Authority> adminAuthorities = new HashSet<>(List.of(adminAuthority, userAuthority));
             Set<Authority> userAuthorities = new HashSet<>(List.of(userAuthority));
 
             UserAccount userAccount1 = new UserAccount(
-                    "username",
-                    "password",
-                    "name",
-                    "email@email.com",
+                    "admin@email.com",
+                    passwordEncoder.encode("password"),
+                    "admin",
                     LocalDate.of(2000, 1, 1),
                     adminAuthorities
                     );
             UserAccount userAccount2 = new UserAccount(
-                    "username2",
-                    "password2",
-                    "name2",
-                    "email2@email.com",
+                    "alice@email.com",
+                    passwordEncoder.encode("password"),
+                    "Alice",
+                    LocalDate.of(2000, 1, 1),
+                    userAuthorities);
+            UserAccount userAccount3 = new UserAccount(
+                    "bob@email.com",
+                    passwordEncoder.encode("password"),
+                    "Bob",
                     LocalDate.of(2000, 1, 1),
                     userAuthorities);
 
-            userRepository.saveAll(Arrays.asList(userAccount1, userAccount2));
+            userManagementRepository.saveAll(Arrays.asList(userAccount1, userAccount2, userAccount3));
         }
 
-        if(userRepository.count() != 0 && authorityRepository.count() != 0){
+        if(userManagementRepository.count() != 0 && authorityRepository.count() != 0){
             System.out.println("Data loaded");
         }
     }

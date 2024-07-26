@@ -6,6 +6,8 @@ import com.caldev.wishlister.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +22,16 @@ public class UserController {
 
 //    INDEX Users
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserAccount>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 //    SHOW User
     @GetMapping("/{requestedId}")
-    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId){
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId ")
+    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
+        System.out.println(userAccount);
         return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
     }
 
