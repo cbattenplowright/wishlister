@@ -3,38 +3,36 @@ package com.caldev.wishlister.dtos;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class UserDto {
+public class UserAccountDto {
 
-    private String username;
+    private String email;
     private String password;
     private String name;
-    private String email;
     private LocalDate dateOfBirth;
-    private ArrayList<Long> roleIds;
+    private ArrayList<Long> authorityIds;
     private ArrayList<Long> wishlistIds;
     private ArrayList<Long> productIds;
 
-    public UserDto() {
+    public UserAccountDto() {
 
     }
 
-    public UserDto(String username, String password, String name, String email, LocalDate dateOfBirth, ArrayList<Long> roleIds, ArrayList<Long> wishlistIds, ArrayList<Long> productIds) {
-        this.username = username;
+    public UserAccountDto(String email, String password, String name, LocalDate dateOfBirth, ArrayList<Long> authorityIds, ArrayList<Long> wishlistIds, ArrayList<Long> productIds) {
+        this.email = email;
         this.password = password;
         this.name = name;
-        this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.roleIds = roleIds;
+        this.authorityIds = authorityIds;
         this.wishlistIds = wishlistIds;
         this.productIds = productIds;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -53,14 +51,6 @@ public class UserDto {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -69,12 +59,12 @@ public class UserDto {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public ArrayList<Long> getRoleIds() {
-        return roleIds;
+    public ArrayList<Long> getAuthorityIds() {
+        return authorityIds;
     }
 
-    public void setRoleIds(ArrayList<Long> roleIds) {
-        this.roleIds = roleIds;
+    public void setAuthorityIds(ArrayList<Long> authorityIds) {
+        this.authorityIds = authorityIds;
     }
 
     public ArrayList<Long> getWishlistIds() {
@@ -96,12 +86,11 @@ public class UserDto {
     @Override
     public String toString() {
         return "UserDto{" +
-                "username='" + username + '\'' +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", roleIds=" + roleIds +
+                ", authorityIds=" + authorityIds +
                 ", wishlistIds=" + wishlistIds +
                 ", productIds=" + productIds +
                 '}';
