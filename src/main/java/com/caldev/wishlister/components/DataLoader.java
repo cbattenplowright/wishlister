@@ -4,7 +4,6 @@ import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.repositories.AuthorityRepository;
 import com.caldev.wishlister.repositories.UserManagementRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,13 +1,14 @@
 package com.caldev.wishlister.repositories;
 
 import com.caldev.wishlister.entities.UserAccount;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@org.springframework.stereotype.Repository
-public interface UserRepository extends Repository<UserAccount, UUID> {
+@Repository
+public interface UserRepository extends JpaRepository<UserAccount, UUID> {
 
     Optional<UserAccount> findByEmail(String email);
 }
