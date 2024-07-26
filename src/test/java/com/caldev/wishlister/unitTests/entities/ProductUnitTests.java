@@ -15,14 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class ProductUnitTests {
 
     private Product product;
-    private User user;
+    private UserAccount userAccount;
     private Wishlist wishlist;
 
     @BeforeEach
     public void setUp() throws MalformedURLException {
-        user = new User("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
-        wishlist = new Wishlist("wishlistName", user, null);
-        product = new Product("productName", 100, new URL("https://url"), new URL("https://imageUrl"), "description", PrioritySelection.NON_URGENT, LocalDate.now(), null, user);
+        userAccount = new UserAccount("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
+        wishlist = new Wishlist("wishlistName", userAccount, null);
+        product = new Product("productName", 100, new URL("https://url"), new URL("https://imageUrl"), "description", PrioritySelection.NON_URGENT, LocalDate.now(), null, userAccount);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ProductUnitTests {
 
     @Test
     public void shouldGetUser(){
-        assertThat(product.getUser()).isEqualTo(user);
+        assertThat(product.getUser()).isEqualTo(userAccount);
     }
 
     @Test
@@ -126,13 +126,13 @@ public class ProductUnitTests {
 
     @Test
     public void shouldSetUser(){
-        User newUser = new User("newUsername", "newPassword", "newName", "newEmail@email.com", LocalDate.of(2000, 1, 1), null);
-        product.setUser(newUser);
-        assertThat(product.getUser()).isEqualTo(newUser);
+        UserAccount newUserAccount = new UserAccount("newUsername", "newPassword", "newName", "newEmail@email.com", LocalDate.of(2000, 1, 1), null);
+        product.setUser(newUserAccount);
+        assertThat(product.getUser()).isEqualTo(newUserAccount);
     }
 
     @Test
     public void shouldToString(){
-        assertThat(product.toString()).isEqualTo("Product{productId=null, productName='productName', price=100, url=https://url, imageUrl=https://imageUrl, description='description', priority=NON_URGENT, dateAdded=" + LocalDate.now() + ", wishlistProducts=null, user=" + user + "}");
+        assertThat(product.toString()).isEqualTo("Product{productId=null, productName='productName', price=100, url=https://url, imageUrl=https://imageUrl, description='description', priority=NON_URGENT, dateAdded=" + LocalDate.now() + ", wishlistProducts=null, user=" + userAccount + "}");
     }
 }

@@ -1,7 +1,7 @@
 package com.caldev.wishlister.components;
 
 import com.caldev.wishlister.entities.Role;
-import com.caldev.wishlister.entities.User;
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.repositories.RoleRepository;
 import com.caldev.wishlister.repositories.UserRepository;
 import org.springframework.boot.ApplicationArguments;
@@ -39,7 +39,7 @@ public class DataLoader implements ApplicationRunner {
             Set<Role> adminRoles = new HashSet<>(List.of(adminRole, userRole));
             Set<Role> userRoles = new HashSet<>(List.of(userRole));
 
-            User user1 = new User(
+            UserAccount userAccount1 = new UserAccount(
                     "username",
                     "password",
                     "name",
@@ -47,7 +47,7 @@ public class DataLoader implements ApplicationRunner {
                     LocalDate.of(2000, 1, 1),
                     adminRoles
                     );
-            User user2 = new User(
+            UserAccount userAccount2 = new UserAccount(
                     "username2",
                     "password2",
                     "name2",
@@ -55,7 +55,7 @@ public class DataLoader implements ApplicationRunner {
                     LocalDate.of(2000, 1, 1),
                     userRoles);
 
-            userRepository.saveAll(Arrays.asList(user1, user2));
+            userRepository.saveAll(Arrays.asList(userAccount1, userAccount2));
         }
 
         if(userRepository.count() != 0 && roleRepository.count() != 0){

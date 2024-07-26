@@ -2,7 +2,7 @@ package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.entities.Role;
-import com.caldev.wishlister.entities.User;
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.repositories.RoleRepository;
 import com.caldev.wishlister.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -24,18 +24,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers(){
+    public List<UserAccount> getAllUsers(){
         return userRepository.findAll();
     }
 
-    public User getUserById(UUID requestedId){
+    public UserAccount getUserById(UUID requestedId){
         return userRepository.findById(requestedId).orElse(null);
     }
 
-    public User createUser(NewUserDto newUserDto){
+    public UserAccount createUser(NewUserDto newUserDto){
         Set<Role> userRole = new HashSet<>(List.of(roleRepository.findByRoleName("ROLE_USER")));
 
-        User newUser = new User(
+        UserAccount newUserAccount = new UserAccount(
                 newUserDto.getUsername(),
                 newUserDto.getPassword(),
                 newUserDto.getName(),
@@ -43,7 +43,7 @@ public class UserService {
                 newUserDto.getDateOfBirth(),
                 userRole
                 );
-        return userRepository.save(newUser);
+        return userRepository.save(newUserAccount);
     }
 
     public void deleteUser(UUID requestedId){

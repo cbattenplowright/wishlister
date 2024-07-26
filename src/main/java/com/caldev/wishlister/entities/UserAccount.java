@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -41,9 +40,9 @@ public class User {
     @JsonIgnoreProperties({"user"})
     private List<Product> products;
 
-    protected User() {}
+    protected UserAccount() {}
 
-    public User(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Role> roles) {
+    public UserAccount(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.name = name;

@@ -1,6 +1,6 @@
 package com.caldev.wishlister.unitTests.entities;
 
-import com.caldev.wishlister.entities.User;
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class WishlistUnitTests {
 
     private Wishlist wishlist;
-    private User user;
+    private UserAccount userAccount;
 
     @BeforeEach
     public void setUp(){
-        user = new User("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
-        wishlist = new Wishlist("wishlistName", user, null);
+        userAccount = new UserAccount("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
+        wishlist = new Wishlist("wishlistName", userAccount, null);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class WishlistUnitTests {
 
     @Test
     public void shouldGetWishlistUser(){
-        assertThat(wishlist.getUser()).isEqualTo(user);
+        assertThat(wishlist.getUser()).isEqualTo(userAccount);
     }
 
     @Test
@@ -55,13 +55,13 @@ public class WishlistUnitTests {
 
     @Test
     public void shouldSetWishlistUser(){
-        User newUser = new User("newUsername", "newPassword", "newName", "newEmail@email.com", LocalDate.of(2000, 1, 1), null);
-        wishlist.setUser(newUser);
-        assertThat(wishlist.getUser()).isEqualTo(newUser);
+        UserAccount newUserAccount = new UserAccount("newUsername", "newPassword", "newName", "newEmail@email.com", LocalDate.of(2000, 1, 1), null);
+        wishlist.setUser(newUserAccount);
+        assertThat(wishlist.getUser()).isEqualTo(newUserAccount);
     }
 
     @Test
     public void shouldToString(){
-        assertThat(wishlist.toString()).isEqualTo("Wishlist{wishlistId=null, wishlistName='wishlistName', user=" + user + "}");
+        assertThat(wishlist.toString()).isEqualTo("Wishlist{wishlistId=null, wishlistName='wishlistName', user=" + userAccount + "}");
     }
 }

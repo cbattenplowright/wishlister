@@ -16,13 +16,13 @@ public class Role {
     private String roleName;
     @JsonIgnoreProperties({"roles"})
     @ManyToMany(mappedBy="roles")
-    private Set<User> users;
+    private Set<UserAccount> userAccounts;
 
     protected Role() {}
 
-    public Role(String roleName, Set<User> users) {
+    public Role(String roleName, Set<UserAccount> userAccounts) {
         this.roleName = roleName;
-        this.users = users;
+        this.userAccounts = userAccounts;
     }
 
 //    Getters and Setters
@@ -44,7 +44,7 @@ public class Role {
         return "Role{" +
                 "id=" + id +
                 ", roleName='" + roleName + '\'' +
-                ", users=" + users +
+                ", users=" + userAccounts +
                 '}';
     }
 }
