@@ -34,9 +34,16 @@ public class UserController {
 //    SHOW User
     @GetMapping("/{requestedId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId ")
-    public ResponseEntity<UserAccount> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
+    public ResponseEntity<Object> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
         System.out.println(userAccount);
-        return new ResponseEntity<>(userService.getUserById(requestedId), HttpStatus.OK);
+        if (userAccount == null){
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        UserAccount user = userService.getUserById(requestedId);
+        if (user != null){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
     }
 
 //    CREATE User
