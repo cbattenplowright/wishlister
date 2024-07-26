@@ -2,26 +2,27 @@ package com.caldev.wishlister.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Authority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false)
-    private String roleName;
+    @Column(name = "authority", nullable = false)
+    private String authority;
     @JsonIgnoreProperties({"roles"})
     @ManyToMany(mappedBy="roles")
     private Set<UserAccount> userAccounts;
 
-    protected Role() {}
+    protected Authority() {}
 
-    public Role(String roleName, Set<UserAccount> userAccounts) {
-        this.roleName = roleName;
+    public Authority(String authority, Set<UserAccount> userAccounts) {
+        this.authority = authority;
         this.userAccounts = userAccounts;
     }
 
@@ -31,19 +32,20 @@ public class Role {
         return id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    @Override
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", roleName='" + roleName + '\'' +
+                ", roleName='" + authority + '\'' +
                 ", users=" + userAccounts +
                 '}';
     }

@@ -1,11 +1,11 @@
 package com.caldev.wishlister.repositories;
 
-import com.caldev.wishlister.entities.Role;
+import com.caldev.wishlister.entities.Authority;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends CrudRepository<Role, Long> {
+public interface RoleRepository extends CrudRepository<Authority, Long> {
 
-    Role findByRoleName(String roleName);
+    Authority findByRoleName(String roleName);
 }

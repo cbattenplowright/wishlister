@@ -23,13 +23,13 @@ public class RoleUnitTests {
 
     @Test
     public void shouldGetRoleNameTest(){
-        assertThat(role.getRoleName()).isEqualTo("ROLE_ADMIN");
+        assertThat(role.getAuthority()).isEqualTo("ROLE_ADMIN");
     }
 
     @Test
     public void shouldSetRoleNameTest(){
-        role.setRoleName("ROLE_USER");
-        assertThat(role.getRoleName()).isEqualTo("ROLE_USER");
+        role.setAuthority("ROLE_USER");
+        assertThat(role.getAuthority()).isEqualTo("ROLE_USER");
     }
 
     @Test
