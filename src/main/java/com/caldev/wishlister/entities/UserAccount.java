@@ -2,15 +2,18 @@ package com.caldev.wishlister.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class UserAccount {
+public class UserAccount implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,23 +35,23 @@ public class UserAccount {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
-    @OneToMany(mappedBy = "user")
-    @JsonIgnoreProperties({"user"})
+    private Set<Authority> authorities;
+    @OneToMany(mappedBy = "userAccount")
+    @JsonIgnoreProperties({"userAccount"})
     private List<Wishlist> wishlists;
-    @OneToMany(mappedBy = "user")
-    @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy = "userAccount")
+    @JsonIgnoreProperties({"userAccount"})
     private List<Product> products;
 
     protected UserAccount() {}
 
-    public UserAccount(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Role> roles) {
+    public UserAccount(String username, String password, String name, String email, LocalDate dateOfBirth, Set<Authority> authorities) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-        this.roles = roles;
+        this.authorities = authorities;
         this.wishlists = null;
         this.products = null;
     }
@@ -99,12 +102,12 @@ public class UserAccount {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<Authority> getRoles() {
+        return authorities;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public List<Wishlist> getWishlists() {
@@ -132,9 +135,36 @@ public class UserAccount {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", roles=" + roles +
+                ", roles=" + authorities +
                 ", wishlists=" + wishlists +
                 ", products=" + products +
                 '}';
+    }
+
+//    Override methods of UserDetails
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 }

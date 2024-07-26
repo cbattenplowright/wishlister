@@ -1,9 +1,9 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.dtos.NewUserDto;
-import com.caldev.wishlister.entities.Role;
+import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.UserAccount;
-import com.caldev.wishlister.repositories.RoleRepository;
+import com.caldev.wishlister.repositories.AuthorityRepository;
 import com.caldev.wishlister.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +15,12 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final RoleRepository roleRepository;
+    private final AuthorityRepository authorityRepository;
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository) {
+        this.authorityRepository = authorityRepository;
         this.userRepository = userRepository;
     }
 
@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public UserAccount createUser(NewUserDto newUserDto){
-        Set<Role> userRole = new HashSet<>(List.of(roleRepository.findByRoleName("ROLE_USER")));
+        Set<Authority> userAuthority = new HashSet<>(List.of(authorityRepository.findByRoleName("ROLE_USER")));
 
         UserAccount newUserAccount = new UserAccount(
                 newUserDto.getUsername(),
@@ -41,7 +41,7 @@ public class UserService {
                 newUserDto.getName(),
                 newUserDto.getEmail(),
                 newUserDto.getDateOfBirth(),
-                userRole
+                userAuthority
                 );
         return userRepository.save(newUserAccount);
     }
