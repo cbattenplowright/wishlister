@@ -32,7 +32,7 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if(authorityRepository.count() == 0){
-            List<Authority> authorities = Arrays.asList(new Authority("ROLE_ADMIN", null), new Authority("ROLE_USER", null));
+            List<Authority> authorities = Arrays.asList(new Authority("ROLE_ADMIN"), new Authority("ROLE_USER"));
 
             authorityRepository.saveAll(authorities);
         }

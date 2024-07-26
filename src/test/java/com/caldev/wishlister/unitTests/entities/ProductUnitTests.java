@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,9 +19,10 @@ public class ProductUnitTests {
     private UserAccount userAccount;
     private Wishlist wishlist;
 
+
     @BeforeEach
     public void setUp() throws MalformedURLException {
-        userAccount = new UserAccount("username", "password", "name", "email@email.com", LocalDate.of(2000, 1, 1), null);
+        userAccount = new UserAccount("user@email.com", "password", "name", LocalDate.of(2000, 1, 1), null);
         wishlist = new Wishlist("wishlistName", userAccount, null);
         product = new Product("productName", 100, new URL("https://url"), new URL("https://imageUrl"), "description", PrioritySelection.NON_URGENT, LocalDate.now(), null, userAccount);
     }
@@ -126,7 +128,7 @@ public class ProductUnitTests {
 
     @Test
     public void shouldSetUser(){
-        UserAccount newUserAccount = new UserAccount("newUsername", "newPassword", "newName", "newEmail@email.com", LocalDate.of(2000, 1, 1), null);
+        UserAccount newUserAccount = new UserAccount("newUser@email.com", "newPassword", "newName", LocalDate.of(2000, 1, 1), null);
         product.setUser(newUserAccount);
         assertThat(product.getUser()).isEqualTo(newUserAccount);
     }

@@ -13,7 +13,7 @@ public class AuthorityUnitTests {
 
     @BeforeEach
     public void setUp() {
-        authority = new Authority("ROLE_ADMIN", null);
+        authority = new Authority("ROLE_ADMIN");
     }
 
     @Test
@@ -34,6 +34,6 @@ public class AuthorityUnitTests {
 
     @Test
     public void shouldToStringTest(){
-        assertThat(authority.toString()).isEqualTo("Role{id=null, roleName='ROLE_ADMIN', users=null}");
+        assertThat(authority.toString()).isEqualTo("Authority{id=null, authority='ROLE_ADMIN'}");
     }
 }

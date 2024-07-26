@@ -21,9 +21,8 @@ public class Authority implements GrantedAuthority {
 
     protected Authority() {}
 
-    public Authority(String authority, Set<UserAccount> userAccounts) {
+    public Authority(String authority) {
         this.authority = authority;
-        this.userAccounts = userAccounts;
     }
 
 //    Getters and Setters
@@ -43,9 +42,9 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Authority{" +
                 "id=" + id +
-                ", roleName='" + authority + '\'' +
+                ", authority='" + authority + '\'' +
                 '}';
     }
 }

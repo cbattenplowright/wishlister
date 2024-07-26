@@ -18,7 +18,7 @@ public class SharedUserWishlistUnitTestsAccount {
 
     @BeforeEach
     public void setUp(){
-        sharedUserAccount = new UserAccount("testUser", "testPassword", "testName", "testEmail", LocalDate.of(2000, 1, 1), null);
+        sharedUserAccount = new UserAccount("sharedUser@email.com", "testPassword", "testName", LocalDate.of(2000, 1, 1), null);
         sharedWishlist = new Wishlist("testWishlist", sharedUserAccount, null);
         sharedUserWishlist = new SharedUserWishlist(sharedUserAccount, sharedWishlist);
     }
@@ -40,7 +40,7 @@ public class SharedUserWishlistUnitTestsAccount {
 
     @Test
     public void shouldSetSharedUserTest(){
-        UserAccount userAccount = new UserAccount("testUser2", "testPassword", "testName", "testEmail", LocalDate.of(2000, 1, 1), null);
+        UserAccount userAccount = new UserAccount("sharedUser2@email.com", "testPassword", "testName", LocalDate.of(2000, 1, 1), null);
         sharedUserWishlist.setSharedUser(userAccount);
         assertThat(sharedUserWishlist.getSharedUser()).isEqualTo(userAccount);
     }

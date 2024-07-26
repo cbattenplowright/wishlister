@@ -95,11 +95,7 @@ public class UserAccount implements UserDetails {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Set<Authority> getRoles() {
-        return authorities;
-    }
-
-    public void setRoles(Set<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 
@@ -159,4 +155,5 @@ public class UserAccount implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
+
 }
