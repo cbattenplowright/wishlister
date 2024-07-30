@@ -53,7 +53,7 @@ public class UserAccountControllerIndexTests {
     //   INDEX User Endpoint Tests
     @Test
     @WithMockUser   // Annotation simulates the user logging in
-    void whenUnAuthorizedAndRequestingAllUsers_thenReturn403() throws Exception {
+    void whenUnauthorizedAndRequestingAllUsers_thenReturn403() throws Exception {
 
         this.mockMvc.perform(get("/api/users")
                         .contentType(MediaType.APPLICATION_JSON))

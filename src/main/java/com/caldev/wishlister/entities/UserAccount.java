@@ -53,10 +53,14 @@ public class UserAccount implements UserDetails {
         this.products = null;
     }
 
-//    Getters and Setters
 
+//    Getters and Setters
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -155,5 +159,4 @@ public class UserAccount implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-
 }
