@@ -3,17 +3,14 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +45,7 @@ public class UserController {
 
 //    CREATE User
     @PostMapping("/new")
-    public ResponseEntity<UserAccount> createUser(@RequestBody NewUserDto newUserDto){
+    public ResponseEntity<UserAccount> createUser(@Valid @RequestBody NewUserDto newUserDto){
         UserAccount newUserAccount = userService.createUser(newUserDto);
         return new ResponseEntity<>(
                 newUserAccount,

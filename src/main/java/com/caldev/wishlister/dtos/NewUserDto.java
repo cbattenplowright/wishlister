@@ -1,12 +1,20 @@
 package com.caldev.wishlister.dtos;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 public class NewUserDto {
 
+    @NotNull(message = "This field cannot be empty")
+    @Email(message = "This field must be a valid email address")
     private String email;
+    @NotNull(message = "This field cannot be empty")
     private String password;
+    @NotNull(message = "This field cannot be empty")
     private String name;
+    @NotNull(message = "This field cannot be empty")
     private LocalDate dateOfBirth;
 
 
