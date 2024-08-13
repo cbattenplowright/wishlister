@@ -30,7 +30,7 @@ public class UserController {
 
 //    SHOW User
     @GetMapping("/{requestedId}")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId ")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
     public ResponseEntity<Object> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
         System.out.println(userAccount);
         if (userAccount == null){
@@ -54,11 +54,15 @@ public class UserController {
 
 //    DELETE User
     @DeleteMapping("/{requestedId}")
-    @PreAuthorize(("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId "))
-    public ResponseEntity<UUID> deleteUser(@PathVariable UUID requestedId){
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
+    public ResponseEntity<Object> deleteUser(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
         // Delete products associated with user
         // Delete wishlists associated with user
         // Delete user
+        System.out.println(userAccount);
+        if (userAccount == null){
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
         userService.deleteUser(requestedId);
         return new ResponseEntity<>(
                 requestedId,
