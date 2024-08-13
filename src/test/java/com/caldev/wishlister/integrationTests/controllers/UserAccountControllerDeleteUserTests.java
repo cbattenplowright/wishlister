@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -43,7 +42,7 @@ public class UserAccountControllerDeleteUserTests {
 
     @BeforeEach
     void setUp(){
-        testUserAccount = new UserAccount("test@email.com", "test", "test", LocalDate.now(), new HashSet<>(List.of(new Authority("ROLE_ADMIN"))));
+        testUserAccount = new UserAccount("test@email.com", "test", "test", LocalDate.of(2022, 1, 1), new HashSet<>(List.of(new Authority("ROLE_ADMIN"))));
     }
 
     @Test
@@ -56,10 +55,23 @@ public class UserAccountControllerDeleteUserTests {
     }
 
     @Test
-    void whenUserIsNotAuthorized_thenReturn401() throws Exception {
+    void whenUserIsNotAuthenticated_thenReturn401() throws Exception {
 
         this.mockMvc.perform(delete("/api/users/{requestedId}", UUID.randomUUID()))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void whenUserIsAuthenticatedButNotAuthorized_thenReturn403() throws Exception{
+
+        UUID testUserAccountId = UUID.randomUUID();
+        UUID requestedUserId = UUID.randomUUID();
+        testUserAccount.setAuthorities(new HashSet<>(List.of(new Authority("ROLE_USER"))));
+        testUserAccount.setId(testUserAccountId);
+
+        this.mockMvc.perform(delete("/api/users/{requestedId}", requestedUserId)
+                .with(user(testUserAccount)))
+                .andExpect(status().isForbidden());
     }
 
     @Test

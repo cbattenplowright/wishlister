@@ -51,7 +51,7 @@ public class UserAccountControllerShowTests {
     @WithMockUser
     void whenUnauthorizedAndRequestingUser_thenReturn403() throws Exception {
 
-        this.mockMvc.perform(get("/api/users/{id}", UUID.randomUUID())
+        this.mockMvc.perform(get("/api/users/{requestedId}", UUID.randomUUID())
                         .with(user(userAccount))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
