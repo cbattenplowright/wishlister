@@ -38,16 +38,27 @@ public class UserAccountControllerCreateTests {
     @MockBean
     UserAccount userAccount;
 
+//    @Test
+//    void whenUnauthorizedAndCreatingUser_thenReturn403() throws Exception {
+//
+//        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+//        UserAccount unauthorizedUser = new UserAccount("unauth@email.com", "password", "unauth", LocalDate.of(2000, 1, 1), null);
+//
+//        this.mockMvc.perform(post("/api/users/new")
+//                        .with(user(unauthorizedUser))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(new UserAccount("user@email.com", "password", "user", LocalDate.of(2000, 1, 1), null))))
+//                .andExpect(status().isForbidden());
+//    }
+
     @Test
-    void whenUnauthorizedAndCreatingUser_thenReturn403() throws Exception {
+    void whenAllRequiredFieldsUserCreated_thenReturn201() throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        UserAccount unauthorizedUser = new UserAccount("unauth@email.com", "password", "unauth", LocalDate.of(2000, 1, 1), null);
-
+        UserAccount user = new UserAccount("user@email.com", "password", "user", LocalDate.of(2000, 1, 1), null);
         this.mockMvc.perform(post("/api/users/new")
-                        .with(user(unauthorizedUser))
-                .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new UserAccount("user@email.com", "password", "user", LocalDate.of(2000, 1, 1), null))))
-                .andExpect(status().isForbidden());
+                .content(objectMapper.writeValueAsString(user))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
     }
 }
