@@ -56,6 +56,13 @@ public class UserAccountControllerDeleteUserTests {
     }
 
     @Test
+    void whenUserIsNotAuthorized_thenReturn401() throws Exception {
+
+        this.mockMvc.perform(delete("/api/users/{requestedId}", UUID.randomUUID()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void whenUserIdDoesNotExistAndUserIsAuthenticatedAndAuthorized_thenReturn404() throws Exception {
 
         UUID testUserId = UUID.randomUUID();
