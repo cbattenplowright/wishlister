@@ -54,6 +54,7 @@ public class UserController {
 
 //    DELETE User
     @DeleteMapping("/{requestedId}")
+    @PreAuthorize(("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId "))
     public ResponseEntity<UUID> deleteUser(@PathVariable UUID requestedId){
         // Delete products associated with user
         // Delete wishlists associated with user
