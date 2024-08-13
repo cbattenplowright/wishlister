@@ -1,6 +1,7 @@
 package com.caldev.wishlister.integrationTests.controllers;
 
 import com.caldev.wishlister.controllers.UserController;
+import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.security.CustomUserDetailsService;
 import com.caldev.wishlister.security.SecurityConfig;
@@ -38,27 +39,32 @@ public class UserAccountControllerCreateTests {
     @MockBean
     UserAccount userAccount;
 
-//    @Test
-//    void whenUnauthorizedAndCreatingUser_thenReturn403() throws Exception {
-//
-//        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-//        UserAccount unauthorizedUser = new UserAccount("unauth@email.com", "password", "unauth", LocalDate.of(2000, 1, 1), null);
-//
-//        this.mockMvc.perform(post("/api/users/new")
-//                        .with(user(unauthorizedUser))
-//                .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(new UserAccount("user@email.com", "password", "user", LocalDate.of(2000, 1, 1), null))))
-//                .andExpect(status().isForbidden());
-//    }
-
     @Test
     void whenAllRequiredFieldsUserCreated_thenReturn201() throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        UserAccount user = new UserAccount("user@email.com", "password", "user", LocalDate.of(2000, 1, 1), null);
+        NewUserDto user = new NewUserDto("user@email.com", "password", "user", LocalDate.of(2000, 1, 1));
+
+        String jsonRequest = objectMapper.writeValueAsString(user);
+
         this.mockMvc.perform(post("/api/users/new")
-                .content(objectMapper.writeValueAsString(user))
+                .content(jsonRequest)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void whenFieldsMissingWhenCreatingUser_thenReturn400() throws Exception {
+
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        NewUserDto newUserDto = new NewUserDto();
+        newUserDto.setName("newUser");
+        newUserDto.setPassword("password");
+        String jsonRequest = objectMapper.writeValueAsString(newUserDto);
+
+        this.mockMvc.perform(post("/api/users/new")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 }
