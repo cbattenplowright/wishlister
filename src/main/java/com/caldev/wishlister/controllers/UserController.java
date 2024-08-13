@@ -1,6 +1,7 @@
 package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.dtos.NewUserDto;
+import com.caldev.wishlister.dtos.UserAccountDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.services.UserService;
 import jakarta.validation.Valid;
@@ -66,6 +67,21 @@ public class UserController {
         userService.deleteUser(requestedId);
         return new ResponseEntity<>(
                 requestedId,
+                HttpStatus.OK);
+    }
+
+//    UPDATE User
+
+    @PatchMapping("/{requestedId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
+    public ResponseEntity<Object> updateUser(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount, @Valid @RequestBody UserAccountDto userAccountDto){
+
+        if (userAccount == null){
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        UserAccount updatedUserAccount = userService.updateUser(requestedId, userAccountDto);
+        return new ResponseEntity<>(
+                updatedUserAccount,
                 HttpStatus.OK);
     }
 }

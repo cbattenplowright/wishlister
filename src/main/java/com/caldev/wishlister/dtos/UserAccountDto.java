@@ -1,10 +1,13 @@
 package com.caldev.wishlister.dtos;
 
+import jakarta.validation.constraints.Email;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class UserAccountDto {
 
+    @Email(message = "This field must be a valid email address")
     private String email;
     private String password;
     private String name;
