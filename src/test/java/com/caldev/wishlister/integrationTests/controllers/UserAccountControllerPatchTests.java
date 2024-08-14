@@ -73,4 +73,25 @@ public class UserAccountControllerPatchTests {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void whenUserIsAuthenticatedAndAuthorizedAndInvalidRequestBody_thenReturn400() throws Exception {
+
+        String jsonRequest = """
+                {
+                "email": "email",
+                "password": "password3",
+                "name": "name3",
+                "dateOfBirth": "1999-08-19",
+                "authorityIds": 1L,
+                "wishlistIds": null,
+                "productIds": null
+                }
+                """;
+
+        this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
+                .with(user(testUserAccount))
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 }
