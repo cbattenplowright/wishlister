@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class UserAccountControllerPatchTests {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired
+    @MockBean
     CustomUserDetailsService customUserDetailsService;
 
     @MockBean
@@ -58,11 +59,14 @@ public class UserAccountControllerPatchTests {
 
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-        UserAccountDto updateUser = new UserAccountDto("updatedTestUser@emmail.com", "updatedPassword", "updatedTestUserName", LocalDate.of(2000, 1, 1), null, null, null);
+        ArrayList<Long> authorityIds = new ArrayList<>();
+        authorityIds.add(2L);
+
+        UserAccountDto updateUser = new UserAccountDto("updatedTestUser@emmail.com", "updatedPassword", "updatedTestUserName", LocalDate.of(2000, 1, 1), authorityIds, null, null);
 
         String jsonRequest = objectMapper.writeValueAsString(updateUser);
 
-        this.mockMvc.perform(patch("api/users/{requestedId}", testUserId)
+        this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
                 .with(user(testUserAccount))
                 .content(jsonRequest)
                 .contentType(MediaType.APPLICATION_JSON))
