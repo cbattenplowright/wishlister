@@ -9,7 +9,6 @@ import com.caldev.wishlister.security.SecurityConfig;
 import com.caldev.wishlister.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.hibernate.engine.spi.ManagedEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

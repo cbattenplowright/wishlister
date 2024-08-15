@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class UserController {
 
 //    SHOW User
     @GetMapping("/{requestedId}")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
     public ResponseEntity<Object> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
         System.out.println(userAccount);
         if (userAccount == null){
@@ -55,7 +56,7 @@ public class UserController {
 
 //    DELETE User
     @DeleteMapping("/{requestedId}")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
     public ResponseEntity<Object> deleteUser(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
         // Delete products associated with user
         // Delete wishlists associated with user
@@ -73,7 +74,7 @@ public class UserController {
 //    UPDATE User
 
     @PatchMapping("/{requestedId}")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
     public ResponseEntity<Object> updateUser(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount, @Valid @RequestBody UserAccountDto userAccountDto){
 
         if (userAccount == null){
