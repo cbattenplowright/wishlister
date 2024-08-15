@@ -49,7 +49,7 @@ public class UserAccountControllerPatchTests {
     @BeforeEach
     void setUp() {
         testUserId = randomUUID();
-        testUserAccount = new UserAccount("testUser@gmail.com", "password", "testName", LocalDate.of(1999, 8, 10), new HashSet<>(List.of(new Authority("ROLE_USER"))));
+        testUserAccount = new UserAccount("testUser@gmail.com", "password", "testName", LocalDate.of(1999, 8, 10), new HashSet<>(List.of(new Authority("ROLE_ADMIN"))));
         testUserAccount.setId(testUserId);
         when(userService.getUserById(testUserId)).thenReturn(testUserAccount);
     }
@@ -82,7 +82,7 @@ public class UserAccountControllerPatchTests {
                 "password": "password3",
                 "name": "name3",
                 "dateOfBirth": "1999-08-19",
-                "authorityIds": 1L,
+                "authorityIds": [1],
                 "wishlistIds": null,
                 "productIds": null
                 }
