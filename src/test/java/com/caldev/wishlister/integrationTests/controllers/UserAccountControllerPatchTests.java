@@ -9,6 +9,7 @@ import com.caldev.wishlister.security.SecurityConfig;
 import com.caldev.wishlister.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.hibernate.engine.spi.ManagedEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,16 +47,38 @@ public class UserAccountControllerPatchTests {
     UUID testUserId;
     UserAccount testUserAccount;
 
+    String validJsonRequest;
+
     @BeforeEach
     void setUp() {
         testUserId = randomUUID();
-        testUserAccount = new UserAccount("testUser@gmail.com", "password", "testName", LocalDate.of(1999, 8, 10), new HashSet<>(List.of(new Authority("ROLE_ADMIN"))));
+
+        testUserAccount = new UserAccount(
+                "testUser@gmail.com",
+                "password",
+                "testName",
+                LocalDate.of(1999, 8, 10),
+                new HashSet<>(List.of(new Authority("ROLE_USER"))));
+
         testUserAccount.setId(testUserId);
+
+        validJsonRequest = """
+                {
+                "email": "email@email.com",
+                "password": "password3",
+                "name": "name3",
+                "dateOfBirth": "1999-08-19",
+                "authorityIds": [1],
+                "wishlistIds": null,
+                "productIds": null
+                }
+                """;
+
         when(userService.getUserById(testUserId)).thenReturn(testUserAccount);
     }
 
     @Test
-    void whenUserIsAuthenticatedAndAuthorizedAndValidRequestBody_thenReturn200() throws Exception {
+    void shouldReturn200WhenRequestBodyIsValid() throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -74,7 +97,7 @@ public class UserAccountControllerPatchTests {
     }
 
     @Test
-    void whenUserIsAuthenticatedAndAuthorizedAndInvalidRequestBody_thenReturn400() throws Exception {
+    void shouldReturn400WhenRequestBodyIsInvalid() throws Exception {
 
         String jsonRequest = """
                 {
@@ -96,23 +119,23 @@ public class UserAccountControllerPatchTests {
     }
 
     @Test
-    void whenUserIsNotAuthenticated_thenReturn401() throws Exception {
-
-        String jsonRequest = """
-                {
-                "email": "email@email.com",
-                "password": "password3",
-                "name": "name3",
-                "dateOfBirth": "1999-08-19",
-                "authorityIds": [1],
-                "wishlistIds": null,
-                "productIds": null
-                }
-                """;
+    void shouldReturn401WhenUserIsNotAuthenticated() throws Exception {
 
         this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonRequest))
+                .content(validJsonRequest))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void shouldReturn403WhenUserIsNotAuthorized() throws Exception {
+
+        testUserAccount.setId(randomUUID());
+
+        this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isForbidden());
     }
 }
