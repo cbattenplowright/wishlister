@@ -94,4 +94,25 @@ public class UserAccountControllerPatchTests {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void whenUserIsNotAuthenticated_thenReturn401() throws Exception {
+
+        String jsonRequest = """
+                {
+                "email": "email@email.com",
+                "password": "password3",
+                "name": "name3",
+                "dateOfBirth": "1999-08-19",
+                "authorityIds": [1],
+                "wishlistIds": null,
+                "productIds": null
+                }
+                """;
+
+        this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andExpect(status().isUnauthorized());
+    }
 }
