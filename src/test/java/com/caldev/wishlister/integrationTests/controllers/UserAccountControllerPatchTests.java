@@ -75,6 +75,7 @@ public class UserAccountControllerPatchTests {
                 """;
 
         when(userService.getUserById(testUserId)).thenReturn(testUserAccount);
+
     }
 
     @Test
@@ -137,5 +138,20 @@ public class UserAccountControllerPatchTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(validJsonRequest))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturn404WhenUserIsNotFound() throws Exception {
+
+        UUID invalidUserId = randomUUID();
+        when(userService.getUserById(invalidUserId)).thenReturn(null);
+
+        testUserAccount.setAuthorities(new HashSet<>(List.of(new Authority("ROLE_ADMIN"))));
+
+        this.mockMvc.perform(patch("/api/users/{requestedId}", invalidUserId)
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isNotFound());
     }
 }
