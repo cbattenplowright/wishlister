@@ -81,9 +81,6 @@ public class UserController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
         UserAccount updatedUserAccount = userService.updateUser(requestedId, userAccountDto);
-        if (updatedUserAccount == null){
-            return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
-        }
 
         return new ResponseEntity<>(
                 updatedUserAccount,

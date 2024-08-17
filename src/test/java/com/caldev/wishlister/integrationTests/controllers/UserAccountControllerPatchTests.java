@@ -4,6 +4,10 @@ import com.caldev.wishlister.controllers.UserController;
 import com.caldev.wishlister.dtos.UserAccountDto;
 import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.UserAccount;
+import com.caldev.wishlister.repositories.AuthorityRepository;
+import com.caldev.wishlister.repositories.ProductRepository;
+import com.caldev.wishlister.repositories.UserManagementRepository;
+import com.caldev.wishlister.repositories.WishlistRepository;
 import com.caldev.wishlister.security.CustomUserDetailsService;
 import com.caldev.wishlister.security.SecurityConfig;
 import com.caldev.wishlister.services.UserService;
@@ -11,6 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,20 +40,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(SecurityConfig.class)
 @WebMvcTest(controllers = UserController.class)
+@ExtendWith(MockitoExtension.class)
 public class UserAccountControllerPatchTests {
 
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     CustomUserDetailsService customUserDetailsService;
-
     @MockBean
     UserService userService;
-
     UUID testUserId;
     UserAccount testUserAccount;
-
     String validJsonRequest;
 
     @BeforeEach
@@ -73,7 +78,7 @@ public class UserAccountControllerPatchTests {
                 }
                 """;
 
-        when(userService.getUserById(testUserId)).thenReturn(testUserAccount);
+        UserAccountDto testUserAccountDto = new UserAccountDto("testUser@gmail.com", "password", "testName", LocalDate.of(1999, 8, 10), new ArrayList<>(), null, null);
 
     }
 
@@ -89,10 +94,12 @@ public class UserAccountControllerPatchTests {
 
         String jsonRequest = objectMapper.writeValueAsString(updateUser);
 
+        when(userService.updateUser(testUserId, updateUser)).thenReturn(testUserAccount);
+
         this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
                 .with(user(testUserAccount))
-                .content(jsonRequest)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
                 .andExpect(status().isOk());
     }
 
@@ -113,8 +120,8 @@ public class UserAccountControllerPatchTests {
 
         this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
                 .with(user(testUserAccount))
-                .content(jsonRequest)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
                 .andExpect(status().isBadRequest());
     }
 
