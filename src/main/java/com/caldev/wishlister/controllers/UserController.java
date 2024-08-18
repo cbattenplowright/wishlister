@@ -82,6 +82,10 @@ public class UserController {
         }
         UserAccount updatedUserAccount = userService.updateUser(requestedId, userAccountDto);
 
+        if (updatedUserAccount == null){
+            return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(
                 updatedUserAccount,
                 HttpStatus.OK);

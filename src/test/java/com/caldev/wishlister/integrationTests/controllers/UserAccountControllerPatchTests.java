@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,6 +34,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -40,11 +43,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(SecurityConfig.class)
 @WebMvcTest(controllers = UserController.class)
-@ExtendWith(MockitoExtension.class)
 public class UserAccountControllerPatchTests {
 
     @Autowired
     MockMvc mockMvc;
+
     @MockBean
     CustomUserDetailsService customUserDetailsService;
     @MockBean
@@ -90,11 +93,12 @@ public class UserAccountControllerPatchTests {
         ArrayList<Long> authorityIds = new ArrayList<>();
         authorityIds.add(2L);
 
-        UserAccountDto updateUser = new UserAccountDto("updatedTestUser@emmail.com", "updatedPassword", "updatedTestUserName", LocalDate.of(2000, 1, 1), authorityIds, null, null);
+        UserAccountDto updatedUserInfo = new UserAccountDto("updatedTestUser@email.com", "updatedPassword", "updatedTestUserName", LocalDate.of(2000, 1, 1), authorityIds, null, null);
 
-        String jsonRequest = objectMapper.writeValueAsString(updateUser);
+        String jsonRequest = objectMapper.writeValueAsString(updatedUserInfo);
 
-        when(userService.updateUser(testUserId, updateUser)).thenReturn(testUserAccount);
+        when(userService.updateUser(any(UUID.class), any(UserAccountDto.class))).thenReturn(testUserAccount);
+//        doReturn(testUserAccount).when(userService).updateUser(testUserId, updateUser);
 
         this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)
                 .with(user(testUserAccount))
