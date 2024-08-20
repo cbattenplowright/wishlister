@@ -1,6 +1,7 @@
 package com.caldev.wishlister.components;
 
 import com.caldev.wishlister.exceptions.UserNotFoundException;
+import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     private ResponseEntity<String> handleUserNotFoundException(UserNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(WishlistsNotFoundException.class)
+    private ResponseEntity<String> handleWishlistsNotFoundException(WishlistsNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

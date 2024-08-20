@@ -78,4 +78,15 @@ public class WishlistControllerIndexWishlistsTests {
 
     }
 
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldReturn404_whenAuthenticatedAndAuthorizedAndNoWishlists() throws Exception {
+
+        when(wishlistService.findAllWishlists()).thenReturn(null);
+
+        this.mockMvc.perform(get("/api/wishlists")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
 }

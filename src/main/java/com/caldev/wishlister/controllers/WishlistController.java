@@ -2,6 +2,7 @@ package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
+import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,13 @@ public class WishlistController {
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Wishlist>> getAllWishlists() {
-        List<Wishlist> wishlists = wishlistService.findAllWishlists();
-        return new ResponseEntity<>(wishlists, HttpStatus.OK);
+        List<Wishlist> wishlistList = wishlistService.findAllWishlists();
+
+        if (wishlistList == null) {
+            throw new WishlistsNotFoundException("Wishlists not found");
+        }
+
+        return new ResponseEntity<>(wishlistList, HttpStatus.OK);
     }
 
 //    @GetMapping("/{requestedId}")
