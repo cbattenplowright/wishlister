@@ -61,6 +61,14 @@ public class WishlistControllerIndexWishlistsTests {
     }
 
     @Test
+    void shouldReturn401_whenUnauthenticatedAndRequestingAllWishlists() throws Exception {
+
+        this.mockMvc.perform(get("/api/wishlists")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     @WithMockUser
     void shouldReturn403_whenUnauthorizedAndRequestingAllWishlists() throws Exception {
 
