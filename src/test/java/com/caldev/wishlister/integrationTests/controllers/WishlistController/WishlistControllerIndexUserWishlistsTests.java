@@ -83,4 +83,11 @@ public class WishlistControllerIndexUserWishlistsTests {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    void shouldReturn403_WhenUnauthorizedAndRequestingAllUserWishlists() throws Exception {
+
+        this.mockMvc.perform(get("/api/wishlists/{requestedId}", UUID.randomUUID())
+            .with(user(testUserAccount)))
+            .andExpect(status().isForbidden());
+    }
 }
