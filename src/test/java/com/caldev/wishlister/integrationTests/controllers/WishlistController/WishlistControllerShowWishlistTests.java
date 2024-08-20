@@ -6,14 +6,16 @@ import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.security.CustomUserDetailsService;
 import com.caldev.wishlister.security.SecurityConfig;
-import com.caldev.wishlister.services.UserService;
 import com.caldev.wishlister.services.WishlistService;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(SecurityConfig.class)
 @WebMvcTest(controllers = WishlistController.class)
-public class WishlistControllerIndexUserWishlistsTests {
+public class WishlistControllerShowWishlistTests {
 
     @Autowired
     MockMvc mockMvc;
@@ -44,7 +46,11 @@ public class WishlistControllerIndexUserWishlistsTests {
 
     UserAccount testUserAccount;
 
+    Wishlist testWishlist;
+
     UUID testUserId;
+
+    Long testWishlistId;
 
     @BeforeEach
     void setUp(){
@@ -58,43 +64,25 @@ public class WishlistControllerIndexUserWishlistsTests {
                 new HashSet<>(List.of(new Authority("ROLE_USER"))));
 
         testUserAccount.setId(testUserId);
+
+        testWishlistId = 1L;
+
+        testWishlist = new Wishlist("testWishlist", testUserAccount, new ArrayList<>());
+
+        testWishlist.setId(testWishlistId);
     }
+
 
     @Test
-    void shouldReturn200_WhenAuthenticatedAndAuthorizedAndRequestingAllUserWishlists() throws Exception {
+    void shouldReturn200_whenAuthenticatedAndAuthorizedAndRequestingWishlist() throws Exception {
 
-        List<Wishlist> wishlistList = new ArrayList<>(List.of(new Wishlist("wishlist1", testUserAccount, new ArrayList<>()), new Wishlist("wishlist2", testUserAccount, new ArrayList<>())));
+        when(wishlistService.findWishlistById(any(Long.class))).thenReturn(testWishlist);
 
-        when(wishlistService.findAllUserWishlists(any(UUID.class))).thenReturn(wishlistList);
-
-        this.mockMvc.perform(get("/api/wishlists/{requestedId}", testUserId)
-                .with(user(testUserAccount)))
-                .andExpect(status().isOk());
-
+        this.mockMvc.perform(get("/api/wishlists/{requestedUserId}/{requestedWishlistId}", testUserId, testWishlistId)
+                .with(user(testUserAccount))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(result -> result.getResponse().getContentAsString().contains(testWishlist.toString()));
     }
 
-    @Test
-    void shouldReturn401_WhenUnauthenticatedAndRequestingAllUserWishlists() throws Exception {
-
-        this.mockMvc.perform(get("/api/wishlists/{requestedId}", testUserId))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void shouldReturn403_WhenUnauthorizedAndRequestingAllUserWishlists() throws Exception {
-
-        this.mockMvc.perform(get("/api/wishlists/{requestedId}", UUID.randomUUID())
-            .with(user(testUserAccount)))
-            .andExpect(status().isForbidden());
-    }
-
-    @Test
-    void shouldReturn404_WhenAuthenticatedAndAuthorizedAndNoUserWishlists() throws Exception {
-
-        when(wishlistService.findAllUserWishlists(any(UUID.class))).thenReturn(null);
-
-        this.mockMvc.perform(get("/api/wishlists/{requestedId}", testUserId)
-                .with(user(testUserAccount)))
-                .andExpect(status().isNotFound());
-    }
 }
