@@ -1,4 +1,4 @@
-package com.caldev.wishlister.integrationTests.controllers;
+package com.caldev.wishlister.integrationTests.controllers.UserAccountController;
 
 import com.caldev.wishlister.controllers.UserController;
 import com.caldev.wishlister.dtos.NewUserDto;

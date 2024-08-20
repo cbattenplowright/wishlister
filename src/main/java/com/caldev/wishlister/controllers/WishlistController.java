@@ -1,16 +1,20 @@
 package com.caldev.wishlister.controllers;
 
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/wishlists")
@@ -25,4 +29,10 @@ public class WishlistController {
         List<Wishlist> wishlists = wishlistService.findAllWishlists();
         return new ResponseEntity<>(wishlists, HttpStatus.OK);
     }
+
+//    @GetMapping("/{requestedId}")
+//    @PreAuthorize("hasRole('USER') && #userAccount.id == #requestedId")
+//    public ResponseEntity<List<Wishlist>> getUserWishlists(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount) {
+//
+//    }
 }
