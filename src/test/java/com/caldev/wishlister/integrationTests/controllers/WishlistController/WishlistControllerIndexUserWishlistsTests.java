@@ -90,4 +90,14 @@ public class WishlistControllerIndexUserWishlistsTests {
             .with(user(testUserAccount)))
             .andExpect(status().isForbidden());
     }
+
+    @Test
+    void shouldReturn404_WhenAuthenticatedAndAuthorizedAndNoUserWishlists() throws Exception {
+
+        when(wishlistService.findAllUserWishlists(any(UUID.class))).thenReturn(null);
+
+        this.mockMvc.perform(get("/api/wishlists/{requestedId}", testUserId)
+                .with(user(testUserAccount)))
+                .andExpect(status().isNotFound());
+    }
 }
