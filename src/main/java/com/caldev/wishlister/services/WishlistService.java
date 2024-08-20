@@ -27,4 +27,10 @@ public class WishlistService {
         List<Wishlist> wishlistList = wishlistRepository.findAllByUserId(requestedId);
         return wishlistList;
     }
+
+    public Wishlist findWishlistById(Long requestedId) {
+        Wishlist wishlist = wishlistRepository.findById(requestedId).orElse(null);
+
+        return wishlist;
+    }
 }

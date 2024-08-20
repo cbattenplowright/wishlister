@@ -35,6 +35,10 @@ public class Wishlist {
         return wishlistId;
     }
 
+    public void setId(Long id) {
+        this.wishlistId = id;
+    }
+
     public String getWishlistName() {
         return wishlistName;
     }

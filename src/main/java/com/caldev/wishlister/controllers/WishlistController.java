@@ -52,5 +52,23 @@ public class WishlistController {
 
         return new ResponseEntity<>(wishlistList, HttpStatus.OK);
         }
+
+        @GetMapping("/{requestedUserId}/{requestedWishlistId}")
+        @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+        public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId, @PathVariable Long requestedWishlistId, @AuthenticationPrincipal UserAccount userAccount) {
+
+            if (userAccount == null) {
+                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            }
+
+            Wishlist wishlist = wishlistService.findWishlistById(requestedWishlistId);
+
+            if (wishlist == null) {
+                throw new WishlistsNotFoundException("Wishlist not found");
+            }
+
+            return new ResponseEntity<>(wishlist, HttpStatus.OK);
+
+        }
 }
 
