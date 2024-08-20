@@ -85,4 +85,12 @@ public class WishlistControllerShowWishlistTests {
                 .andExpect(result -> result.getResponse().getContentAsString().contains(testWishlist.toString()));
     }
 
+    @Test
+    void shouldReturn401_whenUnauthenticatedAndRequestingWishlist() throws Exception {
+
+        this.mockMvc.perform(get("/api/wishlists/{requestedUserId}/{requestedWishlistId}", testUserId, testWishlistId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
 }
