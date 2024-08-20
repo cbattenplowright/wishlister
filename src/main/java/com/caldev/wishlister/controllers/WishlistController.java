@@ -36,9 +36,21 @@ public class WishlistController {
         return new ResponseEntity<>(wishlistList, HttpStatus.OK);
     }
 
-//    @GetMapping("/{requestedId}")
-//    @PreAuthorize("hasRole('USER') && #userAccount.id == #requestedId")
-//    public ResponseEntity<List<Wishlist>> getUserWishlists(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount) {
-//
-//    }
+    @GetMapping("/{requestedId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
+    public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount) {
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        List<Wishlist> wishlistList = wishlistService.findAllUserWishlists(requestedId);
+
+        if (wishlistList == null) {
+            throw new WishlistsNotFoundException("Wishlists not found");
+        }
+
+        return new ResponseEntity<>(wishlistList, HttpStatus.OK);
+        }
 }
+

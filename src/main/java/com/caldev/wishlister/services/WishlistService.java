@@ -5,6 +5,7 @@ import com.caldev.wishlister.repositories.WishlistRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class WishlistService {
@@ -20,5 +21,10 @@ public class WishlistService {
 
     public List<Wishlist> findAllWishlists() {
         return wishlistRepository.findAll();
+    }
+
+    public List<Wishlist> findAllUserWishlists(UUID requestedId) {
+        List<Wishlist> wishlistList = wishlistRepository.findAllByUserId(requestedId);
+        return wishlistList;
     }
 }
