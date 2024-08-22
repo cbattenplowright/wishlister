@@ -1,9 +1,12 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.dtos.WishlistDto;
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,5 +35,18 @@ public class WishlistService {
         Wishlist wishlist = wishlistRepository.findById(requestedId).orElse(null);
 
         return wishlist;
+    }
+
+    public Wishlist createWishlist(WishlistDto wishlistDto, UserAccount userAccount) {
+
+        Wishlist newWishlist = new Wishlist(
+                wishlistDto.getWishlistName(),
+                userAccount,
+                new ArrayList<>()
+        );
+
+        Wishlist savedWishlist = wishlistRepository.save(newWishlist);
+
+        return savedWishlist;
     }
 }
