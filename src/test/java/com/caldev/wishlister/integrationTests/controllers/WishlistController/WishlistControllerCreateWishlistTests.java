@@ -102,4 +102,19 @@ public class WishlistControllerCreateWishlistTests {
                 .andExpect(status().isUnauthorized());
 
     }
+
+    @Test
+    void shouldReturn403_whenUnauthorizedAndCreatingWishlist() throws Exception {
+
+        testWishlistDto.setUserId(randomUUID());
+
+        String jsonRequest = objectMapper.writeValueAsString(testWishlistDto);
+
+        this.mockMvc.perform(post("/api/wishlists/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+                .with(user(testUserAccount)))
+                .andExpect(status().isForbidden());
+
+    }
 }
