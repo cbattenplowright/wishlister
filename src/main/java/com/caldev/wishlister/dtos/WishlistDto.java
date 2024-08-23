@@ -1,10 +1,15 @@
 package com.caldev.wishlister.dtos;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
 public class WishlistDto {
 
+    @NotNull(message = "The userId field cannot be empty")
     private UUID userId;
+
+    @NotNull(message = "The wishlistName cannot be empty")
     private String wishlistName;
 
     public WishlistDto() {
