@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -22,7 +24,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Import(SecurityConfig.class)
 @WebMvcTest(controllers = WishlistController.class)
@@ -60,11 +64,14 @@ public class WishlistControllerCreateWishlistTests {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        WishlistDto newWishlistDto = new WishlistDto(testUserId, "newWishlistName");
+        WishlistDto newWishlistDto = new WishlistDto( testUserId, "testWishlist");
 
-        String jsonRequest = objectMapper.writeValueAsString();
+        String jsonRequest = objectMapper.writeValueAsString(newWishlistDto);
 
         this.mockMvc.perform(post("/api/wishlists/new")
-                .cont)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+                .with(user(testUserAccount)))
+                .andExpect(status().isCreated());
     }
 }
