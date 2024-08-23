@@ -74,4 +74,16 @@ public class WishlistControllerCreateWishlistTests {
                 .with(user(testUserAccount)))
                 .andExpect(status().isCreated());
     }
+
+    @Test
+    void shouldReturn400_whenAuthenticatedAndAuthorizedAndMissingRequiredFields() throws Exception {
+
+        String jsonRequest = new ObjectMapper().writeValueAsString(new WishlistDto());
+
+        this.mockMvc.perform(post("/api/wishlists/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+                .with(user(testUserAccount)))
+                .andExpect(status().isBadRequest());
+    }
 }
