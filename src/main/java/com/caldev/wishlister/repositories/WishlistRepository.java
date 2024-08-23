@@ -1,5 +1,6 @@
 package com.caldev.wishlister.repositories;
 
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -12,4 +13,5 @@ import java.util.UUID;
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
 
     List<Wishlist> findAllByUserId(UUID userId);
+    boolean findByWishlistNameAndUserAccount(String wishlistName, UserAccount userAccount);
 }

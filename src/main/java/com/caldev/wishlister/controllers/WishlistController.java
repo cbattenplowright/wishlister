@@ -82,7 +82,7 @@ public class WishlistController {
 
             boolean wishlistExists = wishlistService.existsByWishlistNameAndUserAccount(newWishlistDto.getWishlistName(), userAccount);
 
-            if (wishlistExists) {
+            if (!wishlistExists) {
                 return new ResponseEntity<>("Wishlist already exists", HttpStatus.CONFLICT);
             }
 

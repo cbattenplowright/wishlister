@@ -49,4 +49,9 @@ public class WishlistService {
 
         return savedWishlist;
     }
+
+    public boolean existsByWishlistNameAndUserAccount(String wishlistName, UserAccount userAccount) {
+
+        return wishlistRepository.findByWishlistNameAndUserAccount(wishlistName, userAccount);
+    }
 }

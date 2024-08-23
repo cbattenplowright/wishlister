@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -115,6 +117,19 @@ public class WishlistControllerCreateWishlistTests {
                 .content(jsonRequest)
                 .with(user(testUserAccount)))
                 .andExpect(status().isForbidden());
+    }
 
+    @Test
+    void shouldReturn409_whenAuthenticatedAndAuthorizedAndWishlistAlreadyExists() throws Exception {
+
+        when(wishlistService.existsByWishlistNameAndUserAccount(any(String.class), any(UserAccount.class))).thenReturn(false);
+
+        String jsonRequest = objectMapper.writeValueAsString(testWishlistDto);
+
+        this.mockMvc.perform(post("/api/wishlists/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+                .with(user(testUserAccount)))
+                .andExpect(status().isConflict());
     }
 }
