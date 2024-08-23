@@ -41,9 +41,13 @@ public class WishlistControllerCreateWishlistTests {
     @MockBean
     WishlistService wishlistService;
 
+    ObjectMapper objectMapper;
+
     UserAccount testUserAccount;
 
     UUID testUserId;
+
+    WishlistDto testWishlistDto;
 
     @BeforeEach
     void setUp(){
@@ -57,16 +61,16 @@ public class WishlistControllerCreateWishlistTests {
                 new HashSet<>(List.of(new Authority("ROLE_USER"))));
 
         testUserAccount.setId(testUserId);
+
+        testWishlistDto = new WishlistDto( testUserId, "testWishlist");
+
+        objectMapper = new ObjectMapper();
     }
 
     @Test
     void shouldReturn201_whenAuthenticatedAndAuthorizedAndCreatingWishlist() throws Exception {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        WishlistDto newWishlistDto = new WishlistDto( testUserId, "testWishlist");
-
-        String jsonRequest = objectMapper.writeValueAsString(newWishlistDto);
+        String jsonRequest = objectMapper.writeValueAsString(testWishlistDto);
 
         this.mockMvc.perform(post("/api/wishlists/new")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,12 +82,24 @@ public class WishlistControllerCreateWishlistTests {
     @Test
     void shouldReturn400_whenAuthenticatedAndAuthorizedAndMissingRequiredFields() throws Exception {
 
-        String jsonRequest = new ObjectMapper().writeValueAsString(new WishlistDto());
+        String jsonRequest = objectMapper.writeValueAsString(new WishlistDto());
 
         this.mockMvc.perform(post("/api/wishlists/new")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest)
                 .with(user(testUserAccount)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturn401_whenUnauthenticatedAndCreatingWishlist() throws Exception {
+
+        String jsonRequest = objectMapper.writeValueAsString(testWishlistDto);
+
+        this.mockMvc.perform(post("/api/wishlists/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andExpect(status().isUnauthorized());
+
     }
 }
