@@ -76,6 +76,16 @@ public class WishlistController {
         @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistDto.userId")
         public ResponseEntity<Object> createWishlist(@Valid @RequestBody WishlistDto newWishlistDto, @AuthenticationPrincipal UserAccount userAccount) {
 
+            if (userAccount == null) {
+                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            }
+
+            boolean wishlistExists = wishlistService.existsByWishlistNameAndUserAccount(newWishlistDto.getWishlistName(), userAccount);
+
+            if (wishlistExists) {
+                return new ResponseEntity<>("Wishlist already exists", HttpStatus.CONFLICT);
+            }
+
             Wishlist wishlist = wishlistService.createWishlist(newWishlistDto, userAccount);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
