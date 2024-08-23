@@ -122,7 +122,7 @@ public class WishlistControllerCreateWishlistTests {
     @Test
     void shouldReturn409_whenAuthenticatedAndAuthorizedAndWishlistAlreadyExists() throws Exception {
 
-        when(wishlistService.existsByWishlistNameAndUserAccount(any(String.class), any(UserAccount.class))).thenReturn(false);
+        when(wishlistService.existsByWishlistNameAndUserAccount(any(String.class), any(UserAccount.class))).thenReturn(true);
 
         String jsonRequest = objectMapper.writeValueAsString(testWishlistDto);
 
