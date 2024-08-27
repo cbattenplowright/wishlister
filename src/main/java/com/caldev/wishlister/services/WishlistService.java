@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,12 +32,6 @@ public class WishlistService {
         return wishlistList;
     }
 
-    public Wishlist findWishlistById(Long requestedId) {
-        Wishlist wishlist = wishlistRepository.findById(requestedId).orElse(null);
-
-        return wishlist;
-    }
-
     public Wishlist createWishlist(WishlistDto wishlistDto, UserAccount userAccount) {
 
         Wishlist newWishlist = new Wishlist(
@@ -53,5 +48,13 @@ public class WishlistService {
     public boolean existsByWishlistNameAndUserAccount(String wishlistName, UserAccount userAccount) {
 
         return wishlistRepository.findByWishlistNameAndUserAccount(wishlistName, userAccount);
+    }
+
+    public Optional<Wishlist> findWishlistById(Long requestedWishlistId) {
+        return wishlistRepository.findById(requestedWishlistId);
+    }
+
+    public void deleteWishlist(Long requestedWishlistId) {
+        wishlistRepository.deleteById(requestedWishlistId);
     }
 }

@@ -6,7 +6,6 @@ import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.services.WishlistService;
 import jakarta.validation.Valid;
-import jdk.jshell.Snippet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -62,9 +62,9 @@ public class WishlistController {
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             }
 
-            Wishlist wishlist = wishlistService.findWishlistById(requestedWishlistId);
+            Optional<Wishlist> wishlist = wishlistService.findWishlistById(requestedWishlistId);
 
-            if (wishlist == null) {
+            if (wishlist.isEmpty()) {
                 throw new WishlistsNotFoundException("Wishlist not found");
             }
 
@@ -89,8 +89,26 @@ public class WishlistController {
             Wishlist wishlist = wishlistService.createWishlist(newWishlistDto, userAccount);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
-
         }
+
+        @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
+        @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+        public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId, @PathVariable int requestedWishlistId, @AuthenticationPrincipal UserAccount userAccount) {
+
+            if (userAccount == null) {
+                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<Wishlist> existingWishlist = wishlistService.findWishlistById((long)requestedWishlistId);
+
+            if (existingWishlist.isPresent()) {
+                wishlistService.deleteWishlist((long)requestedWishlistId);
+                return new ResponseEntity<>(requestedWishlistId, HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
 }
 
 
