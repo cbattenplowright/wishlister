@@ -19,10 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static java.util.UUID.randomUUID;
 import static org.mockito.ArgumentMatchers.any;
@@ -76,7 +73,7 @@ public class WishlistControllerShowWishlistTests {
     @Test
     void shouldReturn200_whenAuthenticatedAndAuthorizedAndRequestingWishlist() throws Exception {
 
-        when(wishlistService.findWishlistById(any(Long.class))).thenReturn(testWishlist);
+        when(wishlistService.findWishlistById(any(Long.class))).thenReturn(Optional.ofNullable(testWishlist));
 
         this.mockMvc.perform(get("/api/wishlists/{requestedUserId}/{requestedWishlistId}", testUserId, testWishlistId)
                 .with(user(testUserAccount))

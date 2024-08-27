@@ -5,7 +5,6 @@ import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,7 +41,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(WishlistsNotFoundException.class)
-    private ResponseEntity<String> handleWishlistsNotFoundException(WishlistsNotFoundException exception) {
+    private ResponseEntity<String> handleWishlistNotFoundException(WishlistsNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
