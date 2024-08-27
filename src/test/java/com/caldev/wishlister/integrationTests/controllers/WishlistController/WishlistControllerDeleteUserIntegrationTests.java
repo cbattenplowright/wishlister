@@ -95,4 +95,14 @@ public class WishlistControllerDeleteUserIntegrationTests {
                 .andExpect(status().isForbidden());
 
     }
+
+    @Test
+    void shouldReturn404_whenWishlistNotFound() throws Exception{
+
+        when(wishlistService.findWishlistById(any(Long.class))).thenReturn(Optional.empty());
+
+        this.mockMvc.perform(delete("/api/wishlists" + testUserId + "/" + testWishlistId)
+                .with(user(testUserAccount)))
+                .andExpect(status().isNotFound());
+    }
 }
