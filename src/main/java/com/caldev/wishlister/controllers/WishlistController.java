@@ -115,13 +115,7 @@ public class WishlistController {
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             }
 
-            Optional<Wishlist> wishlistToUpdate = wishlistService.findWishlistById((long)requestedWishlistId);
-
-            if (wishlistToUpdate.isEmpty()) {
-                throw new WishlistsNotFoundException("Wishlist not found");
-            }
-
-            Wishlist updatedWishlist = wishlistService.updateWishlist((long) requestedWishlistId, wishlistDto);
+            Wishlist updatedWishlist = wishlistService.updateWishlist((long) requestedWishlistId, wishlistDto, userAccount);
 
             return new ResponseEntity<>(updatedWishlist, HttpStatus.OK);
 

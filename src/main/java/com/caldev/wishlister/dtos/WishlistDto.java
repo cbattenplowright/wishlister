@@ -2,6 +2,7 @@ package com.caldev.wishlister.dtos;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class WishlistDto {

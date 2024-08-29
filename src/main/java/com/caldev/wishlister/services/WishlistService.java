@@ -3,6 +3,7 @@ package com.caldev.wishlister.services;
 import com.caldev.wishlister.dtos.WishlistDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
+import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,38 @@ public class WishlistService {
 
     public Optional<Wishlist> findWishlistById(Long requestedWishlistId) {
         return wishlistRepository.findById(requestedWishlistId);
+    }
+
+    public Wishlist updateWishlist(Long requestedWishlistId, WishlistDto wishlistDto, UserAccount userAccount) {
+
+/*
+
+    PseudoCode for method
+
+    find wishlist by id
+        if wishlist not found, throw exception
+    else
+        if wishlist found, update wishlist
+            if userId in wishlistDto is not null, update wishlist userId
+            if name in wishlistDto is not null, update wishlist name
+
+*/
+
+        Optional<Wishlist> wishlistToUpdate = findWishlistById(requestedWishlistId);
+
+        if (wishlistToUpdate.isEmpty()) {
+            throw new WishlistsNotFoundException("Wishlist not found");
+        }
+
+        if (wishlistDto.getUserId() != null && wishlistDto.getUserId() == userAccount.getId()) {
+            wishlistToUpdate.get().setUser(userAccount);
+        }
+
+        if (wishlistDto.getWishlistName() != null) {
+            wishlistToUpdate.get().setWishlistName(wishlistDto.getWishlistName());
+        }
+
+        return wishlistRepository.save(wishlistToUpdate.get());
     }
 
     public void deleteWishlist(Long requestedWishlistId) {
