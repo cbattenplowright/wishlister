@@ -25,6 +25,7 @@ public class WishlistController {
     @Autowired
     private WishlistService wishlistService;
 
+    // INDEX Wishlists
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Wishlist>> getAllWishlists() {
@@ -37,6 +38,7 @@ public class WishlistController {
         return new ResponseEntity<>(wishlistList, HttpStatus.OK);
     }
 
+    // INDEX User Wishlists
     @GetMapping("/{requestedId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
     public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount) {
@@ -54,6 +56,8 @@ public class WishlistController {
         return new ResponseEntity<>(wishlistList, HttpStatus.OK);
         }
 
+
+        // SHOW Wishlist
         @GetMapping("/{requestedUserId}/{requestedWishlistId}")
         @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
         public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId, @PathVariable Long requestedWishlistId, @AuthenticationPrincipal UserAccount userAccount) {
@@ -72,6 +76,8 @@ public class WishlistController {
 
         }
 
+
+        // CREATE Wishlist
         @PostMapping("/new")
         @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistDto.userId")
         public ResponseEntity<Object> createWishlist(@Valid @RequestBody WishlistDto newWishlistDto, @AuthenticationPrincipal UserAccount userAccount) {
@@ -91,6 +97,37 @@ public class WishlistController {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
+        @PatchMapping("/{requestedUserId}/{requestedWishlistId}")
+        @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+        public ResponseEntity<Object> updateWishlist(@PathVariable UUID requestedUserId, @PathVariable int requestedWishlistId, @Valid @RequestBody WishlistDto wishlistDto, @AuthenticationPrincipal UserAccount userAccount) {
+
+/*
+    check if user is authorized
+        if not, then return unauthorized
+
+    find wishlist
+        if not found, then return not found
+
+    update wishlist
+ */
+
+            if (userAccount == null) {
+                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            }
+
+            Optional<Wishlist> wishlistToUpdate = wishlistService.findWishlistById((long)requestedWishlistId);
+
+            if (wishlistToUpdate.isEmpty()) {
+                throw new WishlistsNotFoundException("Wishlist not found");
+            }
+
+            Wishlist updatedWishlist = wishlistService.updateWishlist((long) requestedWishlistId, wishlistDto);
+
+            return new ResponseEntity<>(updatedWishlist, HttpStatus.OK);
+
+        }
+
+        // DELETE Wishlist
         @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
         @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
         public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId, @PathVariable int requestedWishlistId, @AuthenticationPrincipal UserAccount userAccount) {
