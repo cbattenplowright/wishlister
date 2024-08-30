@@ -5,6 +5,7 @@ import com.caldev.wishlister.dtos.WishlistDto;
 import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
+import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.security.CustomUserDetailsService;
 import com.caldev.wishlister.security.SecurityConfig;
 import com.caldev.wishlister.services.WishlistService;
@@ -116,5 +117,17 @@ public class WishlistControllerPatchWishlistTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(validJsonRequest))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturn404_whenWishlistNotFound() throws Exception {
+
+        when(wishlistService.updateWishlist(any(Long.class), any(WishlistDto.class), any(UserAccount.class))).thenThrow(new WishlistsNotFoundException("Wishlist not found"));
+
+        this.mockMvc.perform(patch("/api/wishlists/" + testUserId + "/" + testWishlistId)
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isNotFound());
     }
 }
