@@ -1,5 +1,6 @@
 package com.caldev.wishlister.controllers;
 
+import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.exceptions.ProductNotFoundException;
@@ -42,27 +43,27 @@ public class ProductController {
 
     }
 
-////  CREATE Product
-//
-//    @PostMapping("/new")
-//    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newProductDto.userId")
-//    public ResponseEntity<Object> createProduct(@RequestBody Product newProductDto,
-//                                                @AuthenticationPrincipal UserAccount userAccount) {
-//
-//        if (userAccount == null) {
-//            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-//        }
-//
-//        boolean productExists = productService.existsByProductNameAndUserAccount(newProductDto.getProductName(), userAccount);
-//
-//        if (productExists) {
-//            return new ResponseEntity<>("Product already exists", HttpStatus.CONFLICT);
-//        }
-//
-//        Product newProduct = productService.createProduct(newProductDto, userAccount);
-//
-//        return new ResponseEntity<>(newProductDto, HttpStatus.CREATED);
-//
-//    }
+//  CREATE Product
+
+    @PostMapping("/new")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newProductDto.userId")
+    public ResponseEntity<Object> createProduct(@RequestBody ProductDto newProductDto,
+                                                @AuthenticationPrincipal UserAccount userAccount) {
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        boolean productExists = productService.existsByProductNameAndUserAccount(newProductDto.getProductName(), userAccount);
+
+        if (productExists) {
+            return new ResponseEntity<>("Product already exists", HttpStatus.CONFLICT);
+        }
+
+        Product newProduct = productService.createProduct(newProductDto, userAccount);
+
+        return new ResponseEntity<>(newProductDto, HttpStatus.CREATED);
+
+    }
 
 }

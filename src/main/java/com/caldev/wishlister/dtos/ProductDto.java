@@ -4,6 +4,7 @@ import com.caldev.wishlister.entities.PrioritySelection;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class ProductDto {
@@ -17,10 +18,12 @@ public class ProductDto {
     private String description;
     private LocalDate dateAdded;
 
+    private List<Long> wishlistProductIds;
+
     public ProductDto() {
     }
 
-    public ProductDto(String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded) {
+    public ProductDto(String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded, List<Long> wishlistProductIds) {
         this.productName = productName;
         this.userId = userId;
         this.price = price;
@@ -29,6 +32,7 @@ public class ProductDto {
         this.prioritySelection = prioritySelection;
         this.description = description;
         this.dateAdded = dateAdded;
+        this.wishlistProductIds = wishlistProductIds;
     }
 
     public String getProductName() {
@@ -95,6 +99,14 @@ public class ProductDto {
         this.dateAdded = dateAdded;
     }
 
+    public List<Long> getWishlistProductIds() {
+        return wishlistProductIds;
+    }
+
+    public void setWishlistProductIds(List<Long> wishlistProductIds) {
+        this.wishlistProductIds = wishlistProductIds;
+    }
+
     @Override
     public String toString() {
         return "ProductDto{" +
@@ -106,6 +118,7 @@ public class ProductDto {
                 ", prioritySelection=" + prioritySelection +
                 ", description='" + description + '\'' +
                 ", dateAdded=" + dateAdded +
+                ", wishlistProductIds=" + wishlistProductIds +
                 '}';
     }
 }
