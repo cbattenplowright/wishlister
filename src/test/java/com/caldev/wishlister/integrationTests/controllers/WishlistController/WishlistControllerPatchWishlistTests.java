@@ -47,6 +47,8 @@ public class WishlistControllerPatchWishlistTests {
 
     UserAccount testUserAccount;
 
+    int testWishlistId;
+
     Wishlist testWishlist;
 
     WishlistDto testWishlistDto;
@@ -71,13 +73,19 @@ public class WishlistControllerPatchWishlistTests {
         testWishlist = new Wishlist(
                 "testWishlist",
                 testUserAccount,
-                new ArrayList<>()
+                null
         );
 
         testWishlistDto = new WishlistDto(
                 testUserId,
                 "testWishlist"
         );
+
+        validJsonRequest =
+                "{" +
+                "\"userId\": \"" + testUserId + "\"," +
+                "\"wishlistName\": \"testWishlist\"" +
+                "}";
     }
 
     @Test
@@ -85,7 +93,7 @@ public class WishlistControllerPatchWishlistTests {
 
         when(wishlistService.updateWishlist(any(Long.class), any(WishlistDto.class), any(UserAccount.class))).thenReturn(testWishlist);
 
-        this.mockMvc.perform(patch("/api/wishlists/{requestedId}", testWishlist.getId())
+        this.mockMvc.perform(patch("/api/wishlists/" + testUserId + "/" + testWishlistId)
                 .with(user(testUserAccount))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(validJsonRequest))

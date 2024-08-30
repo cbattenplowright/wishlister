@@ -41,7 +41,8 @@ public class WishlistController {
     // INDEX User Wishlists
     @GetMapping("/{requestedId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
-    public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount) {
+    public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedId,
+                                                   @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -60,7 +61,9 @@ public class WishlistController {
         // SHOW Wishlist
         @GetMapping("/{requestedUserId}/{requestedWishlistId}")
         @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-        public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId, @PathVariable Long requestedWishlistId, @AuthenticationPrincipal UserAccount userAccount) {
+        public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId,
+                                                      @PathVariable Long requestedWishlistId,
+                                                      @AuthenticationPrincipal UserAccount userAccount) {
 
             if (userAccount == null) {
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -80,7 +83,8 @@ public class WishlistController {
         // CREATE Wishlist
         @PostMapping("/new")
         @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistDto.userId")
-        public ResponseEntity<Object> createWishlist(@Valid @RequestBody WishlistDto newWishlistDto, @AuthenticationPrincipal UserAccount userAccount) {
+        public ResponseEntity<Object> createWishlist(@Valid @RequestBody WishlistDto newWishlistDto,
+                                                     @AuthenticationPrincipal UserAccount userAccount) {
 
             if (userAccount == null) {
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -99,7 +103,11 @@ public class WishlistController {
 
         @PatchMapping("/{requestedUserId}/{requestedWishlistId}")
         @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-        public ResponseEntity<Object> updateWishlist(@PathVariable UUID requestedUserId, @PathVariable int requestedWishlistId, @Valid @RequestBody WishlistDto wishlistDto, @AuthenticationPrincipal UserAccount userAccount) {
+        public ResponseEntity<Object> updateWishlist(
+                @PathVariable UUID requestedUserId,
+                @PathVariable int requestedWishlistId,
+                @Valid @RequestBody WishlistDto wishlistDto,
+                @AuthenticationPrincipal UserAccount userAccount) {
 
 /*
     check if user is authorized
@@ -124,7 +132,9 @@ public class WishlistController {
         // DELETE Wishlist
         @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
         @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-        public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId, @PathVariable int requestedWishlistId, @AuthenticationPrincipal UserAccount userAccount) {
+        public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId,
+                                                     @PathVariable int requestedWishlistId,
+                                                     @AuthenticationPrincipal UserAccount userAccount) {
 
             if (userAccount == null) {
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
