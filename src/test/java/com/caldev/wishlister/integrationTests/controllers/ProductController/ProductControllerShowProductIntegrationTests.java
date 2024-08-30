@@ -90,4 +90,11 @@ public class ProductControllerShowProductIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(result -> result.getResponse().getContentAsString().contains(testProduct.toString()));
     }
+
+    @Test
+    void shouldReturn401_whenUnauthenticatedAndRequestingProduct() throws Exception {
+        this.mockMvc.perform(get("/api/products/{requestedUserId}/{requestedProductId}", testUserId, testProductId)
+                .contentType("application/json"))
+                .andExpect(status().isUnauthorized());
+    }
 }
