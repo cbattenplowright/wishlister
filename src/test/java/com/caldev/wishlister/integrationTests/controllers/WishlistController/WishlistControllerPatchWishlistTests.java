@@ -99,4 +99,12 @@ public class WishlistControllerPatchWishlistTests {
                 .content(validJsonRequest))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void shouldReturn401_whenUnauthenticated() throws Exception {
+        this.mockMvc.perform(patch("/api/wishlists/" + testUserId + "/" + testWishlistId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isUnauthorized());
+    }
 }
