@@ -117,5 +117,14 @@ public class ProductControllerCreateProductIntegrationTests {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void shouldReturn401_whenUnauthenticatedAndCreatingProduct() throws Exception {
+
+        this.mockMvc.perform(post("/api/products/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isUnauthorized());
+    }
+
 
 }
