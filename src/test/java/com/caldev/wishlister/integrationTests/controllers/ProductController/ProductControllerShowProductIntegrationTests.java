@@ -5,6 +5,7 @@ import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.PrioritySelection;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
+import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.security.CustomUserDetailsService;
 import com.caldev.wishlister.security.SecurityConfig;
 import com.caldev.wishlister.services.ProductService;
@@ -104,5 +105,15 @@ public class ProductControllerShowProductIntegrationTests {
                 .with(user(testUserAccount))
                 .contentType("application/json"))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturn404_whenProductNotFound() throws Exception {
+        when(productService.findProductById(testProductId)).thenThrow(new ProductNotFoundException("Product not found"));
+
+        this.mockMvc.perform(get("/api/products/{requestedUserId}/{requestedProductId}", testUserId, testProductId)
+                .with(user(testUserAccount))
+                .contentType("application/json"))
+                .andExpect(status().isNotFound());
     }
 }
