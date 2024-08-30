@@ -5,9 +5,11 @@ import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +48,8 @@ public class ProductController {
 //  CREATE Product
 
     @PostMapping("/new")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newProductDto.userId")
-    public ResponseEntity<Object> createProduct(@RequestBody ProductDto newProductDto,
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newProductDto.userId")
+    public ResponseEntity<Object> createProduct(@Valid @RequestBody ProductDto newProductDto,
                                                 @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {

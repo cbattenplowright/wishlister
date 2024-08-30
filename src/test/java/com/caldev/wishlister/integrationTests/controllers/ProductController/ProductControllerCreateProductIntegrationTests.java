@@ -105,5 +105,17 @@ public class ProductControllerCreateProductIntegrationTests {
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    void shouldReturn400_whenAuthenticatedAndAuthorizedAndMissingRequiredFields() throws Exception {
+
+        String jsonRequest = objectMapper.writeValueAsString(new ProductDto(null, testUserId, 159, null, null, null, null, null, null));
+
+        this.mockMvc.perform(post("/api/products/new")
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andExpect(status().isBadRequest());
+    }
+
 
 }

@@ -8,6 +8,7 @@ import com.caldev.wishlister.repositories.ProductRepository;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class ProductService {
                 newProductDto.getImageUrl(),
                 newProductDto.getDescription(),
                 newProductDto.getPrioritySelection(),
-                newProductDto.getDateAdded(),
+                LocalDate.now(),
                 wishlistProducts,
                 userAccount
         );

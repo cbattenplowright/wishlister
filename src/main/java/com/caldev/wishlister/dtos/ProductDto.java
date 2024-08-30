@@ -1,6 +1,7 @@
 package com.caldev.wishlister.dtos;
 
 import com.caldev.wishlister.entities.PrioritySelection;
+import jakarta.validation.constraints.NotNull;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -9,7 +10,9 @@ import java.util.UUID;
 
 public class ProductDto {
 
+    @NotNull(message = "The productName field cannot be empty")
     private String productName;
+    @NotNull(message = "The userId field cannot be empty")
     private UUID userId;
     private int price;
     private URL url;
@@ -17,7 +20,6 @@ public class ProductDto {
     private PrioritySelection prioritySelection;
     private String description;
     private LocalDate dateAdded;
-
     private List<Long> wishlistProductIds;
 
     public ProductDto() {
