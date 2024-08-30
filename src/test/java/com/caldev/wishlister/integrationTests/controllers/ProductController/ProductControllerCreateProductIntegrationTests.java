@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -138,6 +140,21 @@ public class ProductControllerCreateProductIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    void shouldReturn409_whenAuthenticatedAndAuthorizedAndProductAlreadyExists() throws Exception {
+
+        when(productService.existsByProductNameAndUserAccount(any(String.class), any(UserAccount.class))).thenReturn(true);
+
+        String jsonRequest = objectMapper.writeValueAsString(testProductDto);
+
+        this.mockMvc.perform(post("/api/products/new")
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isConflict());
     }
 
 
