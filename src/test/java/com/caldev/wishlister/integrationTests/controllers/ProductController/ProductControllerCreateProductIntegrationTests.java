@@ -126,5 +126,19 @@ public class ProductControllerCreateProductIntegrationTests {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    void shouldReturn403_whenUnauthorizedAndCreatingProduct() throws Exception {
+
+        testProductDto.setUserId(randomUUID());
+
+        String jsonRequest = objectMapper.writeValueAsString(testProductDto);
+
+        this.mockMvc.perform(post("/api/products/new")
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andExpect(status().isForbidden());
+    }
+
 
 }
