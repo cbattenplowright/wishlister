@@ -97,4 +97,12 @@ public class ProductControllerShowProductIntegrationTests {
                 .contentType("application/json"))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    void shouldReturn403_whenUnauthorizedAndRequestingProduct() throws Exception {
+        this.mockMvc.perform(get("/api/products/{requestedUserId}/{requestedProductId}", randomUUID(), testProductId)
+                .with(user(testUserAccount))
+                .contentType("application/json"))
+                .andExpect(status().isForbidden());
+    }
 }
