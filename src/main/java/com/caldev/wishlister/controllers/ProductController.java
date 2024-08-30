@@ -42,27 +42,27 @@ public class ProductController {
 
     }
 
-//  CREATE Product
-
-    @PostMapping("/new")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newProductDto.userId")
-    public ResponseEntity<Object> createProduct(@RequestBody Product newProductDto,
-                                                @AuthenticationPrincipal UserAccount userAccount) {
-
-        if (userAccount == null) {
-            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-        }
-
-        boolean productExists = productService.existsByProductNameAndUserAccount(newProductDto.getProductName(), userAccount);
-
-        if (productExists) {
-            return new ResponseEntity<>("Product already exists", HttpStatus.CONFLICT);
-        }
-
-        Product newProduct = productService.createProduct(newProductDto, userAccount);
-
-        return new ResponseEntity<>(newProductDto, HttpStatus.CREATED);
-
-    }
+////  CREATE Product
+//
+//    @PostMapping("/new")
+//    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newProductDto.userId")
+//    public ResponseEntity<Object> createProduct(@RequestBody Product newProductDto,
+//                                                @AuthenticationPrincipal UserAccount userAccount) {
+//
+//        if (userAccount == null) {
+//            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+//        }
+//
+//        boolean productExists = productService.existsByProductNameAndUserAccount(newProductDto.getProductName(), userAccount);
+//
+//        if (productExists) {
+//            return new ResponseEntity<>("Product already exists", HttpStatus.CONFLICT);
+//        }
+//
+//        Product newProduct = productService.createProduct(newProductDto, userAccount);
+//
+//        return new ResponseEntity<>(newProductDto, HttpStatus.CREATED);
+//
+//    }
 
 }

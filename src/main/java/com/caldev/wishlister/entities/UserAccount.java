@@ -16,8 +16,9 @@ import java.util.UUID;
 public class UserAccount implements UserDetails {
 
     @Id
+    @Column(name = "user_account_id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID userAccountId;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
@@ -56,11 +57,11 @@ public class UserAccount implements UserDetails {
 
 //    Getters and Setters
     public UUID getId() {
-        return id;
+        return userAccountId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setId(UUID userAccountId) {
+        this.userAccountId = userAccountId;
     }
 
     public String getUsername() {
@@ -122,7 +123,7 @@ public class UserAccount implements UserDetails {
     @Override
     public String toString() {
         return "UserAccount{" +
-                "id=" + id +
+                "userAccountId=" + userAccountId +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +

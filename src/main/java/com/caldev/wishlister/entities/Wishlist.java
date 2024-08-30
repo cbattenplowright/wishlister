@@ -15,7 +15,7 @@ public class Wishlist {
     @Column(nullable = false)
     private String wishlistName;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_account_id")
     @JsonIgnoreProperties({"wishlists"})
     private UserAccount userAccount;
     @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)

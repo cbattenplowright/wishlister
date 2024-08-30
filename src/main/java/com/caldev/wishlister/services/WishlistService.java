@@ -29,7 +29,7 @@ public class WishlistService {
     }
 
     public List<Wishlist> findAllUserWishlists(UUID requestedId) {
-        List<Wishlist> wishlistList = wishlistRepository.findAllByUserId(requestedId);
+        List<Wishlist> wishlistList = wishlistRepository.findAllByUserAccount_Id(requestedId);
         return wishlistList;
     }
 
