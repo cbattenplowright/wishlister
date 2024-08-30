@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -42,6 +39,29 @@ public class ProductController {
         }
 
         return new ResponseEntity<>(product, HttpStatus.OK);
+
+    }
+
+//  CREATE Product
+
+    @PostMapping("/new")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newProductDto.userId")
+    public ResponseEntity<Object> createProduct(@RequestBody Product newProductDto,
+                                                @AuthenticationPrincipal UserAccount userAccount) {
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        boolean productExists = productService.existsByProductNameAndUserAccount(newProductDto.getProductName(), userAccount);
+
+        if (productExists) {
+            return new ResponseEntity<>("Product already exists", HttpStatus.CONFLICT);
+        }
+
+        Product newProduct = productService.createProduct(newProductDto, userAccount);
+
+        return new ResponseEntity<>(newProductDto, HttpStatus.CREATED);
 
     }
 

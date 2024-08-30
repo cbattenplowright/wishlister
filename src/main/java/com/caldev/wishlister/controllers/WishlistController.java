@@ -96,7 +96,7 @@ public class WishlistController {
                 return new ResponseEntity<>("Wishlist already exists", HttpStatus.CONFLICT);
             }
 
-            Wishlist wishlist = wishlistService.createWishlist(newWishlistDto, userAccount);
+            Wishlist newWishlist = wishlistService.createWishlist(newWishlistDto, userAccount);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
