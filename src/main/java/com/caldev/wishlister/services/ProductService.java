@@ -1,6 +1,7 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.entities.Product;
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +19,9 @@ public class ProductService {
     public Optional<Product> findProductById(Long requestedProductId) {
 
         return productRepository.findById(requestedProductId);
+    }
+
+    public boolean existsByProductNameAndUserAccount(String productName, UserAccount userAccount) {
+        return productRepository.existsByProductNameAndUserAccount(productName, userAccount);
     }
 }
