@@ -89,4 +89,11 @@ public class ProductControllerDeleteProductIntegrationTests {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void shouldReturn401_whenUnauthenticated() throws Exception {
+
+        this.mockMvc.perform(delete("/api/products/{requestedUserId}/{requestedProductId}", testUserId, testProductId))
+                .andExpect(status().isUnauthorized());
+    }
+
 }

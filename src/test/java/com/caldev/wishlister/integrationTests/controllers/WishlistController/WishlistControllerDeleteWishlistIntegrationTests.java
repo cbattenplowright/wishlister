@@ -80,7 +80,6 @@ public class WishlistControllerDeleteWishlistIntegrationTests {
     @Test
     void shouldReturn401_whenUnauthenticated() throws Exception{
 
-
         this.mockMvc.perform(delete("/api/wishlists/" + testUserId + "/" + testWishlistId))
                 .andExpect(status().isUnauthorized());
     }
