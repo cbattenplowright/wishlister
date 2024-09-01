@@ -89,7 +89,7 @@ public class ProductController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        Product updatedProduct = productService.updateProduct(updatedProductDto, requestedProductId, userAccount);
+        Product updatedProduct = productService.updateProduct(requestedProductId, updatedProductDto, userAccount);
 
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }

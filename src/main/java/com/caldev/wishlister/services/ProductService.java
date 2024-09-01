@@ -4,6 +4,7 @@ import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.WishlistProduct;
+import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.repositories.ProductRepository;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -64,6 +66,61 @@ public class ProductService {
         );
 
         return productRepository.save(newProduct);
+    }
+
+    public Product updateProduct(Long requestedProductId,
+                                 ProductDto updatedProductDto,
+                                 UserAccount userAccount) {
+
+        Optional<Product> productToUpdate = findProductById(requestedProductId);
+
+        if (productToUpdate.isEmpty()) {
+            throw new ProductNotFoundException("Product not found");
+        }
+
+
+        if (updatedProductDto.getUserId() != null && userAccount.getId() == updatedProductDto.getUserId()) {
+            productToUpdate.get().setUser(userAccount);
+        }
+
+        if (updatedProductDto.getProductName() != null) {
+            productToUpdate.get().setProductName(updatedProductDto.getProductName());
+        }
+
+        if (Objects.nonNull(updatedProductDto.getPrice())) {
+            productToUpdate.get().setPrice(updatedProductDto.getPrice());
+        }
+
+        if (updatedProductDto.getUrl() != null) {
+            productToUpdate.get().setUrl(updatedProductDto.getUrl());
+        }
+
+        if (updatedProductDto.getImageUrl() != null) {
+            productToUpdate.get().setImageUrl(updatedProductDto.getImageUrl());
+        }
+
+        if (updatedProductDto.getPrioritySelection() != null) {
+            productToUpdate.get().setPriority(updatedProductDto.getPrioritySelection());
+        }
+
+        if (updatedProductDto.getDescription() != null) {
+            productToUpdate.get().setDescription(updatedProductDto.getDescription());
+        }
+
+        if (updatedProductDto.getDateAdded() != null) {
+            productToUpdate.get().setDateAdded(updatedProductDto.getDateAdded());
+        }
+
+        if(updatedProductDto.getWishlistProductIds() != null) {
+            List<WishlistProduct> wishlistProducts = new ArrayList<>();
+            for (Long wishlistProductId : updatedProductDto.getWishlistProductIds()){
+                WishlistProduct wishlistProduct = wishlistProductRepository.findById(wishlistProductId).get();
+                wishlistProducts.add(wishlistProduct);
+            }
+            productToUpdate.get().setWishlistProducts(wishlistProducts);
+        }
+
+        return productRepository.save(productToUpdate.get());
     }
 
     public void deleteProduct(Long requestedProductId) {
