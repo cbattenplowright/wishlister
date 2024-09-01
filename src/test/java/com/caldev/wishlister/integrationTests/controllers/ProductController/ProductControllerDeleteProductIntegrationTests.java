@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static java.util.UUID.randomUUID;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -102,6 +103,15 @@ public class ProductControllerDeleteProductIntegrationTests {
         this.mockMvc.perform(delete("/api/products/{requestedUserId}/{requestedProductId}", randomUUID(), testProductId)
                 .with(user(testUserAccount)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void shouldReturn404_whenProductNotFound() throws Exception {
+        when(productService.findProductById(any(Long.class))).thenReturn(Optional.empty());
+
+        this.mockMvc.perform(delete("/api/products/{requestedUserId}/{requestedProductId}", testUserId, testProductId)
+                .with(user(testUserAccount)))
+                .andExpect(status().isNotFound());
     }
 
 }
