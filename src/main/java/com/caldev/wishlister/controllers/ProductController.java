@@ -70,6 +70,32 @@ public class ProductController {
 
     }
 
+//    UPDATE Product
+
+    @PatchMapping("/{requestedUserId}/{requestedProductId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> updateProduct(@PathVariable UUID requestedUserId,
+                                                @PathVariable Long requestedProductId,
+                                                @Valid @RequestBody ProductDto updatedProductDto,
+                                                @AuthenticationPrincipal UserAccount userAccount) {
+/*        check if user is authenticated
+            if not, return unauthenticated
+          find product
+            if not found, return not found
+          update product
+ */
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        Product updatedProduct = productService.updateProduct(updatedProductDto, requestedProductId, userAccount);
+
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+//    DELETE Product
+
     @DeleteMapping("/{requestedUserId}/{requestedProductId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> deleteProduct(@PathVariable UUID requestedUserId,
