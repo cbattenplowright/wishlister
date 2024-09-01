@@ -133,17 +133,17 @@ public class WishlistController {
         @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
         @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
         public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId,
-                                                     @PathVariable int requestedWishlistId,
+                                                     @PathVariable Long requestedWishlistId,
                                                      @AuthenticationPrincipal UserAccount userAccount) {
 
             if (userAccount == null) {
                 return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
             }
 
-            Optional<Wishlist> existingWishlist = wishlistService.findWishlistById((long)requestedWishlistId);
+            Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
 
             if (existingWishlist.isPresent()) {
-                wishlistService.deleteWishlist((long)requestedWishlistId);
+                wishlistService.deleteWishlist(requestedWishlistId);
                 return new ResponseEntity<>(requestedWishlistId, HttpStatus.OK);
             }
 
