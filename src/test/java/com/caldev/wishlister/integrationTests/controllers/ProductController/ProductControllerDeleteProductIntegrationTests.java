@@ -96,4 +96,12 @@ public class ProductControllerDeleteProductIntegrationTests {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    public void shouldReturn403_whenUnauthorized() throws Exception {
+
+        this.mockMvc.perform(delete("/api/products/{requestedUserId}/{requestedProductId}", randomUUID(), testProductId)
+                .with(user(testUserAccount)))
+                .andExpect(status().isForbidden());
+    }
+
 }
