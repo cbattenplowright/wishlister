@@ -162,4 +162,16 @@ public class ProductControllerPatchProductIntegrationTests {
                 .content(validJsonRequest))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void shouldReturn404_whenProductIsNotFound() throws Exception {
+
+        when(productService.updateProduct(any(Long.class), any(ProductDto.class), any(UserAccount.class))).thenReturn(null);
+
+        this.mockMvc.perform(patch("/api/products/{requestedUserId}/{requestedProductId}", testUserId, testProductId)
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isNotFound());
+    }
 }

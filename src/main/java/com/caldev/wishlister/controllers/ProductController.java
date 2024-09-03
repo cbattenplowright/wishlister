@@ -91,6 +91,10 @@ public class ProductController {
 
         Product updatedProduct = productService.updateProduct(requestedProductId, updatedProductDto, userAccount);
 
+        if (updatedProduct == null) {
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
