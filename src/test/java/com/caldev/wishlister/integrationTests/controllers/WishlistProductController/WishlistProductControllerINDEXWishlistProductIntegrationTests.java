@@ -108,4 +108,13 @@ public class WishlistProductControllerINDEXWishlistProductIntegrationTests {
         this.mockMvc.perform(get("/api/wishlist-products"))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldReturn404_whenNotFound() throws Exception {
+        when(wishlistProductService.getAllWishlistProducts()).thenReturn(null);
+
+        this.mockMvc.perform(get("/api/wishlist-products"))
+                .andExpect(status().isNotFound());
+    }
 }

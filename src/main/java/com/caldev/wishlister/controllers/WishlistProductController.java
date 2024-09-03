@@ -1,6 +1,7 @@
 package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.entities.WishlistProduct;
+import com.caldev.wishlister.exceptions.WishlistProductsNotFoundException;
 import com.caldev.wishlister.services.WishlistProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
