@@ -3,7 +3,6 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
-import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.services.ProductService;
 import jakarta.validation.Valid;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
