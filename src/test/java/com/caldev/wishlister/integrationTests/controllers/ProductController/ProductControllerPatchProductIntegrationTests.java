@@ -143,4 +143,13 @@ public class ProductControllerPatchProductIntegrationTests {
                 .content(invalidJsonRequest))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void shouldReturn401_whenUserIsNotAuthenticated() throws Exception {
+
+        this.mockMvc.perform(patch("/api/products/{requestedUserId}/{requestedProductId}", testUserId, testProductId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isUnauthorized());
+    }
 }
