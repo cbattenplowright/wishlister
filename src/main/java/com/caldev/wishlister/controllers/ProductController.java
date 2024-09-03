@@ -24,7 +24,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-//    SHOW Products
+//    SHOW Product
     @GetMapping("/{requestedUserId}/{requestedProductId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getProductById(@PathVariable UUID requestedUserId,
