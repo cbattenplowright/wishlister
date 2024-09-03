@@ -119,4 +119,28 @@ public class ProductControllerPatchProductIntegrationTests {
                 .andExpect(status().isOk());
 
     }
+
+    @Test
+    void shouldReturn400_whenRequestIsInvalid() throws Exception {
+
+        String invalidJsonRequest = """
+                {
+                    "productName": null,
+                    "userId": 1,
+                    "price": 1599,
+                    "url": "https://www.testUrl.com",
+                    "imageUrl": "https://www.testImageUrl.com",
+                    "priority": "IMPORTANT",
+                    "description": null,
+                    "dateAdded": "2022-01-01",
+                    "wishlistProducts": []
+                }
+                """;
+
+        this.mockMvc.perform(patch("/api/products/{requestedUserId}/{requestedProductId}", testUserId, testProductId)
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidJsonRequest))
+                .andExpect(status().isBadRequest());
+    }
 }
