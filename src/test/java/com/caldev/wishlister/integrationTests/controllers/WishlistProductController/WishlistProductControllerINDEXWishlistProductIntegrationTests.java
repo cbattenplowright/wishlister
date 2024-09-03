@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -101,5 +100,12 @@ public class WishlistProductControllerINDEXWishlistProductIntegrationTests {
     void shouldReturn401_whenNotAuthenticated() throws Exception {
         this.mockMvc.perform(get("/api/wishlist-products"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldReturn403_whenNotAuthorized() throws Exception {
+        this.mockMvc.perform(get("/api/wishlist-products"))
+                .andExpect(status().isForbidden());
     }
 }
