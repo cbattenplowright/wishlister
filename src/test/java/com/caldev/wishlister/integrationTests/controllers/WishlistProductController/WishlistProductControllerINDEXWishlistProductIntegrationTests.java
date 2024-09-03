@@ -88,12 +88,18 @@ public class WishlistProductControllerINDEXWishlistProductIntegrationTests {
         );
     }
 
-        @Test
-        @WithMockUser(roles = "ADMIN")
-        void shouldReturn200_whenAuthenticatedAndAuthorizedAndIndexingWishlistProduct() throws Exception {
-            when (wishlistProductService.getAllWishlistProducts()).thenReturn(List.of(testWishlistProduct));
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldReturn200_whenAuthenticatedAndAuthorizedAndIndexingWishlistProduct() throws Exception {
+        when (wishlistProductService.getAllWishlistProducts()).thenReturn(List.of(testWishlistProduct));
 
-            this.mockMvc.perform(get("/api/wishlist-products"))
-                    .andExpect(status().isOk());
-        }
+        this.mockMvc.perform(get("/api/wishlist-products"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturn401_whenNotAuthenticated() throws Exception {
+        this.mockMvc.perform(get("/api/wishlist-products"))
+                .andExpect(status().isUnauthorized());
+    }
 }
