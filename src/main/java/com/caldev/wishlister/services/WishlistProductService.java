@@ -18,4 +18,8 @@ public class WishlistProductService {
     public List<WishlistProduct> getAllWishlistProducts() {
         return wishlistProductRepository.findAll();
     }
+
+    public WishlistProduct getWishlistProductById(Long wishlistProductId) {
+        return wishlistProductRepository.findById(wishlistProductId).get();
+    }
 }

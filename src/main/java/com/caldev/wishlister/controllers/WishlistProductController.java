@@ -1,11 +1,9 @@
 package com.caldev.wishlister.controllers;
 
-<<<<<<< Updated upstream
-=======
 import com.caldev.wishlister.dtos.WishlistProductDto;
 import com.caldev.wishlister.entities.UserAccount;
->>>>>>> Stashed changes
 import com.caldev.wishlister.entities.WishlistProduct;
+import com.caldev.wishlister.exceptions.UserNotFoundException;
 import com.caldev.wishlister.exceptions.WishlistProductsNotFoundException;
 import com.caldev.wishlister.services.WishlistProductService;
 import jakarta.validation.Valid;
@@ -13,14 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-<<<<<<< Updated upstream
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-=======
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
->>>>>>> Stashed changes
 
 import java.util.List;
 import java.util.UUID;
