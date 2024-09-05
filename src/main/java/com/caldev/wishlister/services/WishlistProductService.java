@@ -22,4 +22,8 @@ public class WishlistProductService {
     public WishlistProduct getWishlistProductById(Long wishlistProductId) {
         return wishlistProductRepository.findById(wishlistProductId).get();
     }
+
+    public boolean existsByWishlistIdAndProductId(Long wishlistId, Long productId) {
+        return wishlistProductRepository.existsByWishlistIdAndProductId(wishlistId, productId);
+    }
 }
