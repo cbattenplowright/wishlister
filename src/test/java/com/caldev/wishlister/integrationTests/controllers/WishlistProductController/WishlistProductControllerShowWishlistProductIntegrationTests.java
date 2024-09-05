@@ -109,4 +109,11 @@ public class WishlistProductControllerShowWishlistProductIntegrationTests {
         this.mockMvc.perform(get("/api/wishlist-products/{requestedUserId}/{requestedWishlistProductId}", testUserId, testWishlistProductId))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    void shouldReturn403_whenNotAuthorized() throws Exception {
+        this.mockMvc.perform(get("/api/wishlist-products/{requestedUserId}/{requestedWishlistProductId}", randomUUID(), testWishlistProductId)
+                        .with(user(testUserAccount)))
+                .andExpect(status().isForbidden());
+    }
 }
