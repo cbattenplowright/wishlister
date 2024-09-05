@@ -116,4 +116,13 @@ public class WishlistProductControllerShowWishlistProductIntegrationTests {
                         .with(user(testUserAccount)))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void shouldReturn404_whenWishlistProductNotFound() throws Exception {
+        when(wishlistProductService.getWishlistProductById(testWishlistProductId)).thenReturn(null);
+
+        this.mockMvc.perform(get("/api/wishlist-products/{requestedUserId}/{requestedWishlistProductId}", testUserId, testWishlistProductId)
+                .with(user(testUserAccount)))
+                .andExpect(status().isNotFound());
+    };
 }
