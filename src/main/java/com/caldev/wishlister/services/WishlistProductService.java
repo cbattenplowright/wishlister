@@ -1,5 +1,7 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.dtos.WishlistProductDto;
+import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,10 @@ public class WishlistProductService {
     }
 
     public boolean existsByWishlistIdAndProductId(Long wishlistId, Long productId) {
-        return wishlistProductRepository.existsByWishlistIdAndProductId(wishlistId, productId);
+        return wishlistProductRepository.existsByWishlist_WishlistIdAndProduct_ProductId(wishlistId, productId);
+    }
+
+    public WishlistProduct createWishlistProduct(WishlistProductDto newWishlistProductDto, UserAccount testUserAccount) {
+        return null;
     }
 }
