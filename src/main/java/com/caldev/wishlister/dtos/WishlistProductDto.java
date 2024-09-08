@@ -36,7 +36,7 @@ public class WishlistProductDto {
         return isPurchased;
     }
 
-    public void setPurchased(boolean purchased) {
+    public void setIsPurchased(boolean purchased) {
         isPurchased = purchased;
     }
 

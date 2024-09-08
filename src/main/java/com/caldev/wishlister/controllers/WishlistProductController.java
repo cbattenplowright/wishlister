@@ -94,9 +94,9 @@ public class WishlistProductController {
         boolean wishlistProductExists = wishlistProductService.existsByWishlistIdAndProductId(updatedWishlistProductDto.getWishlistId(), updatedWishlistProductDto.getProductId());
 
         if(wishlistProductExists){
-            WishlistProduct updatedWishlistProduct = wishlistProductService.updateWishlistProduct(updatedWishlistProductDto, userAccount);
+            WishlistProduct updatedWishlistProduct = wishlistProductService.updateWishlistProduct(requestedWishlistProductId, updatedWishlistProductDto, userAccount);
 
-            return new ResponseEntity<>(updatedWishlistProductDto, HttpStatus.OK);
+            return new ResponseEntity<>(updatedWishlistProduct, HttpStatus.OK);
         }
         else {
             throw new WishlistProductsNotFoundException("WishlistProduct not found");

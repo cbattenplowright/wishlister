@@ -1,19 +1,27 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.dtos.WishlistProductDto;
+import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
+import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.entities.WishlistProduct;
+import com.caldev.wishlister.exceptions.WishlistProductsNotFoundException;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WishlistProductService {
 
+    private final ProductService productService;
+    private final WishlistService wishlistService;
     private final WishlistProductRepository wishlistProductRepository;
 
-    public WishlistProductService(WishlistProductRepository wishlistProductRepository) {
+    public WishlistProductService(ProductService productService, WishlistService wishlistService, WishlistProductRepository wishlistProductRepository) {
+        this.productService = productService;
+        this.wishlistService = wishlistService;
         this.wishlistProductRepository = wishlistProductRepository;
     }
 
@@ -31,5 +39,21 @@ public class WishlistProductService {
 
     public WishlistProduct createWishlistProduct(WishlistProductDto newWishlistProductDto, UserAccount testUserAccount) {
         return null;
+    }
+
+    public WishlistProduct updateWishlistProduct(Long requestedWishlistProductId, WishlistProductDto updatedWishlistProductDto, UserAccount userAccount) {
+
+        Optional<WishlistProduct> wishlistProductToUpdate = wishlistProductRepository.findById(requestedWishlistProductId);
+        Optional<Wishlist> wishlist = wishlistService.findWishlistById(updatedWishlistProductDto.getWishlistId());
+        Optional<Product> product = productService.findProductById(updatedWishlistProductDto
+            .getProductId());
+
+//        Do I just want to change the isPurchased value for the wishlistProductToUpdate
+        if (wishlistProductToUpdate.isPresent()) {
+            wishlistProductToUpdate.get().setIsPurchased(updatedWishlistProductDto.isPurchased());
+            return wishlistProductRepository.save(wishlistProductToUpdate.get());
+        }
+
+        throw new WishlistProductsNotFoundException("WishlistProduct not found");
     }
 }

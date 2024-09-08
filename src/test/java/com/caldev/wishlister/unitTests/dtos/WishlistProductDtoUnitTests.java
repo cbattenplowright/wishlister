@@ -47,7 +47,7 @@ public class WishlistProductDtoUnitTests {
 
     @Test
     public void shouldSetPurchased(){
-        wishlistProductDto.setPurchased(true);
+        wishlistProductDto.setIsPurchased(true);
         assertThat(wishlistProductDto.isPurchased()).isTrue();
     }
 

@@ -54,7 +54,7 @@ public class WishlistProduct {
         this.product = product;
     }
 
-    public void setPurchased(boolean purchased) {
+    public void setIsPurchased(boolean purchased) {
         isPurchased = purchased;
     }
 }
