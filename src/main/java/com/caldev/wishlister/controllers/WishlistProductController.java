@@ -78,4 +78,28 @@ public class WishlistProductController {
 
         return new ResponseEntity<>(newWishlistProductDto, HttpStatus.CREATED);
     }
+
+//    UPDATE WishlistProduct
+    @PutMapping("/{requestedUserId}/{requestedWishlistProductId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> updateWishlistProduct(@PathVariable UUID requestedUserId,
+                                                        @PathVariable Long requestedWishlistProductId,
+                                                        @Valid @RequestBody WishlistProductDto updatedWishlistProductDto,
+                                                        @AuthenticationPrincipal UserAccount userAccount){
+
+        if(userAccount == null){
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        boolean wishlistProductExists = wishlistProductService.existsByWishlistIdAndProductId(updatedWishlistProductDto.getWishlistId(), updatedWishlistProductDto.getProductId());
+
+        if(wishlistProductExists){
+            WishlistProduct updatedWishlistProduct = wishlistProductService.updateWishlistProduct(updatedWishlistProductDto, userAccount);
+
+            return new ResponseEntity<>(updatedWishlistProductDto, HttpStatus.OK);
+        }
+        else {
+            throw new WishlistProductsNotFoundException("WishlistProduct not found");
+        }
+    }
 }
