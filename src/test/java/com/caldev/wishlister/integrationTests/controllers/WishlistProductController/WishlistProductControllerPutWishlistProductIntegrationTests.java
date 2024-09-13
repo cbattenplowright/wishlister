@@ -115,7 +115,6 @@ public class WishlistProductControllerPutWishlistProductIntegrationTests {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
     void shouldReturn200_whenAuthenticatedAndAuthorizedAndUpdatingWishlistProduct() throws Exception {
         when(wishlistProductService.existsByWishlistIdAndProductId(any(Long.class), any(Long.class))).thenReturn(true);
 
@@ -126,6 +125,25 @@ public class WishlistProductControllerPutWishlistProductIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(validJsonRequest))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturn400_whenRequestIsInvalid() throws Exception {
+        String invalidJsonRequest = """
+                {
+                    "wishlistProductId": null
+                }
+                """;
+
+        when(wishlistProductService.existsByWishlistIdAndProductId(any(Long.class), any(Long.class))).thenReturn(true);
+
+        when(wishlistProductService.updateWishlistProduct(any(Long.class), any(WishlistProductDto.class), any(UserAccount.class))).thenReturn(testWishlistProduct);
+
+        this.mockMvc.perform(put("/api/wishlist-products/{requestedUserId}/{requestedWishlistProductId}", testUserId, testWishlistProduct.getWishlistProductId())
+                        .with(user(testUserAccount))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidJsonRequest))
+                .andExpect(status().isBadRequest());
     }
 
 

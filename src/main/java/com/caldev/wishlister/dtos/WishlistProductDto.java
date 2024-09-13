@@ -1,9 +1,16 @@
 package com.caldev.wishlister.dtos;
 
+import jakarta.validation.constraints.NotNull;
+
 public class WishlistProductDto {
 
+    @NotNull
     private Long wishlistId;
+
+    @NotNull
     private Long productId;
+
+    @NotNull
     private boolean isPurchased;
 
     public WishlistProductDto() {
