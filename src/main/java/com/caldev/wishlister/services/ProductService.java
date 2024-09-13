@@ -18,11 +18,14 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
+    private final WishlistProductService wishlistProductService;
+
     private final ProductRepository productRepository;
 
     private final WishlistProductRepository wishlistProductRepository;
 
-    public ProductService(ProductRepository productRepository, WishlistProductRepository wishlistProductRepository) {
+    public ProductService(WishlistProductService wishlistProductService, ProductRepository productRepository, WishlistProductRepository wishlistProductRepository) {
+        this.wishlistProductService = wishlistProductService;
         this.productRepository = productRepository;
         this.wishlistProductRepository = wishlistProductRepository;
     }
@@ -124,6 +127,7 @@ public class ProductService {
     }
 
     public void deleteProduct(Long requestedProductId) {
+        wishlistProductService.deleteWishlistProductByProductId(requestedProductId); // cascade delete()
         productRepository.deleteById(requestedProductId);
     }
 }

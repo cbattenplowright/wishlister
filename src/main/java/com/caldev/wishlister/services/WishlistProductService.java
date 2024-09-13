@@ -15,8 +15,8 @@ import java.util.Optional;
 @Service
 public class WishlistProductService {
 
-    private final ProductService productService;
-    private final WishlistService wishlistService;
+    private ProductService productService;
+    private WishlistService wishlistService;
     private final WishlistProductRepository wishlistProductRepository;
 
     public WishlistProductService(ProductService productService, WishlistService wishlistService, WishlistProductRepository wishlistProductRepository) {
@@ -55,5 +55,17 @@ public class WishlistProductService {
         }
 
         throw new WishlistProductsNotFoundException("WishlistProduct not found");
+    }
+
+    public void deleteWishlistProduct(Long wishlistProductId) {
+        wishlistProductRepository.deleteById(wishlistProductId);
+    }
+
+    public void deleteWishlistProductByWishlistId(Long wishlistId) {
+        wishlistProductRepository.deleteByWishlist_WishlistId(wishlistId);
+    }
+
+    public void deleteWishlistProductByProductId(Long productId) {
+        wishlistProductRepository.deleteByProduct_ProductId(productId);
     }
 }

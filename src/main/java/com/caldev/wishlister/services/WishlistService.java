@@ -15,13 +15,17 @@ import java.util.UUID;
 @Service
 public class WishlistService {
 
-    private final WishlistRepository wishlistRepository;
-
     private final UserService userService;
 
-    public WishlistService(WishlistRepository wishlistRepository, UserService userService) {
-        this.wishlistRepository = wishlistRepository;
+    private final WishlistProductService wishlistProductService;
+
+    private final WishlistRepository wishlistRepository;
+
+
+    public WishlistService(UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
+        this.wishlistProductService = wishlistProductService;
         this.userService = userService;
+        this.wishlistRepository = wishlistRepository;
     }
 
     public List<Wishlist> findAllWishlists() {
@@ -88,6 +92,7 @@ public class WishlistService {
     }
 
     public void deleteWishlist(Long requestedWishlistId) {
+        wishlistProductService.deleteWishlistProductByWishlistId(requestedWishlistId);
         wishlistRepository.deleteById(requestedWishlistId);
     }
 }

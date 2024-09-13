@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WishlistProductRepository extends JpaRepository<WishlistProduct, Long> {
     boolean existsByWishlist_WishlistIdAndProduct_ProductId(Long wishlistId, Long productId);
+
+    void deleteByWishlist_WishlistId(Long wishlistId);
+
+    void deleteByProduct_ProductId(Long productId);
 }
