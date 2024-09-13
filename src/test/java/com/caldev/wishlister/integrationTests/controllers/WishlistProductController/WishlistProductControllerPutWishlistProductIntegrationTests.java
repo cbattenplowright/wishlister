@@ -146,6 +146,14 @@ public class WishlistProductControllerPutWishlistProductIntegrationTests {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void shouldReturn401_whenUnauthenticatedAndUpdatingWishlistProduct() throws Exception {
+        this.mockMvc.perform(put("/api/wishlist-products/{requestedUserId}/{requestedWishlistProductId}", testUserId, testWishlistProduct.getWishlistProductId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(validJsonRequest))
+                .andExpect(status().isUnauthorized());
+    }
+
 
 
 }
