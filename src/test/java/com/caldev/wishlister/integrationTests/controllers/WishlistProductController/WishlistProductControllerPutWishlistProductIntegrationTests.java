@@ -154,6 +154,16 @@ public class WishlistProductControllerPutWishlistProductIntegrationTests {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    void shouldReturn403_whenUnauthorizedAndUpdatingWishlistProduct() throws Exception {
+
+        this.mockMvc.perform(put("/api/wishlist-products/{requestedUserId}/{requestedWishlistProductId}", randomUUID(), testWishlistProduct.getWishlistProductId())
+                .with(user(testUserAccount))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validJsonRequest))
+                .andExpect(status().isForbidden());
+    }
+
 
 
 }
