@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(SecurityConfig.class)
 @WebMvcTest(controllers = WishlistProductController.class)
-public class WishlistProductControllerINDEXWishlistProductIntegrationTests {
+public class WishlistProductControllerIndexWishlistProductIntegrationTests {
 
     @Autowired
     MockMvc mockMvc;

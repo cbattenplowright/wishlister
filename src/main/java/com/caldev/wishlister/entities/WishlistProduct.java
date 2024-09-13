@@ -30,8 +30,13 @@ public class WishlistProduct {
         this.isPurchased = isPurchased;
     }
 
+
     public Long getWishlistProductId() {
         return wishlistProductId;
+    }
+
+    public void setWishlistProductId(Long wishlistProductId) {
+        this.wishlistProductId = wishlistProductId;
     }
 
     public Wishlist getWishlist() {
