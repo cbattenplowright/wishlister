@@ -7,6 +7,7 @@ import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.repositories.ProductRepository;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

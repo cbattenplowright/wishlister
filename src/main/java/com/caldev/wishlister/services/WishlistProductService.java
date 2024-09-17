@@ -7,6 +7,8 @@ import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.WishlistProductsNotFoundException;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +17,11 @@ import java.util.Optional;
 @Service
 public class WishlistProductService {
 
-    private ProductService productService;
-    private WishlistService wishlistService;
+    private final ProductService productService;
+    private final WishlistService wishlistService;
     private final WishlistProductRepository wishlistProductRepository;
 
-    public WishlistProductService(ProductService productService, WishlistService wishlistService, WishlistProductRepository wishlistProductRepository) {
+    public WishlistProductService(@Lazy ProductService productService, @Lazy WishlistService wishlistService, WishlistProductRepository wishlistProductRepository) {
         this.productService = productService;
         this.wishlistService = wishlistService;
         this.wishlistProductRepository = wishlistProductRepository;
