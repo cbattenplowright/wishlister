@@ -1,6 +1,7 @@
 package com.caldev.wishlister.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,19 +28,19 @@ public class UserAccount implements UserDetails {
     private String name;
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
-    @JsonIgnoreProperties({"users"})
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_authorities",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "user_account_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id")
     )
+    @JsonIgnoreProperties({"users"})
     private Set<Authority> authorities;
     @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"userAccount"})
     private List<Wishlist> wishlists;
     @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"userAccount"})
+    @JsonManagedReference
     private List<Product> products;
 
     protected UserAccount() {}

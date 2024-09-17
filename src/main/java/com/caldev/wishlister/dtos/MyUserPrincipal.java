@@ -11,30 +11,30 @@ import java.util.UUID;
 
 public class MyUserPrincipal implements UserDetails {
 
-    private UserAccount user;
+    private UserAccount userAccount;
 
-    public MyUserPrincipal(UserAccount user){
-        this.user = user;
+    public MyUserPrincipal(UserAccount userAccount){
+        this.userAccount = userAccount;
     }
 
     public UUID getId(){
-        return user.getId();
+        return userAccount.getId();
     }
 
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return userAccount.getUsername();
     }
 
     @Override
     public String getPassword(){
-        return user.getPassword();
+        return userAccount.getPassword();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities();
+        return userAccount.getAuthorities();
     }
 
     @Override
@@ -58,6 +58,6 @@ public class MyUserPrincipal implements UserDetails {
     }
 
     public UserAccount getUser(){
-        return user;
+        return userAccount;
     }
 }

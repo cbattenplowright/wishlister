@@ -1,5 +1,6 @@
 package com.caldev.wishlister.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -29,12 +30,12 @@ public class Product {
     @Column(name = "date_added", nullable = false)
     private LocalDate dateAdded;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"products"})
+    @JsonIgnoreProperties({"product"})
     private List<WishlistProduct> wishlistProducts;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"products"})
+    @JoinColumn(name = "user_account_id")
+    @JsonBackReference
     private UserAccount userAccount;
 
     protected Product() {
