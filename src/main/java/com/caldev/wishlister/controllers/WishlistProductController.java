@@ -59,6 +59,8 @@ public class WishlistProductController {
         throw new WishlistProductsNotFoundException("WishlistProduct not found");
     }
 
+//    CREATE WishlistProduct
+
     @PostMapping("/new")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistProductDto.userId")
     public ResponseEntity<Object> createWishlistProduct(@Valid @RequestBody WishlistProductDto newWishlistProductDto,

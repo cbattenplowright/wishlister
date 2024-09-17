@@ -31,14 +31,14 @@ public class UserController {
     }
 
 //    SHOW User
-    @GetMapping("/{requestedId}")
-    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
-    public ResponseEntity<Object> getUserById(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount){
+    @GetMapping("/{requestedUserId}")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> getUserById(@PathVariable UUID requestedUserId, @AuthenticationPrincipal UserAccount userAccount){
         System.out.println(userAccount);
         if (userAccount == null){
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        UserAccount user = userService.getUserById(requestedId);
+        UserAccount user = userService.getUserById(requestedUserId);
         if (user != null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
@@ -52,6 +52,26 @@ public class UserController {
         return new ResponseEntity<>(
                 newUserAccount,
                 HttpStatus.CREATED);
+    }
+
+    //    UPDATE User
+
+    @PatchMapping("/{requestedUserId}")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> updateUser(@PathVariable UUID requestedUserId, @AuthenticationPrincipal UserAccount userAccount, @Valid @RequestBody UserAccountDto userAccountDto){
+
+        if (userAccount == null){
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        UserAccount updatedUserAccount = userService.updateUser(requestedUserId, userAccountDto);
+
+        if (updatedUserAccount == null){
+            return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(
+                updatedUserAccount,
+                HttpStatus.OK);
     }
 
 //    DELETE User
@@ -71,23 +91,5 @@ public class UserController {
                 HttpStatus.OK);
     }
 
-//    UPDATE User
 
-    @PatchMapping("/{requestedId}")
-    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
-    public ResponseEntity<Object> updateUser(@PathVariable UUID requestedId, @AuthenticationPrincipal UserAccount userAccount, @Valid @RequestBody UserAccountDto userAccountDto){
-
-        if (userAccount == null){
-            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-        }
-        UserAccount updatedUserAccount = userService.updateUser(requestedId, userAccountDto);
-
-        if (updatedUserAccount == null){
-            return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(
-                updatedUserAccount,
-                HttpStatus.OK);
-    }
 }

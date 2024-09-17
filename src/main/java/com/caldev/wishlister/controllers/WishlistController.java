@@ -101,6 +101,8 @@ public class WishlistController {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
+//        UPDATE Wishlist
+
         @PatchMapping("/{requestedUserId}/{requestedWishlistId}")
         @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
         public ResponseEntity<Object> updateWishlist(
