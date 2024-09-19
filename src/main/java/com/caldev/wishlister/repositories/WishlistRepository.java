@@ -14,5 +14,5 @@ import java.util.UUID;
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
 
     List<Wishlist> findAllByUserAccount_Id(UUID userId);
-    boolean findByWishlistNameAndUserAccount(String wishlistName, UserAccount userAccount);
+    boolean existsByWishlistNameAndUserAccount(String wishlistName, UserAccount userAccount);
 }

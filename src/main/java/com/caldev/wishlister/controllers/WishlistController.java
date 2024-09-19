@@ -40,7 +40,7 @@ public class WishlistController {
 
     // INDEX User Wishlists
     @GetMapping("/{requestedUserId}")
-//    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedUserId,
                                                    @AuthenticationPrincipal UserAccount userAccount) {
 
@@ -57,8 +57,7 @@ public class WishlistController {
         return new ResponseEntity<>(wishlistList, HttpStatus.OK);
     }
 
-
-        // SHOW Wishlist
+    // SHOW Wishlist
     @GetMapping("/{requestedUserId}/{requestedWishlistId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId,

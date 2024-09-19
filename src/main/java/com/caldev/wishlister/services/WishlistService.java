@@ -52,7 +52,7 @@ public class WishlistService {
 
     public boolean existsByWishlistNameAndUserAccount(String wishlistName, UserAccount userAccount) {
 
-        return wishlistRepository.findByWishlistNameAndUserAccount(wishlistName, userAccount);
+        return wishlistRepository.existsByWishlistNameAndUserAccount(wishlistName, userAccount);
     }
 
     public Optional<Wishlist> findWishlistById(Long requestedWishlistId) {

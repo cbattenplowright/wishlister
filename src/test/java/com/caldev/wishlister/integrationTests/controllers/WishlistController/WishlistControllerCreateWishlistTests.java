@@ -64,7 +64,7 @@ public class WishlistControllerCreateWishlistTests {
 
         testUserAccount.setId(testUserId);
 
-        testWishlistDto = new WishlistDto( testUserId, "testWishlist");
+        testWishlistDto = new WishlistDto(testUserId, "testWishlist");
 
         objectMapper = new ObjectMapper();
     }
