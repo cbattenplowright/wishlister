@@ -1,5 +1,6 @@
 package com.caldev.wishlister.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -11,15 +12,18 @@ public class Wishlist {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "wishlist_id")
     private Long wishlistId;
     @Column(nullable = false)
     private String wishlistName;
+
     @ManyToOne
     @JoinColumn(name = "user_account_id")
-    @JsonIgnoreProperties({"wishlists"})
+    @JsonIgnore
     private UserAccount userAccount;
+
     @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"wishlist"})
+    @JsonIgnoreProperties("wishlist")
     private List<WishlistProduct> wishlistProducts;
 
     protected Wishlist(){}
@@ -46,11 +50,11 @@ public class Wishlist {
         this.wishlistName = wishlistName;
     }
 
-    public UserAccount getUser() {
+    public UserAccount getUserAccount() {
         return userAccount;
     }
 
-    public void setUser(UserAccount userAccount) {
+    public void setUserAccount(UserAccount userAccount) {
         this.userAccount = userAccount;
     }
 

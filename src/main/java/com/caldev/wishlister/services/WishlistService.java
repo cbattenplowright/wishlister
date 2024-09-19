@@ -81,7 +81,7 @@ public class WishlistService {
         }
 
         if (wishlistDto.getUserId() != null && wishlistDto.getUserId() == userAccount.getId()) {
-            wishlistToUpdate.get().setUser(userAccount);
+            wishlistToUpdate.get().setUserAccount(userAccount);
         }
 
         if (wishlistDto.getWishlistName() != null) {

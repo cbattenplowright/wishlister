@@ -1,6 +1,6 @@
 package com.caldev.wishlister.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -14,6 +14,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productId;
     @Column(name = "product_name", nullable = false)
     private String productName;
@@ -27,16 +28,18 @@ public class Product {
     private String description;
     @Column
     private PrioritySelection priority;
+
     @Column(name = "date_added", nullable = false)
     private LocalDate dateAdded;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"product"})
-    private List<WishlistProduct> wishlistProducts;
 
     @ManyToOne
     @JoinColumn(name = "user_account_id")
-    @JsonBackReference
+    @JsonIgnore
     private UserAccount userAccount;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("product")
+    private List<WishlistProduct> wishlistProducts;
 
     protected Product() {
     }
@@ -125,11 +128,11 @@ public class Product {
         this.wishlistProducts = wishlistProducts;
     }
 
-    public UserAccount getUser() {
+    public UserAccount getUserAccount() {
         return userAccount;
     }
 
-    public void setUser(UserAccount userAccount) {
+    public void setUserAccount(UserAccount userAccount) {
         this.userAccount = userAccount;
     }
 
@@ -145,7 +148,7 @@ public class Product {
                 ", priority=" + priority +
                 ", dateAdded=" + dateAdded +
                 ", wishlistProducts=" + wishlistProducts +
-                ", user=" + userAccount +
+                ", userAccount=" + userAccount +
                 '}';
     }
 }

@@ -14,12 +14,12 @@ public class WishlistProduct {
 
     @ManyToOne
     @JoinColumn(name = "wishlist_id")
-    @JsonIgnoreProperties({"wishlistProducts"})
+    @JsonIgnoreProperties("wishlistProducts")
     private Wishlist wishlist;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonIgnoreProperties({"wishlistProducts"})
+    @JsonIgnoreProperties("wishlistProducts")
     private Product product;
 
     @Column(name = "is_purchased")

@@ -74,7 +74,7 @@ public class ProductUnitTests {
 
     @Test
     public void shouldGetUser(){
-        assertThat(product.getUser()).isEqualTo(userAccount);
+        assertThat(product.getUserAccount()).isEqualTo(userAccount);
     }
 
     @Test
@@ -129,8 +129,8 @@ public class ProductUnitTests {
     @Test
     public void shouldSetUser(){
         UserAccount newUserAccount = new UserAccount("newUser@email.com", "newPassword", "newName", LocalDate.of(2000, 1, 1), null);
-        product.setUser(newUserAccount);
-        assertThat(product.getUser()).isEqualTo(newUserAccount);
+        product.setUserAccount(newUserAccount);
+        assertThat(product.getUserAccount()).isEqualTo(newUserAccount);
     }
 
     @Test

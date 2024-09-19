@@ -84,7 +84,7 @@ public class ProductService {
 
 
         if (updatedProductDto.getUserId() != null && userAccount.getId() == updatedProductDto.getUserId()) {
-            productToUpdate.get().setUser(userAccount);
+            productToUpdate.get().setUserAccount(userAccount);
         }
 
         if (updatedProductDto.getProductName() != null) {

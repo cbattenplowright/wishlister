@@ -15,8 +15,8 @@ public class Authority implements GrantedAuthority {
     private Long id;
     @Column(name = "authority", nullable = false)
     private String authority;
-    @JsonIgnoreProperties({"authorities"})
     @ManyToMany(mappedBy="authorities", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"authorities"})
     private Set<UserAccount> userAccounts;
 
     protected Authority() {}

@@ -33,7 +33,7 @@ public class WishlistUnitTests {
 
     @Test
     public void shouldGetWishlistUser(){
-        assertThat(wishlist.getUser()).isEqualTo(userAccount);
+        assertThat(wishlist.getUserAccountr()).isEqualTo(userAccount);
     }
 
     @Test
@@ -56,8 +56,8 @@ public class WishlistUnitTests {
     @Test
     public void shouldSetWishlistUser(){
         UserAccount newUserAccount = new UserAccount("newUser@email.com", "newPassword", "newName", LocalDate.of(2000, 1, 1), null);
-        wishlist.setUser(newUserAccount);
-        assertThat(wishlist.getUser()).isEqualTo(newUserAccount);
+        wishlist.setUserAccount(newUserAccount);
+        assertThat(wishlist.getUserAccount()).isEqualTo(newUserAccount);
     }
 
     @Test
