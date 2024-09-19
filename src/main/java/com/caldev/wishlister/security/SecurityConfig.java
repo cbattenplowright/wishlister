@@ -25,7 +25,6 @@ public class SecurityConfig {
             .authorizeHttpRequests((requests) -> requests
                     .requestMatchers("/api/users/new").permitAll()
                     .anyRequest().authenticated()
-
             )
             .httpBasic(withDefaults());
         return http.build();

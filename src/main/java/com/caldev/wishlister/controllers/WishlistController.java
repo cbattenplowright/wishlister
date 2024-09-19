@@ -39,79 +39,79 @@ public class WishlistController {
     }
 
     // INDEX User Wishlists
-    @GetMapping("/{requestedId}")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedId")
-    public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedId,
+    @GetMapping("/{requestedUserId}")
+//    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedUserId,
                                                    @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        List<Wishlist> wishlistList = wishlistService.findAllUserWishlists(requestedId);
+        List<Wishlist> wishlistList = wishlistService.findAllUserWishlists(requestedUserId);
 
         if (wishlistList == null) {
             throw new WishlistsNotFoundException("Wishlists not found");
         }
 
         return new ResponseEntity<>(wishlistList, HttpStatus.OK);
-        }
+    }
 
 
         // SHOW Wishlist
-        @GetMapping("/{requestedUserId}/{requestedWishlistId}")
-        @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-        public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId,
-                                                      @PathVariable Long requestedWishlistId,
-                                                      @AuthenticationPrincipal UserAccount userAccount) {
+    @GetMapping("/{requestedUserId}/{requestedWishlistId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId,
+                                                  @PathVariable Long requestedWishlistId,
+                                                  @AuthenticationPrincipal UserAccount userAccount) {
 
-            if (userAccount == null) {
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-            }
-
-            Optional<Wishlist> wishlist = wishlistService.findWishlistById(requestedWishlistId);
-
-            if (wishlist.isEmpty()) {
-                throw new WishlistsNotFoundException("Wishlist not found");
-            }
-
-            return new ResponseEntity<>(wishlist, HttpStatus.OK);
-
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
+        Optional<Wishlist> wishlist = wishlistService.findWishlistById(requestedWishlistId);
 
-        // CREATE Wishlist
-        @PostMapping("/new")
-        @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistDto.userId")
-        public ResponseEntity<Object> createWishlist(@Valid @RequestBody WishlistDto newWishlistDto,
-                                                     @AuthenticationPrincipal UserAccount userAccount) {
-
-            if (userAccount == null) {
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-            }
-
-            boolean wishlistExists = wishlistService.existsByWishlistNameAndUserAccount(newWishlistDto.getWishlistName(), userAccount);
-
-            if (wishlistExists) {
-                return new ResponseEntity<>("Wishlist already exists", HttpStatus.CONFLICT);
-            }
-
-            Wishlist newWishlist = wishlistService.createWishlist(newWishlistDto, userAccount);
-
-            return new ResponseEntity<>(HttpStatus.CREATED);
+        if (wishlist.isEmpty()) {
+            throw new WishlistsNotFoundException("Wishlist not found");
         }
+
+        return new ResponseEntity<>(wishlist, HttpStatus.OK);
+
+    }
+
+
+    // CREATE Wishlist
+    @PostMapping("/new")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistDto.userId")
+    public ResponseEntity<Object> createWishlist(@Valid @RequestBody WishlistDto newWishlistDto,
+                                                 @AuthenticationPrincipal UserAccount userAccount) {
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        boolean wishlistExists = wishlistService.existsByWishlistNameAndUserAccount(newWishlistDto.getWishlistName(), userAccount);
+
+        if (wishlistExists) {
+            return new ResponseEntity<>("Wishlist already exists", HttpStatus.CONFLICT);
+        }
+
+        Wishlist newWishlist = wishlistService.createWishlist(newWishlistDto, userAccount);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
 //        UPDATE Wishlist
 
-        @PatchMapping("/{requestedUserId}/{requestedWishlistId}")
-        @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-        public ResponseEntity<Object> updateWishlist(
-                @PathVariable UUID requestedUserId,
-                @PathVariable int requestedWishlistId,
-                @Valid @RequestBody WishlistDto wishlistDto,
-                @AuthenticationPrincipal UserAccount userAccount) {
+    @PatchMapping("/{requestedUserId}/{requestedWishlistId}")
+    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> updateWishlist(
+            @PathVariable UUID requestedUserId,
+            @PathVariable int requestedWishlistId,
+            @Valid @RequestBody WishlistDto wishlistDto,
+            @AuthenticationPrincipal UserAccount userAccount) {
 
-/*
+    /*
     check if user is authorized
         if not, then return unauthorized
 
@@ -119,38 +119,38 @@ public class WishlistController {
         if not found, then return not found
 
     update wishlist
- */
+    */
 
-            if (userAccount == null) {
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-            }
-
-            Wishlist updatedWishlist = wishlistService.updateWishlist((long) requestedWishlistId, wishlistDto, userAccount);
-
-            return new ResponseEntity<>(updatedWishlist, HttpStatus.OK);
-
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        // DELETE Wishlist
-        @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
-        @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-        public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId,
-                                                     @PathVariable Long requestedWishlistId,
-                                                     @AuthenticationPrincipal UserAccount userAccount) {
+        Wishlist updatedWishlist = wishlistService.updateWishlist((long) requestedWishlistId, wishlistDto, userAccount);
 
-            if (userAccount == null) {
-                return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-            }
+        return new ResponseEntity<>(updatedWishlist, HttpStatus.OK);
 
-            Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
+    }
 
-            if (existingWishlist.isPresent()) {
-                wishlistService.deleteWishlist(requestedWishlistId);
-                return new ResponseEntity<>(requestedWishlistId, HttpStatus.OK);
-            }
+    // DELETE Wishlist
+    @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId,
+                                                 @PathVariable Long requestedWishlistId,
+                                                 @AuthenticationPrincipal UserAccount userAccount) {
 
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
+
+        Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
+
+        if (existingWishlist.isPresent()) {
+            wishlistService.deleteWishlist(requestedWishlistId);
+            return new ResponseEntity<>(requestedWishlistId, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
 }
 

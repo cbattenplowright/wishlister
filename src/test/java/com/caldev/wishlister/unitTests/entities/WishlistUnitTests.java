@@ -33,7 +33,7 @@ public class WishlistUnitTests {
 
     @Test
     public void shouldGetWishlistUser(){
-        assertThat(wishlist.getUserAccountr()).isEqualTo(userAccount);
+        assertThat(wishlist.getUserAccount()).isEqualTo(userAccount);
     }
 
     @Test

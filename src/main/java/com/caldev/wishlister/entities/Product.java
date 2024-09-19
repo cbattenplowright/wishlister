@@ -37,7 +37,7 @@ public class Product {
     @JsonIgnore
     private UserAccount userAccount;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("product")
     private List<WishlistProduct> wishlistProducts;
 
@@ -148,7 +148,7 @@ public class Product {
                 ", priority=" + priority +
                 ", dateAdded=" + dateAdded +
                 ", wishlistProducts=" + wishlistProducts +
-                ", userAccount=" + userAccount +
+                ", userAccount=" + userAccount.getEmail() +
                 '}';
     }
 }

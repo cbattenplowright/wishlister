@@ -22,7 +22,7 @@ public class Wishlist {
     @JsonIgnore
     private UserAccount userAccount;
 
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("wishlist")
     private List<WishlistProduct> wishlistProducts;
 
@@ -71,7 +71,7 @@ public class Wishlist {
         return "Wishlist{" +
                 "wishlistId=" + wishlistId +
                 ", wishlistName='" + wishlistName + '\'' +
-                ", user=" + userAccount +
+                ", userAccount=" + userAccount.getEmail() +
                 '}';
     }
 }
