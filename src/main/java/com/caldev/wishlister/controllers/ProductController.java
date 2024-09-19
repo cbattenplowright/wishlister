@@ -64,7 +64,7 @@ public class ProductController {
 
         Product newProduct = productService.createProduct(newProductDto, userAccount);
 
-        return new ResponseEntity<>(newProductDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
 
     }
 

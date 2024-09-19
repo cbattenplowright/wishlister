@@ -57,6 +57,10 @@ public class ProductService {
             }
         }
 
+        if (newProductDto.getPrioritySelection() == null) {
+
+        }
+
         Product newProduct = new Product(
                 newProductDto.getProductName(),
                 newProductDto.getPrice(),
@@ -130,5 +134,9 @@ public class ProductService {
     public void deleteProduct(Long requestedProductId) {
         wishlistProductService.deleteWishlistProductByProductId(requestedProductId); // cascade delete()
         productRepository.deleteById(requestedProductId);
+    }
+
+    public boolean userAccountOwnsProduct(Long productId, UserAccount userAccount){
+        return productRepository.existsByProductIdAndUserAccount(productId, userAccount);
     }
 }

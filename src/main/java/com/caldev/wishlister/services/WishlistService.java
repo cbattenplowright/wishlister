@@ -95,4 +95,8 @@ public class WishlistService {
         wishlistProductService.deleteWishlistProductByWishlistId(requestedWishlistId);
         wishlistRepository.deleteById(requestedWishlistId);
     }
+
+    public boolean userAccountOwnsWishlist(Long wishlistId, UserAccount userAccount) {
+        return wishlistRepository.existsByWishlistIdAndUserAccount(wishlistId, userAccount);
+    }
 }

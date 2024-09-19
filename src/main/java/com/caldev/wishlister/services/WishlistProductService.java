@@ -5,9 +5,10 @@ import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.entities.WishlistProduct;
+import com.caldev.wishlister.exceptions.WishlistProductNotCreatedException;
 import com.caldev.wishlister.exceptions.WishlistProductsNotFoundException;
+import com.caldev.wishlister.exceptions.WishlistProductNotOwnedByUserAccountException;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +40,30 @@ public class WishlistProductService {
         return wishlistProductRepository.existsByWishlist_WishlistIdAndProduct_ProductId(wishlistId, productId);
     }
 
-    public WishlistProduct createWishlistProduct(WishlistProductDto newWishlistProductDto, UserAccount testUserAccount) {
-        return null;
+    public WishlistProduct createWishlistProduct(WishlistProductDto newWishlistProductDto, UserAccount userAccount) throws WishlistProductNotOwnedByUserAccountException, WishlistProductNotCreatedException {
+
+        boolean userOwnsWishlist = wishlistService.userAccountOwnsWishlist(newWishlistProductDto.getWishlistId(), userAccount);
+        boolean userOwnsProduct = productService.userAccountOwnsProduct(newWishlistProductDto.getProductId(), userAccount);
+
+        if (!userOwnsWishlist || !userOwnsProduct) {
+            throw new WishlistProductNotOwnedByUserAccountException("User does not own wishlist or product");
+        }
+
+       Optional<Wishlist> wishlist = wishlistService.findWishlistById(newWishlistProductDto.getWishlistId());
+       Optional<Product> product = productService.findProductById(newWishlistProductDto.getProductId());
+
+       if (wishlist.isPresent() || product.isPresent()) {
+           WishlistProduct newWishlistProduct = new WishlistProduct(
+                   wishlist.get(),
+                   product.get(),
+                   newWishlistProductDto.isPurchased()
+           );
+
+           return wishlistProductRepository.save(newWishlistProduct);
+       }
+
+       throw new WishlistProductNotCreatedException("WishlistProduct not created");
+
     }
 
     public WishlistProduct updateWishlistProduct(Long requestedWishlistProductId, WishlistProductDto updatedWishlistProductDto, UserAccount userAccount) {

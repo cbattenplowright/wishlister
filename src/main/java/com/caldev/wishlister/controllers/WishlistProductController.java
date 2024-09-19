@@ -1,15 +1,19 @@
 package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.dtos.WishlistProductDto;
+import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.UserNotFoundException;
 import com.caldev.wishlister.exceptions.WishlistProductsNotFoundException;
+import com.caldev.wishlister.services.ProductService;
 import com.caldev.wishlister.services.WishlistProductService;
+import com.caldev.wishlister.services.WishlistService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +24,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/api/wishlist-products")
 public class WishlistProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private WishlistService wishlistService;
 
     @Autowired
     private WishlistProductService wishlistProductService;
@@ -62,7 +72,6 @@ public class WishlistProductController {
 //    CREATE WishlistProduct
 
     @PostMapping("/new")
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistProductDto.userId")
     public ResponseEntity<Object> createWishlistProduct(@Valid @RequestBody WishlistProductDto newWishlistProductDto,
                                                         @AuthenticationPrincipal UserAccount userAccount){
 
@@ -78,7 +87,7 @@ public class WishlistProductController {
 
         WishlistProduct newWishlistProduct = wishlistProductService.createWishlistProduct(newWishlistProductDto, userAccount);
 
-        return new ResponseEntity<>(newWishlistProductDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(newWishlistProduct, HttpStatus.CREATED);
     }
 
 //    UPDATE WishlistProduct
