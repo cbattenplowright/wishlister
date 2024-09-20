@@ -5,6 +5,7 @@ import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.services.WishlistService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -130,7 +131,7 @@ public class WishlistController {
 
     }
 
-    // DELETE Wishlist
+//  DELETE Wishlist
     @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId,

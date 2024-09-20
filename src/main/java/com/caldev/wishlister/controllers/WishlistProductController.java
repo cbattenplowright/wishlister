@@ -56,6 +56,8 @@ public class WishlistProductController {
                                                          @PathVariable Long requestedWishlistProductId,
                                                          @AuthenticationPrincipal UserAccount userAccount){
 
+//      TODO  When the user is authenticated and the requestedUserId is the same the endpoint can be accessed even if the WishlistProduct does not belong to the user
+
         if(userAccount == null){
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }

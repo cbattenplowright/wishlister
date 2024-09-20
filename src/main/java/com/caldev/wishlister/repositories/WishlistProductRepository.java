@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface WishlistProductRepository extends JpaRepository<WishlistProduct, Long> {
     boolean existsByWishlist_WishlistIdAndProduct_ProductId(Long wishlistId, Long productId);
@@ -12,4 +14,6 @@ public interface WishlistProductRepository extends JpaRepository<WishlistProduct
     void deleteByWishlist_WishlistId(Long wishlistId);
 
     void deleteByProduct_ProductId(Long productId);
+
+    List<WishlistProduct> findAllByWishlist_WishlistId(Long wishlistId);
 }

@@ -7,6 +7,7 @@ import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.repositories.ProductRepository;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
@@ -131,6 +132,7 @@ public class ProductService {
         return productRepository.save(productToUpdate.get());
     }
 
+    @Transactional
     public void deleteProduct(Long requestedProductId) {
         wishlistProductService.deleteWishlistProductByProductId(requestedProductId); // cascade delete()
         productRepository.deleteById(requestedProductId);

@@ -11,6 +11,7 @@ import com.caldev.wishlister.repositories.AuthorityRepository;
 import com.caldev.wishlister.repositories.ProductRepository;
 import com.caldev.wishlister.repositories.UserManagementRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -116,6 +117,7 @@ public class UserService {
         return userManagementRepository.save(userAccountToUpdate);
     }
 
+    @Transactional
     public void deleteUser(UUID requestedId){
         if (userManagementRepository.findById(requestedId).isEmpty()){
             throw new UserNotFoundException("User not found with id: " + requestedId);

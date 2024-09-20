@@ -9,6 +9,7 @@ import com.caldev.wishlister.exceptions.WishlistProductNotCreatedException;
 import com.caldev.wishlister.exceptions.WishlistProductsNotFoundException;
 import com.caldev.wishlister.exceptions.WishlistProductNotOwnedByUserAccountException;
 import com.caldev.wishlister.repositories.WishlistProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,10 @@ public class WishlistProductService {
 
     public WishlistProduct getWishlistProductById(Long wishlistProductId) {
         return wishlistProductRepository.findById(wishlistProductId).get();
+    }
+
+    public List<WishlistProduct> getAllWishlistProductsByWishlistId(Long wishlistId) {
+        return wishlistProductRepository.findAllByWishlist_WishlistId(wishlistId);
     }
 
     public boolean existsByWishlistIdAndProductId(Long wishlistId, Long productId) {
@@ -82,14 +87,17 @@ public class WishlistProductService {
         throw new WishlistProductsNotFoundException("WishlistProduct not found");
     }
 
+    @Transactional
     public void deleteWishlistProduct(Long wishlistProductId) {
         wishlistProductRepository.deleteById(wishlistProductId);
     }
 
+    @Transactional
     public void deleteWishlistProductByWishlistId(Long wishlistId) {
         wishlistProductRepository.deleteByWishlist_WishlistId(wishlistId);
     }
 
+    @Transactional
     public void deleteWishlistProductByProductId(Long productId) {
         wishlistProductRepository.deleteByProduct_ProductId(productId);
     }

@@ -22,7 +22,7 @@ public class Wishlist {
     @JsonIgnore
     private UserAccount userAccount;
 
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "wishlist")
     @JsonIgnoreProperties("wishlist")
     private List<WishlistProduct> wishlistProducts;
 
