@@ -93,12 +93,7 @@ public class WishlistProductService {
     }
 
     @Transactional
-    public void deleteWishlistProductByWishlistId(Long wishlistId) {
-        wishlistProductRepository.deleteByWishlist_WishlistId(wishlistId);
-    }
-
-    @Transactional
-    public void deleteWishlistProductByProductId(Long productId) {
-        wishlistProductRepository.deleteByProduct_ProductId(productId);
+    public void deleteByWishlistId(Long wishlistId) {
+        wishlistProductRepository.deleteByWishlistId(wishlistId);
     }
 }

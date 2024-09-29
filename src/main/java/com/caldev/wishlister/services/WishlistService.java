@@ -6,6 +6,8 @@ import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.repositories.WishlistRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class WishlistService {
     private final WishlistProductService wishlistProductService;
 
     private final WishlistRepository wishlistRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     public WishlistService(UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
@@ -96,27 +101,9 @@ public class WishlistService {
     @Transactional
     public void deleteWishlist(Long requestedWishlistId) {
 
-        System.out.println("Deleting wishlist with ID: " + requestedWishlistId);
+        wishlistProductService.deleteByWishlistId(requestedWishlistId);
 
-        List<WishlistProduct> wishlistProducts = wishlistProductService.getAllWishlistProductsByWishlistId(requestedWishlistId);
-        System.out.println("Found {%s} wishlist products for wishlist with ID: {%s}" + wishlistProducts.size() + requestedWishlistId);
-
-        for (WishlistProduct wishlistProduct : wishlistProducts) {
-            System.out.println("Deleting wishlist product with ID: {}" + wishlistProduct.getWishlist().getId());
-            wishlistProductService.deleteWishlistProductByWishlistId(wishlistProduct.getWishlist().getId());
-        }
-
-        System.out.println("Deleting wishlist with ID: {%s}" + requestedWishlistId);
-        wishlistRepository.deleteById(requestedWishlistId);
-//        List<WishlistProduct> wishlistProducts = wishlistProductService.getAllWishlistProductsByWishlistId(requestedWishlistId);
-//
-//        for (WishlistProduct wishlistProduct : wishlistProducts) {
-//            wishlistProductService.deleteWishlistProductByWishlistId(wishlistProduct.getWishlist().getId());
-//        }
-//
-////        wishlistProductService.deleteWishlistProductByWishlistId(requestedWishlistId);
-//
-//        wishlistRepository.deleteById(requestedWishlistId);
+        wishlistRepository.deleteByWishlistId(requestedWishlistId);
     }
 
     public boolean userAccountOwnsWishlist(Long wishlistId, UserAccount userAccount) {

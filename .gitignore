@@ -33,3 +33,4 @@ build/
 .vscode/
 
 .env.development.local
+.env.development.test

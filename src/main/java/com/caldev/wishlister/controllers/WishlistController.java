@@ -145,7 +145,8 @@ public class WishlistController {
         Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
 
         if (existingWishlist.isPresent()) {
-            wishlistService.deleteWishlist(requestedWishlistId);
+            System.out.println(existingWishlist.get());
+            wishlistService.deleteWishlist(existingWishlist.get().getId());
             return new ResponseEntity<>(requestedWishlistId, HttpStatus.OK);
         }
 

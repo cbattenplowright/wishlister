@@ -36,11 +36,11 @@ public class UserAccount implements UserDetails {
     @JsonIgnoreProperties("userAccounts")
     private Set<Authority> authorities;
 
-    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("userAccount")
     private List<Wishlist> wishlists;
 
-    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userAccount", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("userAccount")
     private List<Product> products;
 

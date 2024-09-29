@@ -17,12 +17,12 @@ public class Wishlist {
     @Column(nullable = false)
     private String wishlistName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_account_id")
     @JsonIgnore
     private UserAccount userAccount;
 
-    @OneToMany(mappedBy = "wishlist")
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("wishlist")
     private List<WishlistProduct> wishlistProducts;
 

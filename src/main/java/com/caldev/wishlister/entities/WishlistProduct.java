@@ -12,12 +12,12 @@ public class WishlistProduct {
     @Column(name = "wishlist_product_id")
     private Long wishlistProductId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wishlist_id")
     @JsonIgnoreProperties("wishlistProducts")
     private Wishlist wishlist;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties("wishlistProducts")
     private Product product;

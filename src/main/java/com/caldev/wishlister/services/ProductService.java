@@ -134,7 +134,17 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Long requestedProductId) {
-        wishlistProductService.deleteWishlistProductByProductId(requestedProductId); // cascade delete()
+
+        Optional<Product> productToDelete = findProductById(requestedProductId);
+
+        if (productToDelete.isEmpty()) {
+            throw new ProductNotFoundException("Product not found");
+        }
+
+        for (WishlistProduct wishlistProduct : productToDelete.get().getWishlistProducts()) {
+            wishlistProductService.deleteWishlistProduct(wishlistProduct.getWishlistProductId());
+        }
+
         productRepository.deleteById(requestedProductId);
     }
 
