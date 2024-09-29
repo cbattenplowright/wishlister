@@ -96,4 +96,9 @@ public class WishlistProductService {
     public void deleteByWishlistId(Long wishlistId) {
         wishlistProductRepository.deleteByWishlistId(wishlistId);
     }
+
+    @Transactional
+    public void deleteByProductId(Long productId) {
+        wishlistProductRepository.deleteByProductId(productId);
+    }
 }

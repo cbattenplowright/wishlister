@@ -24,12 +24,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    private final WishlistProductRepository wishlistProductRepository;
-
-    public ProductService(WishlistProductService wishlistProductService, ProductRepository productRepository, WishlistProductRepository wishlistProductRepository) {
+    public ProductService(WishlistProductService wishlistProductService, ProductRepository productRepository) {
         this.wishlistProductService = wishlistProductService;
         this.productRepository = productRepository;
-        this.wishlistProductRepository = wishlistProductRepository;
     }
 
     public Optional<Product> findProductById(Long requestedProductId) {
@@ -53,7 +50,7 @@ public class ProductService {
 
         if (newProductDto.getWishlistProductIds() != null) {
             for (Long wishlistProductId : newProductDto.getWishlistProductIds()){
-                WishlistProduct wishlistProduct = wishlistProductRepository.findById(wishlistProductId).get();
+                WishlistProduct wishlistProduct = wishlistProductService.getWishlistProductById(wishlistProductId);
                 wishlistProducts.add(wishlistProduct);
             }
         }
@@ -123,7 +120,7 @@ public class ProductService {
         if(updatedProductDto.getWishlistProductIds() != null) {
             List<WishlistProduct> wishlistProducts = new ArrayList<>();
             for (Long wishlistProductId : updatedProductDto.getWishlistProductIds()){
-                WishlistProduct wishlistProduct = wishlistProductRepository.findById(wishlistProductId).get();
+                WishlistProduct wishlistProduct = wishlistProductService.getWishlistProductById(wishlistProductId);
                 wishlistProducts.add(wishlistProduct);
             }
             productToUpdate.get().setWishlistProducts(wishlistProducts);
@@ -135,17 +132,9 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long requestedProductId) {
 
-        Optional<Product> productToDelete = findProductById(requestedProductId);
+       wishlistProductService.deleteByProductId(requestedProductId);
 
-        if (productToDelete.isEmpty()) {
-            throw new ProductNotFoundException("Product not found");
-        }
-
-        for (WishlistProduct wishlistProduct : productToDelete.get().getWishlistProducts()) {
-            wishlistProductService.deleteWishlistProduct(wishlistProduct.getWishlistProductId());
-        }
-
-        productRepository.deleteById(requestedProductId);
+        productRepository.deleteByProductId(requestedProductId);
     }
 
     public boolean userAccountOwnsProduct(Long productId, UserAccount userAccount){
