@@ -2,6 +2,8 @@ package com.caldev.wishlister.entities;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "pending_share")
 public class PendingShare {
@@ -10,11 +12,11 @@ public class PendingShare {
     @Column(name = "pending_share_id")
     private Long pendingShareId;
     private String token;
-    private String senderUserId;
+    private UUID senderUserId;
     private Long wishlistId;
     private String recipientEmail;
 
-    public PendingShare(String token, String senderUserId, Long wishlistId, String recipientEmail) {
+    public PendingShare(String token, UUID senderUserId, Long wishlistId, String recipientEmail) {
         this.token = token;
         this.senderUserId = senderUserId;
         this.wishlistId = wishlistId;
@@ -40,11 +42,11 @@ public class PendingShare {
         this.token = token;
     }
 
-    public String getSenderUserId() {
+    public UUID getSenderUserId() {
         return senderUserId;
     }
 
-    public void setSenderUserId(String senderUserId) {
+    public void setSenderUserId(UUID senderUserId) {
         this.senderUserId = senderUserId;
     }
 
