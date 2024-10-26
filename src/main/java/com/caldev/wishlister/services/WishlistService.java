@@ -9,6 +9,7 @@ import com.caldev.wishlister.repositories.WishlistRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Email;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -108,5 +109,32 @@ public class WishlistService {
 
     public boolean userAccountOwnsWishlist(Long wishlistId, UserAccount userAccount) {
         return wishlistRepository.existsByWishlistIdAndUserAccount(wishlistId, userAccount);
+    }
+
+    public void shareWishlist(Wishlist wishlistToShare, String sharedUserEmail) {
+/*
+    If user email exists in database, then:
+    Generate Share Token:
+        Use UUID or Spring’s Jwt for tokens with added expiration if needed.
+    Store the Token with Share Details:
+        Create a PendingShare entity to store the token, senderUserId, wishlistId, recipientEmail, and an optional expiryDate.
+    Send the Email with Confirmation Link:
+        Use an email service to send a "Share" button containing a link with the token.
+    When shared user clicks link and logs in, add wishlist to the user adding record to shared_user_wishlist
+
+
+    If user email does not exist in database, then send email to join wishlister to access friend's shared wishlist
+ */
+
+        UserAccount sharedUserAccount = userService.getUserByEmail(sharedUserEmail);
+
+        if (sharedUserAccount != null) {
+            initiateShare(wishlistToShare, sharedUserEmail);
+        }
+    }
+
+    public void initiateShare(Wishlist wishlistToShare, String email) {
+
+        String shareToken = UUID.randomUUID().toString();
     }
 }

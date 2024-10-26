@@ -42,6 +42,10 @@ public class UserService {
         return userManagementRepository.findById(requestedId).orElse(null);
     }
 
+    public UserAccount getUserByEmail(String email){
+        return userManagementRepository.findByEmail(email);
+    }
+
     public UserAccount createUser(NewUserDto newUserDto){
         Set<Authority> userAuthority = new HashSet<>(List.of(authorityRepository.findByAuthority("ROLE_USER")));
 

@@ -7,6 +7,7 @@ import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.services.WishlistService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -148,6 +149,27 @@ public class WishlistController {
             System.out.println(existingWishlist.get());
             wishlistService.deleteWishlist(existingWishlist.get().getId());
             return new ResponseEntity<>(requestedWishlistId, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/{requestedUserId}/{requestedWishlistId}/share")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> shareWishlist(@PathVariable UUID requestedUserId,
+                                                @PathVariable Long requestedWishlistId,
+                                                @RequestParam String email,
+                                                @AuthenticationPrincipal UserAccount userAccount) {
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
+
+        if (existingWishlist.isPresent()) {
+            wishlistService.shareWishlist(existingWishlist.get(), email);
+            return new ResponseEntity<>(existingWishlist.get(), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
