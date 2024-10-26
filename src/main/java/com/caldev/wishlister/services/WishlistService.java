@@ -22,6 +22,8 @@ import java.util.UUID;
 @Service
 public class WishlistService {
 
+    public final EmailService emailService;
+
     public final PendingShareRepository pendingShareRepository;
 
     private final UserService userService;
@@ -34,7 +36,8 @@ public class WishlistService {
     private EntityManager entityManager;
 
 
-    public WishlistService(PendingShareRepository pendingShareRepository, UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
+    public WishlistService(EmailService emailService, PendingShareRepository pendingShareRepository, UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
+        this.emailService = emailService;
         this.pendingShareRepository = pendingShareRepository;
         this.wishlistProductService = wishlistProductService;
         this.userService = userService;
@@ -158,10 +161,11 @@ public class WishlistService {
     public void sendShareEmail(String name, String recipientUserEmail, String shareToken) {
 
         String confirmationUrl = "http://localhost:8080/wishlist/confirm-share/" + shareToken;
-        emailService.send(
-                recipientUserEmail,
-                "%s has shared a wishlist with you!".formatted(name),
-                "Click the link below to see your friend's wishlist with: " + confirmationUrl
-                );
+        emailService.sendEmail();
+//        emailService.send(
+//                recipientUserEmail,
+//                "%s has shared a wishlist with you!".formatted(name),
+//                "Click the link below to see your friend's wishlist with: " + confirmationUrl
+//                );
     }
 }

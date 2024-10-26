@@ -4,10 +4,9 @@ import com.caldev.wishlister.dtos.WishlistDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
+import com.caldev.wishlister.services.EmailService;
 import com.caldev.wishlister.services.WishlistService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +25,9 @@ public class WishlistController {
 
     @Autowired
     private WishlistService wishlistService;
+
+    @Autowired
+    private EmailService emailService;
 
     // INDEX Wishlists
     @GetMapping()
@@ -168,7 +170,8 @@ public class WishlistController {
         Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
 
         if (existingWishlist.isPresent()) {
-            wishlistService.shareWishlist(existingWishlist.get(), userAccount, email);
+            emailService.sendEmail();
+//            wishlistService.shareWishlist(existingWishlist.get(), userAccount, email);
             return new ResponseEntity<>(existingWishlist.get(), HttpStatus.OK);
         }
 
