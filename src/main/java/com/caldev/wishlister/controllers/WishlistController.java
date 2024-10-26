@@ -168,7 +168,7 @@ public class WishlistController {
         Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
 
         if (existingWishlist.isPresent()) {
-            wishlistService.shareWishlist(existingWishlist.get(), email);
+            wishlistService.shareWishlist(existingWishlist.get(), userAccount, email);
             return new ResponseEntity<>(existingWishlist.get(), HttpStatus.OK);
         }
 

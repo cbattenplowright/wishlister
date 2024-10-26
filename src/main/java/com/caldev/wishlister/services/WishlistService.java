@@ -1,10 +1,12 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.dtos.WishlistDto;
+import com.caldev.wishlister.entities.PendingShare;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
+import com.caldev.wishlister.repositories.PendingShareRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,6 +22,8 @@ import java.util.UUID;
 @Service
 public class WishlistService {
 
+    public final PendingShareRepository pendingShareRepository;
+
     private final UserService userService;
 
     private final WishlistProductService wishlistProductService;
@@ -30,7 +34,8 @@ public class WishlistService {
     private EntityManager entityManager;
 
 
-    public WishlistService(UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
+    public WishlistService(PendingShareRepository pendingShareRepository, UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
+        this.pendingShareRepository = pendingShareRepository;
         this.wishlistProductService = wishlistProductService;
         this.userService = userService;
         this.wishlistRepository = wishlistRepository;
@@ -111,7 +116,7 @@ public class WishlistService {
         return wishlistRepository.existsByWishlistIdAndUserAccount(wishlistId, userAccount);
     }
 
-    public void shareWishlist(Wishlist wishlistToShare, String sharedUserEmail) {
+    public void shareWishlist(Wishlist wishlistToShare, UserAccount sendUserAccount, String recipientUserEmail) {
 /*
     If user email exists in database, then:
     Generate Share Token:
@@ -126,15 +131,37 @@ public class WishlistService {
     If user email does not exist in database, then send email to join wishlister to access friend's shared wishlist
  */
 
-        UserAccount sharedUserAccount = userService.getUserByEmail(sharedUserEmail);
+        UserAccount sharedUserAccount = userService.getUserByEmail(recipientUserEmail);
 
         if (sharedUserAccount != null) {
-            initiateShare(wishlistToShare, sharedUserEmail);
+            String shareToken = initiateShare(wishlistToShare, sendUserAccount, recipientUserEmail);
+            sendShareEmail(sendUserAccount.getName(), recipientUserEmail, shareToken);
         }
     }
 
-    public void initiateShare(Wishlist wishlistToShare, String email) {
+    public String initiateShare(Wishlist wishlistToShare, UserAccount sendUserAccount, String recipientEmail) {
 
         String shareToken = UUID.randomUUID().toString();
+
+        PendingShare pendingShare = new PendingShare(
+                shareToken,
+                sendUserAccount.getId(),
+                wishlistToShare.getId(),
+                recipientEmail
+        );
+
+        pendingShareRepository.save(pendingShare);
+
+        return shareToken;
+    }
+
+    public void sendShareEmail(String name, String recipientUserEmail, String shareToken) {
+
+        String confirmationUrl = "http://localhost:8080/wishlist/confirm-share/" + shareToken;
+        emailService.send(
+                recipientUserEmail,
+                "%s has shared a wishlist with you!".formatted(name),
+                "Click the link below to see your friend's wishlist with: " + confirmationUrl
+                );
     }
 }
