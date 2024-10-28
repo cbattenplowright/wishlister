@@ -65,4 +65,18 @@ public class WishlistProduct {
     public void setIsPurchased(boolean purchased) {
         isPurchased = purchased;
     }
+
+    public void setPurchased(boolean purchased) {
+        isPurchased = purchased;
+    }
+
+    @Override
+    public String toString() {
+        return "WishlistProduct{" +
+                "wishlistProductId=" + wishlistProductId +
+                ", wishlist=" + wishlist +
+                ", product=" + product +
+                ", isPurchased=" + isPurchased +
+                '}';
+    }
 }

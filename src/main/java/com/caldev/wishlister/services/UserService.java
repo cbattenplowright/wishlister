@@ -34,8 +34,25 @@ public class UserService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public List<UserAccount> getAllUsers(){
-        return userManagementRepository.findAll();
+    public List<UserAccountDto> getAllUsers(){
+
+        List<UserAccount> userAccounts = userManagementRepository.findAll();
+        List<UserAccountDto> userAccountDtos = new ArrayList<>();
+
+        for (UserAccount userAccount : userAccounts) {
+            UserAccountDto userAccountDto = new UserAccountDto(
+                    userAccount.getEmail(),
+                    userAccount.getPassword(),
+                    userAccount.getName(),
+                    userAccount.getDateOfBirth(),
+                    new ArrayList<>(userAccount.getAuthorities().stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                    new ArrayList<>(userAccount.getWishlists().stream().map(Wishlist::getWishlistId).toList()),
+                    new ArrayList<>(userAccount.getProducts().stream().map(Product::getProductId).toList()
+                    ));
+            userAccountDtos.add(userAccountDto);
+        }
+
+        return userAccountDtos;
     }
 
     public UserAccount getUserById(UUID requestedId){

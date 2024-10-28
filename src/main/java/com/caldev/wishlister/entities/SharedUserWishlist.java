@@ -46,6 +46,18 @@ public class SharedUserWishlist {
         this.sharedWishlist = sharedWishlist;
     }
 
+    public void setSharedUserWishlistId(Long sharedUserWishlistId) {
+        this.sharedUserWishlistId = sharedUserWishlistId;
+    }
+
+    public UserAccount getSharedUserAccount() {
+        return sharedUserAccount;
+    }
+
+    public void setSharedUserAccount(UserAccount sharedUserAccount) {
+        this.sharedUserAccount = sharedUserAccount;
+    }
+
     @Override
     public String toString() {
         return "SharedUserWishlist{" +

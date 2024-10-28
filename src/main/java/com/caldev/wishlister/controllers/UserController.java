@@ -26,7 +26,7 @@ public class UserController {
 //    INDEX Users
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserAccount>> getAllUsers(){
+    public ResponseEntity<List<UserAccountDto>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 

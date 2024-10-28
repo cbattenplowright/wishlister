@@ -2,6 +2,7 @@ package com.caldev.wishlister.integrationTests.controllers.UserAccountController
 
 
 import com.caldev.wishlister.controllers.UserController;
+import com.caldev.wishlister.dtos.UserAccountDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.security.CustomUserDetailsService;
 import com.caldev.wishlister.security.SecurityConfig;
@@ -40,7 +41,7 @@ public class UserAccountControllerIndexTests {
 
     @BeforeEach
     void setUp(){
-        when(userService.getAllUsers()).thenReturn(List.of(userAccount));
+        when(userService.getAllUsers()).thenReturn(List.of(new UserAccountDto()));
     }
 
 

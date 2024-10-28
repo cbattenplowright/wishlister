@@ -66,6 +66,14 @@ public class Wishlist {
         this.wishlistProducts = wishlistProducts;
     }
 
+    public Long getWishlistId() {
+        return wishlistId;
+    }
+
+    public void setWishlistId(Long wishlistId) {
+        this.wishlistId = wishlistId;
+    }
+
     @Override
     public String toString() {
         return "Wishlist{" +

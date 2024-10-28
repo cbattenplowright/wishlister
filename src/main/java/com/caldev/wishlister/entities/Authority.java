@@ -12,7 +12,9 @@ public class Authority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "authority_id")
+    private Long authorityId;
+
     @Column(name = "authority", nullable = false)
     private String authority;
     @ManyToMany(mappedBy="authorities", fetch = FetchType.EAGER)
@@ -27,8 +29,8 @@ public class Authority implements GrantedAuthority {
 
 //    Getters and Setters
 
-    public Long getId() {
-        return id;
+    public Long getAuthorityId() {
+        return authorityId;
     }
 
     @Override
@@ -40,10 +42,22 @@ public class Authority implements GrantedAuthority {
         this.authority = authority;
     }
 
+    public void setAuthorityId(Long authorityId) {
+        this.authorityId = authorityId;
+    }
+
+    public Set<UserAccount> getUserAccounts() {
+        return userAccounts;
+    }
+
+    public void setUserAccounts(Set<UserAccount> userAccounts) {
+        this.userAccounts = userAccounts;
+    }
+
     @Override
     public String toString() {
         return "Authority{" +
-                "id=" + id +
+                "authorityId=" + authorityId +
                 ", authority='" + authority + '\'' +
                 '}';
     }
