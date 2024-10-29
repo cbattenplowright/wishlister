@@ -1,5 +1,6 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.dtos.WishlistProductDto;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
@@ -55,7 +56,7 @@ public class WishlistProductService {
         }
 
        Optional<Wishlist> wishlist = wishlistService.findWishlistById(newWishlistProductDto.getWishlistId());
-       Optional<Product> product = productService.findProductById(newWishlistProductDto.getProductId());
+       ProductDto product = productService.findProductById(newWishlistProductDto.getProductId());
 
        if (wishlist.isPresent() || product.isPresent()) {
            WishlistProduct newWishlistProduct = new WishlistProduct(

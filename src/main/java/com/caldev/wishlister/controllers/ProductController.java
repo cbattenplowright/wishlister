@@ -35,14 +35,13 @@ public class ProductController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<Product> product = productService.findProductById(requestedProductId);
+        ProductDto product = productService.findProductById(requestedProductId);
 
-        if (product.isEmpty()) {
-            throw new ProductNotFoundException("Product not found");
+        if (product != null) {
+            return new ResponseEntity<>(product, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(product, HttpStatus.OK);
-
+        throw new ProductNotFoundException("Product not found");
     }
 
 //  CREATE Product
@@ -108,9 +107,9 @@ public class ProductController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<Product> existingProduct = productService.findProductById(requestedProductId);
+        ProductDto existingProduct = productService.findProductById(requestedProductId);
 
-        if (existingProduct.isPresent()) {
+        if (existingProduct != null) {
             productService.deleteProduct(requestedProductId);
             return new ResponseEntity<>(requestedProductId, HttpStatus.OK);
         }

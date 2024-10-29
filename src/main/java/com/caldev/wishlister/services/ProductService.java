@@ -29,9 +29,29 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Optional<Product> findProductById(Long requestedProductId) {
+    public ProductDto findProductById(Long requestedProductId) {
 
-        return productRepository.findById(requestedProductId);
+
+        Optional<Product> product = productRepository.findById(requestedProductId); // <Product>
+
+        if (product.isEmpty())  {
+            throw new ProductNotFoundException("Product not found");
+        }
+
+        ProductDto productDto = new ProductDto(
+                product.get().getProductId(),
+                product.get().getProductName(),
+                product.get().getUserAccount().getId(),
+                product.get().getPrice(),
+                product.get().getUrl(),
+                product.get().getImageUrl(),
+                product.get().getPriority(),
+                product.get().getDescription(),
+                product.get().getDateAdded(),
+                new ArrayList<>(product.get().getWishlistProducts().stream().map(WishlistProduct::getWishlistProductId).toList())
+        );
+
+        return productDto;
     }
 
     public boolean existsByProductNameAndUserAccount(String productName, UserAccount userAccount) {
