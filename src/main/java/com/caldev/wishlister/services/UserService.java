@@ -79,7 +79,7 @@ public class UserService {
         return userManagementRepository.findByEmail(email);
     }
 
-    public UserAccount createUser(NewUserDto newUserDto){
+    public UserAccountDto createUser(NewUserDto newUserDto){
         Set<Authority> userAuthority = new HashSet<>(List.of(authorityRepository.findByAuthority("ROLE_USER")));
 
         UserAccount newUserAccount = new UserAccount(
@@ -89,7 +89,21 @@ public class UserService {
                 newUserDto.getDateOfBirth(),
                 userAuthority
                 );
-        return userManagementRepository.save(newUserAccount);
+
+        userManagementRepository.save(newUserAccount);
+
+        UserAccountDto userAccountDto = new UserAccountDto(
+                newUserAccount.getEmail(),
+                newUserAccount.getPassword(),
+                newUserAccount.getName(),
+                newUserAccount.getDateOfBirth(),
+
+                new ArrayList<>(Optional.ofNullable(newUserAccount.getAuthorities()).orElseGet(ArrayList::new).stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                new ArrayList<>(Optional.ofNullable(newUserAccount.getWishlists()).orElseGet(ArrayList::new).stream().map(Wishlist::getWishlistId).toList()),
+                new ArrayList<>(Optional.ofNullable(newUserAccount.getProducts()).orElseGet(ArrayList::new).stream().map(Product::getProductId).toList())
+        );
+
+        return userAccountDto;
     }
 
     public UserAccount updateUser(UUID requestedId, UserAccountDto userAccountDto){

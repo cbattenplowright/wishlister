@@ -1,6 +1,7 @@
 package com.caldev.wishlister.controllers;
 
 import com.caldev.wishlister.dtos.NewUserDto;
+import com.caldev.wishlister.dtos.UserAccountDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class RegisterController {
     private UserService userService;
 
     @PostMapping("/new")
-    public ResponseEntity<UserAccount> createUser(@RequestBody NewUserDto newUserDto){
-        UserAccount newUserAccount = userService.createUser(newUserDto);
+    public ResponseEntity<UserAccountDto> createUser(@RequestBody NewUserDto newUserDto){
+        UserAccountDto newUserAccount = userService.createUser(newUserDto);
         return new ResponseEntity<>(
                 newUserAccount,
                 HttpStatus.CREATED);
