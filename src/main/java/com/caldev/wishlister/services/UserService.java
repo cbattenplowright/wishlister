@@ -55,8 +55,24 @@ public class UserService {
         return userAccountDtos;
     }
 
-    public UserAccount getUserById(UUID requestedId){
-        return userManagementRepository.findById(requestedId).orElse(null);
+    public UserAccountDto getUserById(UUID requestedId){
+        UserAccount userAccount = userManagementRepository.findById(requestedId).orElse(null);
+        UserAccountDto userAccountDto;
+        if (userAccount == null){
+            throw new UserNotFoundException("User not found with id: " + requestedId);
+        } else {
+            userAccountDto= new UserAccountDto(
+                    userAccount.getEmail(),
+                    userAccount.getPassword(),
+                    userAccount.getName(),
+                    userAccount.getDateOfBirth(),
+                    new ArrayList<>(userAccount.getAuthorities().stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                    new ArrayList<>(userAccount.getWishlists().stream().map(Wishlist::getWishlistId).toList()),
+                    new ArrayList<>(userAccount.getProducts().stream().map(Product::getProductId).toList())
+            );
+        }
+
+        return userAccountDto;
     }
 
     public UserAccount getUserByEmail(String email){

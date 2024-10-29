@@ -38,7 +38,7 @@ public class UserController {
         if (userAccount == null){
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        UserAccount user = userService.getUserById(requestedUserId);
+        UserAccountDto user = userService.getUserById(requestedUserId);
         if (user != null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
