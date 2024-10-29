@@ -12,6 +12,8 @@ import com.caldev.wishlister.repositories.ProductRepository;
 import com.caldev.wishlister.repositories.UserManagementRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -84,9 +86,11 @@ public class UserService {
     public UserAccountDto createUser(NewUserDto newUserDto){
         Set<Authority> userAuthority = new HashSet<>(List.of(authorityRepository.findByAuthority("ROLE_USER")));
 
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         UserAccount newUserAccount = new UserAccount(
                 newUserDto.getEmail(),
-                newUserDto.getPassword(),
+                passwordEncoder.encode(newUserDto.getPassword()),
                 newUserDto.getName(),
                 newUserDto.getDateOfBirth(),
                 userAuthority
