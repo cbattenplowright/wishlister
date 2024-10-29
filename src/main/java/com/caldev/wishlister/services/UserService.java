@@ -41,6 +41,7 @@ public class UserService {
 
         for (UserAccount userAccount : userAccounts) {
             UserAccountDto userAccountDto = new UserAccountDto(
+                    userAccount.getUserAccountId(),
                     userAccount.getEmail(),
                     userAccount.getPassword(),
                     userAccount.getName(),
@@ -62,6 +63,7 @@ public class UserService {
             throw new UserNotFoundException("User not found with id: " + requestedId);
         } else {
             userAccountDto= new UserAccountDto(
+                    userAccount.getUserAccountId(),
                     userAccount.getEmail(),
                     userAccount.getPassword(),
                     userAccount.getName(),
@@ -93,6 +95,7 @@ public class UserService {
         userManagementRepository.save(newUserAccount);
 
         UserAccountDto userAccountDto = new UserAccountDto(
+                newUserAccount.getUserAccountId(),
                 newUserAccount.getEmail(),
                 newUserAccount.getPassword(),
                 newUserAccount.getName(),
@@ -106,7 +109,7 @@ public class UserService {
         return userAccountDto;
     }
 
-    public UserAccount updateUser(UUID requestedId, UserAccountDto userAccountDto){
+    public UserAccountDto updateUser(UUID requestedId, UserAccountDto userAccountDto){
         UserAccount userAccountToUpdate = userManagementRepository.findById(requestedId).orElse(null);
 
         if (userAccountToUpdate == null){
@@ -165,7 +168,21 @@ public class UserService {
             userAccountToUpdate.setProducts(products);
         }
 
-        return userManagementRepository.save(userAccountToUpdate);
+        userManagementRepository.save(userAccountToUpdate);
+
+        UserAccountDto updatedUserAccountDto = new UserAccountDto(
+                userAccountToUpdate.getUserAccountId(),
+                userAccountToUpdate.getEmail(),
+                userAccountToUpdate.getPassword(),
+                userAccountToUpdate.getName(),
+                userAccountToUpdate.getDateOfBirth(),
+
+                new ArrayList<>(userAccountToUpdate.getAuthorities().stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                new ArrayList<>(userAccountToUpdate.getWishlists().stream().map(Wishlist::getWishlistId).toList()),
+                new ArrayList<>(userAccountToUpdate.getProducts().stream().map(Product::getProductId).toList())
+        );
+
+        return updatedUserAccountDto;
     }
 
     @Transactional
