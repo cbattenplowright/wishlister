@@ -32,14 +32,22 @@ public class WishlistController {
     // INDEX Wishlists
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Wishlist>> getAllWishlists() {
+    public ResponseEntity<List<WishlistDto>> getAllWishlists() {
         List<Wishlist> wishlistList = wishlistService.findAllWishlists();
 
-        if (wishlistList == null) {
-            throw new WishlistsNotFoundException("Wishlists not found");
+        if (wishlistList != null) {
+
+            List<WishlistDto> wishlistDtoList = wishlistList
+                    .stream()
+                    .map(wishlist -> new WishlistDto(
+                            wishlist.getUserAccount().getId(),
+                            wishlist.getWishlistName()
+                    )).toList();
+
+            return new ResponseEntity<>(wishlistDtoList, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(wishlistList, HttpStatus.OK);
+        throw new WishlistsNotFoundException("Wishlists not found");
     }
 
     // INDEX User Wishlists
