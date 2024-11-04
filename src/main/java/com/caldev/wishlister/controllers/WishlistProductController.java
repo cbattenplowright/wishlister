@@ -74,7 +74,15 @@ public class WishlistProductController {
         WishlistProduct wishlistProduct = wishlistProductService.getWishlistProductById(requestedWishlistProductId);
 
         if(wishlistProduct != null){
-            return new ResponseEntity<>(wishlistProduct, HttpStatus.OK);
+
+            WishlistProductDto wishlistProductDto = new WishlistProductDto(
+                    wishlistProduct.getWishlistProductId(),
+                    wishlistProduct.getWishlist().getWishlistId(),
+                    wishlistProduct.getProduct().getProductId(),
+                    wishlistProduct.isPurchased()
+            );
+
+            return new ResponseEntity<>(wishlistProductDto, HttpStatus.OK);
         }
 
         throw new WishlistProductsNotFoundException("WishlistProduct not found");
