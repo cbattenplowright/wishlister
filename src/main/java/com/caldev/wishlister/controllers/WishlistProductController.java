@@ -42,11 +42,20 @@ public class WishlistProductController {
 
         List<WishlistProduct> wishlistProducts = wishlistProductService.getAllWishlistProducts();
 
-        if(wishlistProducts == null){
-            throw new WishlistProductsNotFoundException("WishlistProducts not found");
+        if(wishlistProducts != null){
+
+            List<WishlistProductDto> wishlistProductDtos = wishlistProducts
+                    .stream()
+                    .map(wishlistProduct -> new WishlistProductDto(
+                            wishlistProduct.getWishlistProductId(),
+                            wishlistProduct.getWishlist().getWishlistId(),
+                            wishlistProduct.getProduct().getProductId(),
+                            wishlistProduct.isPurchased())).toList();
+
+            return new ResponseEntity<>(wishlistProductDtos, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(wishlistProducts, HttpStatus.OK);
+        throw new WishlistProductsNotFoundException("WishlistProducts not found");
     }
 
 //    SHOW WishlistProduct
