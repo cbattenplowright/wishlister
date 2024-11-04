@@ -69,7 +69,6 @@ public class WishlistProductService {
        }
 
        throw new WishlistProductNotCreatedException("WishlistProduct not created");
-
     }
 
     public WishlistProduct updateWishlistProduct(Long requestedWishlistProductId, WishlistProductDto updatedWishlistProductDto, UserAccount userAccount) {

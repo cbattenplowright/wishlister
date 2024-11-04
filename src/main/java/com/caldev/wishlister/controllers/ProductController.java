@@ -79,8 +79,24 @@ public class ProductController {
 
         Product newProduct = productService.createProduct(newProductDto, userAccount);
 
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+        if (newProduct != null) {
+            ProductDto productDto = new ProductDto(
+                    newProduct.getProductId(),
+                    newProduct.getProductName(),
+                    newProduct.getUserAccount().getId(),
+                    newProduct.getPrice(),
+                    newProduct.getUrl(),
+                    newProduct.getImageUrl(),
+                    newProduct.getPriority(),
+                    newProduct.getDescription(),
+                    newProduct.getDateAdded(),
+                    new ArrayList<>(newProduct.getWishlistProducts().stream().map(WishlistProduct::getWishlistProductId).toList())
+            );
 
+            return new ResponseEntity<>(productDto, HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity<>("Product not created", HttpStatus.BAD_REQUEST);
     }
 
 //    UPDATE Product
