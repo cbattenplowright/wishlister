@@ -90,11 +90,17 @@ public class WishlistController {
 
         Optional<Wishlist> wishlist = wishlistService.findWishlistById(requestedWishlistId);
 
-        if (wishlist.isEmpty()) {
-            throw new WishlistsNotFoundException("Wishlist not found");
+        if (wishlist.isPresent()) {
+
+            WishlistDto wishlistDto = new WishlistDto(
+                    wishlist.get().getUserAccount().getId(),
+                    wishlist.get().getWishlistName()
+            );
+
+            return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(wishlist, HttpStatus.OK);
+        throw new WishlistsNotFoundException("Wishlist not found");
 
     }
 
