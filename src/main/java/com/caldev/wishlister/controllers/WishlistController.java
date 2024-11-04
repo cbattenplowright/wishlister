@@ -62,11 +62,19 @@ public class WishlistController {
 
         List<Wishlist> wishlistList = wishlistService.findAllUserWishlists(requestedUserId);
 
-        if (wishlistList == null) {
-            throw new WishlistsNotFoundException("Wishlists not found");
+        if (wishlistList != null) {
+
+            List<WishlistDto> wishlistDtoList = wishlistList
+                    .stream()
+                    .map(wishlist -> new WishlistDto(
+                            wishlist.getUserAccount().getId(),
+                            wishlist.getWishlistName()
+                    )).toList();
+
+            return new ResponseEntity<>(wishlistDtoList, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(wishlistList, HttpStatus.OK);
+        throw new WishlistsNotFoundException("Wishlists not found");
     }
 
     // SHOW Wishlist
