@@ -74,8 +74,8 @@ public class WishlistProduct {
     public String toString() {
         return "WishlistProduct{" +
                 "wishlistProductId=" + wishlistProductId +
-                ", wishlist=" + wishlist +
-                ", product=" + product +
+                ", wishlist=" + wishlist.getWishlistId() +
+                ", product=" + product.getProductId() +
                 ", isPurchased=" + isPurchased +
                 '}';
     }

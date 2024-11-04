@@ -3,6 +3,7 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
+import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.services.ProductService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,10 +37,24 @@ public class ProductController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        ProductDto product = productService.findProductById(requestedProductId);
+        Optional<Product> product = productService.findProductById(requestedProductId);
 
-        if (product != null) {
-            return new ResponseEntity<>(product, HttpStatus.OK);
+        if (product.isPresent()) {
+
+            ProductDto productDto = new ProductDto(
+                    product.get().getProductId(),
+                    product.get().getProductName(),
+                    product.get().getUserAccount().getId(),
+                    product.get().getPrice(),
+                    product.get().getUrl(),
+                    product.get().getImageUrl(),
+                    product.get().getPriority(),
+                    product.get().getDescription(),
+                    product.get().getDateAdded(),
+                    new ArrayList<>(product.get().getWishlistProducts().stream().map(WishlistProduct::getWishlistProductId).toList())
+            );
+
+            return new ResponseEntity<>(productDto, HttpStatus.OK);
         }
 
         throw new ProductNotFoundException("Product not found");
@@ -107,9 +123,9 @@ public class ProductController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        ProductDto existingProduct = productService.findProductById(requestedProductId);
+        Optional<Product> existingProduct = productService.findProductById(requestedProductId);
 
-        if (existingProduct != null) {
+        if (existingProduct.isPresent()) {
             productService.deleteProduct(requestedProductId);
             return new ResponseEntity<>(requestedProductId, HttpStatus.OK);
         }

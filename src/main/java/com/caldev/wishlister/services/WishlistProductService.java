@@ -56,7 +56,7 @@ public class WishlistProductService {
         }
 
        Optional<Wishlist> wishlist = wishlistService.findWishlistById(newWishlistProductDto.getWishlistId());
-       ProductDto product = productService.findProductById(newWishlistProductDto.getProductId());
+       Optional<Product> product = productService.findProductById(newWishlistProductDto.getProductId());
 
        if (wishlist.isPresent() || product.isPresent()) {
            WishlistProduct newWishlistProduct = new WishlistProduct(
