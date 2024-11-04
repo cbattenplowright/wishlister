@@ -123,7 +123,17 @@ public class WishlistController {
 
         Wishlist newWishlist = wishlistService.createWishlist(newWishlistDto, userAccount);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if (newWishlist != null) {
+
+            WishlistDto createdWishlistDto = new WishlistDto(
+                    newWishlist.getUserAccount().getId(),
+                    newWishlist.getWishlistName()
+            );
+
+            return new ResponseEntity<>(createdWishlistDto, HttpStatus.CREATED);
+        }
+
+        throw new WishlistsNotFoundException("Wishlist not found");
     }
 
 //        UPDATE Wishlist
