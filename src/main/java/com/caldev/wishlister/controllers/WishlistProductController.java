@@ -106,7 +106,19 @@ public class WishlistProductController {
 
         WishlistProduct newWishlistProduct = wishlistProductService.createWishlistProduct(newWishlistProductDto, userAccount);
 
-        return new ResponseEntity<>(newWishlistProduct, HttpStatus.CREATED);
+        if (newWishlistProduct != null) {
+
+            WishlistProductDto createdWishlistProductDto = new WishlistProductDto(
+                    newWishlistProduct.getWishlistProductId(),
+                    newWishlistProduct.getWishlist().getWishlistId(),
+                    newWishlistProduct.getProduct().getProductId(),
+                    newWishlistProduct.isPurchased()
+            );
+
+            return new ResponseEntity<>(createdWishlistProductDto, HttpStatus.CREATED);
+        }
+
+        throw new WishlistProductsNotFoundException("WishlistProduct not created");
     }
 
 //    UPDATE WishlistProduct
