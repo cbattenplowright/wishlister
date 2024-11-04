@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class WishlistProductDto {
 
-    @NotNull
     private Long wishlistProductId;
 
     @NotNull
@@ -18,6 +17,12 @@ public class WishlistProductDto {
 
     public WishlistProductDto() {
 
+    }
+
+    public WishlistProductDto(Long wishlistId, Long productId, boolean isPurchased) {
+        this.wishlistId = wishlistId;
+        this.productId = productId;
+        this.isPurchased = isPurchased;
     }
 
     public WishlistProductDto(Long wishlistProductId,Long wishlistId, Long productId, boolean isPurchased) {
