@@ -62,10 +62,6 @@ public class ProductService {
             }
         }
 
-        if (newProductDto.getPrioritySelection() == null) {
-
-        }
-
         Product newProduct = new Product(
                 newProductDto.getProductName(),
                 newProductDto.getPrice(),

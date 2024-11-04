@@ -105,7 +105,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> updateProduct(@PathVariable UUID requestedUserId,
                                                 @PathVariable Long requestedProductId,
-                                                @Valid @RequestBody ProductDto updatedProductDto,
+                                                @Valid @RequestBody ProductDto productDtoToUpdate,
                                                 @AuthenticationPrincipal UserAccount userAccount) {
 /*        check if user is authenticated
             if not, return unauthenticated
@@ -118,13 +118,27 @@ public class ProductController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        Product updatedProduct = productService.updateProduct(requestedProductId, updatedProductDto, userAccount);
+        Product updatedProduct = productService.updateProduct(requestedProductId, productDtoToUpdate, userAccount);
 
-        if (updatedProduct == null) {
-            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        if (updatedProduct != null) {
+
+            ProductDto updatedProductDto = new ProductDto(
+                    updatedProduct.getProductId(),
+                    updatedProduct.getProductName(),
+                    updatedProduct.getUserAccount().getId(),
+                    updatedProduct.getPrice(),
+                    updatedProduct.getUrl(),
+                    updatedProduct.getImageUrl(),
+                    updatedProduct.getPriority(),
+                    updatedProduct.getDescription(),
+                    updatedProduct.getDateAdded(),
+                    new ArrayList<>(updatedProduct.getWishlistProducts().stream().map(WishlistProduct::getWishlistProductId).toList())
+            );
+
+            return new ResponseEntity<>(updatedProductDto, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
     }
 
 //    DELETE Product
