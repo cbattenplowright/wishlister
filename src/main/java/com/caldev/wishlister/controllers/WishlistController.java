@@ -162,7 +162,17 @@ public class WishlistController {
 
         Wishlist updatedWishlist = wishlistService.updateWishlist((long) requestedWishlistId, wishlistDto, userAccount);
 
-        return new ResponseEntity<>(updatedWishlist, HttpStatus.OK);
+        if (updatedWishlist != null) {
+
+            WishlistDto wishlistDtoToReturn = new WishlistDto(
+                    updatedWishlist.getUserAccount().getId(),
+                    updatedWishlist.getWishlistName()
+            );
+
+            return new ResponseEntity<>(updatedWishlist, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Wishlist not found", HttpStatus.NOT_FOUND);
 
     }
 
