@@ -32,7 +32,7 @@ public class Product {
     @Column(name = "date_added", nullable = false)
     private LocalDate dateAdded;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_account_id")
     @JsonIgnore
     private UserAccount userAccount;
