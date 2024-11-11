@@ -202,6 +202,7 @@ public class WishlistController {
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> shareWishlist(@PathVariable UUID requestedUserId,
                                                 @PathVariable Long requestedWishlistId,
+                                                @RequestParam String email,
                                                 @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
@@ -211,8 +212,8 @@ public class WishlistController {
         Optional<Wishlist> existingWishlist = wishlistService.findWishlistById(requestedWishlistId);
 
         if (existingWishlist.isPresent()) {
-            emailService.sendEmail();
-//            wishlistService.shareWishlist(existingWishlist.get(), userAccount, email);
+//            emailService.sendEmail();
+            wishlistService.shareWishlist(existingWishlist.get(), userAccount, email);
 
             return new ResponseEntity<>("Wishlist shared!", HttpStatus.OK);
         }

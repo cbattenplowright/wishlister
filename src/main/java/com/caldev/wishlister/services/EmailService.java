@@ -10,7 +10,7 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-    public void sendEmail() {
+    public void sendEmail(String recipientUserEmail, String subject, String message) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -26,12 +26,12 @@ public class EmailService {
         });
 
         try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom("mailtest111999@gmail.com");
-            message.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress("mailtest221999@gmail.com"));
-            message.setSubject("test");
-            message.setText("test");
-            javax.mail.Transport.send(message);
+            MimeMessage newMessage = new MimeMessage(session);
+            newMessage.setFrom("mailtest111999@gmail.com");
+            newMessage.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipientUserEmail));
+            newMessage.setSubject(subject);
+            newMessage.setText(message);
+            javax.mail.Transport.send(newMessage);
             System.out.println("Sending email to " + "mailtest221999@gmail.com");
         } catch (Exception e) {
             e.printStackTrace();

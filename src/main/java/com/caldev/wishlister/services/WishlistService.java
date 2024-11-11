@@ -140,6 +140,8 @@ public class WishlistService {
             String shareToken = initiateShare(wishlistToShare, sendUserAccount, recipientUserEmail);
             sendShareEmail(sendUserAccount.getName(), recipientUserEmail, shareToken);
         }
+
+//        TODO add send email to join wishlister
     }
 
     public String initiateShare(Wishlist wishlistToShare, UserAccount sendUserAccount, String recipientEmail) {
@@ -161,11 +163,11 @@ public class WishlistService {
     public void sendShareEmail(String name, String recipientUserEmail, String shareToken) {
 
         String confirmationUrl = "http://localhost:8080/wishlist/confirm-share/" + shareToken;
-        emailService.sendEmail();
-//        emailService.send(
-//                recipientUserEmail,
-//                "%s has shared a wishlist with you!".formatted(name),
-//                "Click the link below to see your friend's wishlist with: " + confirmationUrl
-//                );
+//        emailService.sendEmail();
+        emailService.sendEmail(
+                recipientUserEmail,
+                "%s has shared a wishlist with you!".formatted(name),
+                "Click the link below to see your friend's wishlist with: " + confirmationUrl
+                );
     }
 }
