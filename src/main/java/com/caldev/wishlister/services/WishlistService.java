@@ -135,12 +135,14 @@ public class WishlistService {
  */
 
         UserAccount sharedUserAccount = userService.getUserByEmail(recipientUserEmail);
+        String shareToken = initiateShare(wishlistToShare, sendUserAccount, recipientUserEmail);
 
         if (sharedUserAccount != null) {
-            String shareToken = initiateShare(wishlistToShare, sendUserAccount, recipientUserEmail);
             sendShareEmail(sendUserAccount.getName(), recipientUserEmail, shareToken);
         }
-
+        else {
+            sendRegisterUserEmail(sendUserAccount.getName(), recipientUserEmail, shareToken);
+        }
 //        TODO add send email to join wishlister
     }
 
@@ -162,12 +164,33 @@ public class WishlistService {
 
     public void sendShareEmail(String name, String recipientUserEmail, String shareToken) {
 
-        String confirmationUrl = "http://localhost:8080/wishlist/confirm-share/" + shareToken;
+        String confirmationUrl = "http://localhost:8080/api/wishlists/confirm-share?shareToken=" + shareToken;
 //        emailService.sendEmail();
         emailService.sendEmail(
                 recipientUserEmail,
                 "%s has shared a wishlist with you!".formatted(name),
                 "Click the link below to see your friend's wishlist with: " + confirmationUrl
-                );
+        );
+    }
+
+    public void sendRegisterUserEmail(String name, String recipientUserEmail, String shareToken) {
+
+        String confirmationUrl = "http://localhost:8080/register?shareToken=" + shareToken;
+        emailService.sendEmail(recipientUserEmail,
+                "Your friend %s wants to share their wishlist with you!".formatted(name),
+                "Click the link below to join Wishlister and access their wishlist: " + confirmationUrl
+        );
+    }
+
+    public boolean verifyShareToken(String shareToken) {
+        PendingShare pendingShare = pendingShareRepository.findByToken(shareToken);
+
+        return pendingShare != null;
+    }
+
+    public boolean userAccountMatchesWithRecipientEmail(String shareToken, String recipientEmail) {
+        PendingShare pendingShare = pendingShareRepository.findByToken(shareToken);
+
+        return pendingShare != null && pendingShare.getRecipientEmail().equals(recipientEmail);
     }
 }

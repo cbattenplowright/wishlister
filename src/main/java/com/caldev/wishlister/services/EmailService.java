@@ -32,7 +32,7 @@ public class EmailService {
             newMessage.setSubject(subject);
             newMessage.setText(message);
             javax.mail.Transport.send(newMessage);
-            System.out.println("Sending email to " + "mailtest221999@gmail.com");
+            System.out.println("Sending email to " + recipientUserEmail);
         } catch (Exception e) {
             e.printStackTrace();
         }

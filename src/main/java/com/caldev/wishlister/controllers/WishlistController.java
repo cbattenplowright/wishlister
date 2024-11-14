@@ -5,6 +5,7 @@ import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.services.EmailService;
+import com.caldev.wishlister.services.UserService;
 import com.caldev.wishlister.services.WishlistService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/api/wishlists")
 public class WishlistController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private WishlistService wishlistService;
@@ -53,8 +57,9 @@ public class WishlistController {
     // INDEX User Wishlists
     @GetMapping("/{requestedUserId}")
     @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-    public ResponseEntity<Object> getUserWishlists(@PathVariable UUID requestedUserId,
-                                                   @AuthenticationPrincipal UserAccount userAccount) {
+    public ResponseEntity<Object> getUserWishlists(
+            @PathVariable UUID requestedUserId,
+            @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -80,9 +85,10 @@ public class WishlistController {
     // SHOW Wishlist
     @GetMapping("/{requestedUserId}/{requestedWishlistId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-    public ResponseEntity<Object> getWishlistById(@PathVariable UUID requestedUserId,
-                                                  @PathVariable Long requestedWishlistId,
-                                                  @AuthenticationPrincipal UserAccount userAccount) {
+    public ResponseEntity<Object> getWishlistById(
+            @PathVariable UUID requestedUserId,
+            @PathVariable Long requestedWishlistId,
+            @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -108,8 +114,9 @@ public class WishlistController {
     // CREATE Wishlist
     @PostMapping("/new")
     @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #newWishlistDto.userId")
-    public ResponseEntity<Object> createWishlist(@Valid @RequestBody WishlistDto newWishlistDto,
-                                                 @AuthenticationPrincipal UserAccount userAccount) {
+    public ResponseEntity<Object> createWishlist(
+            @Valid @RequestBody WishlistDto newWishlistDto,
+            @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -179,9 +186,10 @@ public class WishlistController {
 //  DELETE Wishlist
     @DeleteMapping("/{requestedUserId}/{requestedWishlistId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-    public ResponseEntity<Object> deleteWishlist(@PathVariable UUID requestedUserId,
-                                                 @PathVariable Long requestedWishlistId,
-                                                 @AuthenticationPrincipal UserAccount userAccount) {
+    public ResponseEntity<Object> deleteWishlist(
+            @PathVariable UUID requestedUserId,
+            @PathVariable Long requestedWishlistId,
+            @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -200,10 +208,11 @@ public class WishlistController {
 
     @PostMapping("/{requestedUserId}/{requestedWishlistId}/share")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-    public ResponseEntity<Object> shareWishlist(@PathVariable UUID requestedUserId,
-                                                @PathVariable Long requestedWishlistId,
-                                                @RequestParam String email,
-                                                @AuthenticationPrincipal UserAccount userAccount) {
+    public ResponseEntity<Object> shareWishlist(
+            @PathVariable UUID requestedUserId,
+            @PathVariable Long requestedWishlistId,
+            @RequestParam String email,
+            @AuthenticationPrincipal UserAccount userAccount) {
 
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -219,6 +228,29 @@ public class WishlistController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/confirm-share")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Object> acceptShare(
+            @RequestParam String shareToken,
+            @AuthenticationPrincipal UserAccount userAccount){
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        boolean shareTokenExists = wishlistService.verifyShareToken(shareToken);
+
+        boolean userAccountMatchesWithShareToken = wishlistService.userAccountMatchesWithRecipientEmail(shareToken, userAccount.getEmail());
+
+        if (shareTokenExists && userAccountMatchesWithShareToken) {
+//            wishlistService.acceptShare(shareToken);
+            return new ResponseEntity<>("Share accepted!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Share token not valid", HttpStatus.NOT_FOUND);
+        }
+
     }
 
 }

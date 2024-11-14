@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PendingShareRepository extends JpaRepository<PendingShare, Long> {
+
+    PendingShare findByToken(String token);
 }
