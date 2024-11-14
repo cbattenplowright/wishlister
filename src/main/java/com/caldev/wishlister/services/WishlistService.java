@@ -4,12 +4,11 @@ import com.caldev.wishlister.dtos.WishlistDto;
 import com.caldev.wishlister.entities.*;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.repositories.PendingShareRepository;
-import com.caldev.wishlister.repositories.SharedUserWishlistRepository;
+import com.caldev.wishlister.repositories.SharedWishlistRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Email;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class WishlistService {
 
     private final WishlistProductService wishlistProductService;
 
-    private final SharedUserWishlistRepository sharedUserWishlistRepository;
+    private final SharedWishlistRepository sharedWishlistRepository;
 
     private final WishlistRepository wishlistRepository;
 
@@ -37,12 +36,12 @@ public class WishlistService {
     private EntityManager entityManager;
 
 
-    public WishlistService(EmailService emailService, PendingShareRepository pendingShareRepository, UserService userService,WishlistProductService wishlistProductService,SharedUserWishlistRepository sharedUserWishlistRepository, WishlistRepository wishlistRepository) {
+    public WishlistService(EmailService emailService, PendingShareRepository pendingShareRepository, UserService userService, WishlistProductService wishlistProductService, SharedWishlistRepository sharedWishlistRepository, WishlistRepository wishlistRepository) {
         this.emailService = emailService;
         this.pendingShareRepository = pendingShareRepository;
         this.wishlistProductService = wishlistProductService;
         this.userService = userService;
-        this.sharedUserWishlistRepository = sharedUserWishlistRepository;
+        this.sharedWishlistRepository = sharedWishlistRepository;
         this.wishlistRepository = wishlistRepository;
     }
 
@@ -201,12 +200,12 @@ public class WishlistService {
 
         Wishlist wishlistToShare = wishlistRepository.findById(pendingShare.getWishlistId()).get();
 
-        SharedUserWishlist newSharedUserWishlist = new SharedUserWishlist(
+        SharedWishlist newSharedWishlist = new SharedWishlist(
                 userAccount,
                 wishlistToShare
         );
 
-        sharedUserWishlistRepository.save(newSharedUserWishlist);
+        sharedWishlistRepository.save(newSharedWishlist);
 
         pendingShareRepository.delete(pendingShare);
 

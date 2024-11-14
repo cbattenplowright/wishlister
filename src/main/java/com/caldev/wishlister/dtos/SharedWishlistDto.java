@@ -2,17 +2,17 @@ package com.caldev.wishlister.dtos;
 
 import java.util.UUID;
 
-public class SharedUserWishlistDto {
+public class SharedWishlistDto {
 
     private Long sharedUserWishlistId;
     private UUID userId;
     private Long wishlistId;
 
-    public SharedUserWishlistDto(){
+    public SharedWishlistDto(){
 
     }
 
-    public SharedUserWishlistDto(Long sharedUserWishlistId, UUID userId, Long wishlistId){
+    public SharedWishlistDto(Long sharedUserWishlistId, UUID userId, Long wishlistId){
       this.sharedUserWishlistId = sharedUserWishlistId;
       this.userId = userId;
       this.wishlistId = wishlistId;
