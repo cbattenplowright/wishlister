@@ -1,12 +1,10 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.dtos.WishlistDto;
-import com.caldev.wishlister.entities.PendingShare;
-import com.caldev.wishlister.entities.UserAccount;
-import com.caldev.wishlister.entities.Wishlist;
-import com.caldev.wishlister.entities.WishlistProduct;
+import com.caldev.wishlister.entities.*;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.repositories.PendingShareRepository;
+import com.caldev.wishlister.repositories.SharedUserWishlistRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -30,17 +28,21 @@ public class WishlistService {
 
     private final WishlistProductService wishlistProductService;
 
+    private final SharedUserWishlistRepository sharedUserWishlistRepository;
+
     private final WishlistRepository wishlistRepository;
+
 
     @PersistenceContext
     private EntityManager entityManager;
 
 
-    public WishlistService(EmailService emailService, PendingShareRepository pendingShareRepository, UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
+    public WishlistService(EmailService emailService, PendingShareRepository pendingShareRepository, UserService userService,WishlistProductService wishlistProductService,SharedUserWishlistRepository sharedUserWishlistRepository, WishlistRepository wishlistRepository) {
         this.emailService = emailService;
         this.pendingShareRepository = pendingShareRepository;
         this.wishlistProductService = wishlistProductService;
         this.userService = userService;
+        this.sharedUserWishlistRepository = sharedUserWishlistRepository;
         this.wishlistRepository = wishlistRepository;
     }
 
@@ -192,5 +194,21 @@ public class WishlistService {
         PendingShare pendingShare = pendingShareRepository.findByToken(shareToken);
 
         return pendingShare != null && pendingShare.getRecipientEmail().equals(recipientEmail);
+    }
+
+    public void confirmShare(String shareToken, UserAccount userAccount) {
+        PendingShare pendingShare = pendingShareRepository.findByToken(shareToken);
+
+        Wishlist wishlistToShare = wishlistRepository.findById(pendingShare.getWishlistId()).get();
+
+        SharedUserWishlist newSharedUserWishlist = new SharedUserWishlist(
+                userAccount,
+                wishlistToShare
+        );
+
+        sharedUserWishlistRepository.save(newSharedUserWishlist);
+
+        pendingShareRepository.delete(pendingShare);
+
     }
 }

@@ -245,7 +245,7 @@ public class WishlistController {
         boolean userAccountMatchesWithShareToken = wishlistService.userAccountMatchesWithRecipientEmail(shareToken, userAccount.getEmail());
 
         if (shareTokenExists && userAccountMatchesWithShareToken) {
-//            wishlistService.acceptShare(shareToken);
+            wishlistService.confirmShare(shareToken, userAccount);
             return new ResponseEntity<>("Share accepted!", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Share token not valid", HttpStatus.NOT_FOUND);
