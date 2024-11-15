@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -49,6 +50,7 @@ public class SharedWishlistController {
         return new ResponseEntity<>("No wishlists found", HttpStatus.NOT_FOUND);
     }
 
+//    INDEX Shared Wishlists by User
     @GetMapping("/{requestedUserId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getSharedWishlistsByUser(
@@ -75,5 +77,33 @@ public class SharedWishlistController {
         }
 
         throw new SharedWishlistsNotFoundException("Shared wishlists not found");
+    }
+
+//    SHOW Shared Wishlist
+
+    @GetMapping("/{requestedUserId}/{requestedSharedWishlistId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> getSharedWishlistById(
+            @PathVariable UUID requestedUserId,
+            @PathVariable Long requestedSharedWishlistId,
+            @AuthenticationPrincipal UserAccount userAccount) {
+
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        Optional<SharedWishlist> sharedWishlist = sharedWishlistService.findSharedWishlistById(requestedSharedWishlistId);
+
+        if (sharedWishlist.isPresent()) {
+
+            SharedWishlistDto sharedWishlistDto = new SharedWishlistDto(
+                    sharedWishlist.get().getSharedWishlistId(),
+                    sharedWishlist.get().getSharedUser().getUserAccountId(),
+                    sharedWishlist.get().getSharedWishlist().getWishlistId());
+
+            return new ResponseEntity<>(sharedWishlistDto, HttpStatus.OK);
+        }
+
+        throw new SharedWishlistsNotFoundException("Shared wishlist not found");
     }
 }

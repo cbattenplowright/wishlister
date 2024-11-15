@@ -31,11 +31,6 @@ public class WishlistService {
 
     private final WishlistRepository wishlistRepository;
 
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-
     public WishlistService(EmailService emailService, PendingShareRepository pendingShareRepository, UserService userService, WishlistProductService wishlistProductService, SharedWishlistRepository sharedWishlistRepository, WishlistRepository wishlistRepository) {
         this.emailService = emailService;
         this.pendingShareRepository = pendingShareRepository;
