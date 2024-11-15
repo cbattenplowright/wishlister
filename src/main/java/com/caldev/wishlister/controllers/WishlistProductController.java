@@ -42,11 +42,20 @@ public class WishlistProductController {
 
         List<WishlistProduct> wishlistProducts = wishlistProductService.getAllWishlistProducts();
 
-        if(wishlistProducts == null){
-            throw new WishlistProductsNotFoundException("WishlistProducts not found");
+        if(wishlistProducts != null){
+
+            List<WishlistProductDto> wishlistProductDtos = wishlistProducts
+                    .stream()
+                    .map(wishlistProduct -> new WishlistProductDto(
+                            wishlistProduct.getWishlistProductId(),
+                            wishlistProduct.getWishlist().getWishlistId(),
+                            wishlistProduct.getProduct().getProductId(),
+                            wishlistProduct.isPurchased())).toList();
+
+            return new ResponseEntity<>(wishlistProductDtos, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(wishlistProducts, HttpStatus.OK);
+        throw new WishlistProductsNotFoundException("WishlistProducts not found");
     }
 
 //    SHOW WishlistProduct
@@ -65,7 +74,15 @@ public class WishlistProductController {
         WishlistProduct wishlistProduct = wishlistProductService.getWishlistProductById(requestedWishlistProductId);
 
         if(wishlistProduct != null){
-            return new ResponseEntity<>(wishlistProduct, HttpStatus.OK);
+
+            WishlistProductDto wishlistProductDto = new WishlistProductDto(
+                    wishlistProduct.getWishlistProductId(),
+                    wishlistProduct.getWishlist().getWishlistId(),
+                    wishlistProduct.getProduct().getProductId(),
+                    wishlistProduct.isPurchased()
+            );
+
+            return new ResponseEntity<>(wishlistProductDto, HttpStatus.OK);
         }
 
         throw new WishlistProductsNotFoundException("WishlistProduct not found");
@@ -89,7 +106,19 @@ public class WishlistProductController {
 
         WishlistProduct newWishlistProduct = wishlistProductService.createWishlistProduct(newWishlistProductDto, userAccount);
 
-        return new ResponseEntity<>(newWishlistProduct, HttpStatus.CREATED);
+        if (newWishlistProduct != null) {
+
+            WishlistProductDto createdWishlistProductDto = new WishlistProductDto(
+                    newWishlistProduct.getWishlistProductId(),
+                    newWishlistProduct.getWishlist().getWishlistId(),
+                    newWishlistProduct.getProduct().getProductId(),
+                    newWishlistProduct.isPurchased()
+            );
+
+            return new ResponseEntity<>(createdWishlistProductDto, HttpStatus.CREATED);
+        }
+
+        throw new WishlistProductsNotFoundException("WishlistProduct not created");
     }
 
 //    UPDATE WishlistProduct
@@ -97,19 +126,26 @@ public class WishlistProductController {
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> updateWishlistProduct(@PathVariable UUID requestedUserId,
                                                         @PathVariable Long requestedWishlistProductId,
-                                                        @Valid @RequestBody WishlistProductDto updatedWishlistProductDto,
+                                                        @Valid @RequestBody WishlistProductDto wishlistProductDtoToUpdate,
                                                         @AuthenticationPrincipal UserAccount userAccount){
 
         if(userAccount == null){
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        boolean wishlistProductExists = wishlistProductService.existsByWishlistIdAndProductId(updatedWishlistProductDto.getWishlistId(), updatedWishlistProductDto.getProductId());
+        boolean wishlistProductExists = wishlistProductService.existsByWishlistIdAndProductId(wishlistProductDtoToUpdate.getWishlistId(), wishlistProductDtoToUpdate.getProductId());
 
         if(wishlistProductExists){
-            WishlistProduct updatedWishlistProduct = wishlistProductService.updateWishlistProduct(requestedWishlistProductId, updatedWishlistProductDto, userAccount);
+            WishlistProduct updatedWishlistProduct = wishlistProductService.updateWishlistProduct(requestedWishlistProductId, wishlistProductDtoToUpdate, userAccount);
 
-            return new ResponseEntity<>(updatedWishlistProduct, HttpStatus.OK);
+            WishlistProductDto updatedWishlistProductDto = new WishlistProductDto(
+                    updatedWishlistProduct.getWishlistProductId(),
+                    updatedWishlistProduct.getWishlist().getWishlistId(),
+                    updatedWishlistProduct.getProduct().getProductId(),
+                    updatedWishlistProduct.isPurchased()
+            );
+
+            return new ResponseEntity<>(updatedWishlistProductDto, HttpStatus.OK);
         }
         else {
             throw new WishlistProductsNotFoundException("WishlistProduct not found");

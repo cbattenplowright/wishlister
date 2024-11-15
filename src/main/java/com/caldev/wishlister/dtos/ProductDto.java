@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public class ProductDto {
 
+    private Long productId;
     @NotNull(message = "The productName field cannot be empty")
     private String productName;
     @NotNull(message = "The userId field cannot be empty")
@@ -25,7 +26,8 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded, List<Long> wishlistProductIds) {
+    public ProductDto(Long productId, String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded, List<Long> wishlistProductIds) {
+        this.productId = productId;
         this.productName = productName;
         this.userId = userId;
         this.price = price;
@@ -35,6 +37,14 @@ public class ProductDto {
         this.description = description;
         this.dateAdded = dateAdded;
         this.wishlistProductIds = wishlistProductIds;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {

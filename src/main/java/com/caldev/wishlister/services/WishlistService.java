@@ -1,10 +1,10 @@
 package com.caldev.wishlister.services;
 
 import com.caldev.wishlister.dtos.WishlistDto;
-import com.caldev.wishlister.entities.UserAccount;
-import com.caldev.wishlister.entities.Wishlist;
-import com.caldev.wishlister.entities.WishlistProduct;
+import com.caldev.wishlister.entities.*;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
+import com.caldev.wishlister.repositories.PendingShareRepository;
+import com.caldev.wishlister.repositories.SharedWishlistRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -19,19 +19,24 @@ import java.util.UUID;
 @Service
 public class WishlistService {
 
+    public final EmailService emailService;
+
+    public final PendingShareRepository pendingShareRepository;
+
     private final UserService userService;
 
     private final WishlistProductService wishlistProductService;
 
+    private final SharedWishlistRepository sharedWishlistRepository;
+
     private final WishlistRepository wishlistRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-
-    public WishlistService(UserService userService,WishlistProductService wishlistProductService, WishlistRepository wishlistRepository) {
+    public WishlistService(EmailService emailService, PendingShareRepository pendingShareRepository, UserService userService, WishlistProductService wishlistProductService, SharedWishlistRepository sharedWishlistRepository, WishlistRepository wishlistRepository) {
+        this.emailService = emailService;
+        this.pendingShareRepository = pendingShareRepository;
         this.wishlistProductService = wishlistProductService;
         this.userService = userService;
+        this.sharedWishlistRepository = sharedWishlistRepository;
         this.wishlistRepository = wishlistRepository;
     }
 
@@ -108,5 +113,97 @@ public class WishlistService {
 
     public boolean userAccountOwnsWishlist(Long wishlistId, UserAccount userAccount) {
         return wishlistRepository.existsByWishlistIdAndUserAccount(wishlistId, userAccount);
+    }
+
+    public void shareWishlist(Wishlist wishlistToShare, UserAccount sendUserAccount, String recipientUserEmail) {
+/*
+    If user email exists in database, then:
+    Generate Share Token:
+        Use UUID or Spring’s Jwt for tokens with added expiration if needed.
+    Store the Token with Share Details:
+        Create a PendingShare entity to store the token, senderUserId, wishlistId, recipientEmail, and an optional expiryDate.
+    Send the Email with Confirmation Link:
+        Use an email service to send a "Share" button containing a link with the token.
+    When shared user clicks link and logs in, add wishlist to the user adding record to shared_user_wishlist
+
+
+    If user email does not exist in database, then send email to join wishlister to access friend's shared wishlist
+ */
+
+        UserAccount sharedUserAccount = userService.getUserByEmail(recipientUserEmail);
+        String shareToken = initiateShare(wishlistToShare, sendUserAccount, recipientUserEmail);
+
+        if (sharedUserAccount != null) {
+            sendShareEmail(sendUserAccount.getName(), recipientUserEmail, shareToken);
+        }
+        else {
+            sendRegisterUserEmail(sendUserAccount.getName(), recipientUserEmail, shareToken);
+        }
+//        TODO add send email to join wishlister
+    }
+
+    public String initiateShare(Wishlist wishlistToShare, UserAccount sendUserAccount, String recipientEmail) {
+
+        String shareToken = UUID.randomUUID().toString();
+
+        PendingShare pendingShare = new PendingShare(
+                shareToken,
+                sendUserAccount.getId(),
+                wishlistToShare.getId(),
+                recipientEmail
+        );
+
+        pendingShareRepository.save(pendingShare);
+
+        return shareToken;
+    }
+
+    public void sendShareEmail(String name, String recipientUserEmail, String shareToken) {
+
+        String confirmationUrl = "http://localhost:8080/api/wishlists/confirm-share?shareToken=" + shareToken;
+//        emailService.sendEmail();
+        emailService.sendEmail(
+                recipientUserEmail,
+                "%s has shared a wishlist with you!".formatted(name),
+                "Click the link below to see your friend's wishlist with: " + confirmationUrl
+        );
+    }
+
+    public void sendRegisterUserEmail(String name, String recipientUserEmail, String shareToken) {
+
+//        TODO need to add the front end url to the sendRegisterUserEmail to navigate to the account creation page
+        String confirmationUrl = "http://{{front-end-url}}/register?shareToken=" + shareToken;
+        emailService.sendEmail(recipientUserEmail,
+                "Your friend %s wants to share their wishlist with you!".formatted(name),
+                "Click the link below to join Wishlister and access their wishlist: " + confirmationUrl
+        );
+    }
+
+    public boolean verifyShareToken(String shareToken) {
+        PendingShare pendingShare = pendingShareRepository.findByToken(shareToken);
+
+        return pendingShare != null;
+    }
+
+    public boolean userAccountMatchesWithRecipientEmail(String shareToken, String recipientEmail) {
+        PendingShare pendingShare = pendingShareRepository.findByToken(shareToken);
+
+        return pendingShare != null && pendingShare.getRecipientEmail().equals(recipientEmail);
+    }
+
+    public void confirmShare(String shareToken, UserAccount userAccount) {
+        PendingShare pendingShare = pendingShareRepository.findByToken(shareToken);
+
+        Wishlist wishlistToShare = wishlistRepository.findById(pendingShare.getWishlistId()).get();
+
+        SharedWishlist newSharedWishlist = new SharedWishlist(
+                userAccount,
+                wishlistToShare
+        );
+
+        sharedWishlistRepository.save(newSharedWishlist);
+
+        pendingShareRepository.delete(pendingShare);
+
     }
 }

@@ -122,6 +122,14 @@ public class UserAccount implements UserDetails {
         this.products = products;
     }
 
+    public UUID getUserAccountId() {
+        return userAccountId;
+    }
+
+    public void setUserAccountId(UUID userAccountId) {
+        this.userAccountId = userAccountId;
+    }
+
     @Override
     public String toString() {
         return "UserAccount{" +

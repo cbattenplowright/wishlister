@@ -26,7 +26,7 @@ public class UserController {
 //    INDEX Users
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserAccount>> getAllUsers(){
+    public ResponseEntity<List<UserAccountDto>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
@@ -38,7 +38,7 @@ public class UserController {
         if (userAccount == null){
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        UserAccount user = userService.getUserById(requestedUserId);
+        UserAccountDto user = userService.getUserById(requestedUserId);
         if (user != null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
@@ -47,8 +47,8 @@ public class UserController {
 
 //    CREATE User
     @PostMapping("/new")
-    public ResponseEntity<UserAccount> createUser(@Valid @RequestBody NewUserDto newUserDto){
-        UserAccount newUserAccount = userService.createUser(newUserDto);
+    public ResponseEntity<UserAccountDto> createUser(@Valid @RequestBody NewUserDto newUserDto){
+        UserAccountDto newUserAccount = userService.createUser(newUserDto);
         return new ResponseEntity<>(
                 newUserAccount,
                 HttpStatus.CREATED);
@@ -63,7 +63,7 @@ public class UserController {
         if (userAccount == null){
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        UserAccount updatedUserAccount = userService.updateUser(requestedUserId, userAccountDto);
+        UserAccountDto updatedUserAccount = userService.updateUser(requestedUserId, userAccountDto);
 
         if (updatedUserAccount == null){
             return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
@@ -90,6 +90,5 @@ public class UserController {
                 requestedId,
                 HttpStatus.OK);
     }
-
 
 }

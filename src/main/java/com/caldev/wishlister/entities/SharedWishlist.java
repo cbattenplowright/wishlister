@@ -3,13 +3,13 @@ package com.caldev.wishlister.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="shared_user_wishlists")
-public class SharedUserWishlist {
+@Table(name="shared_wishlists")
+public class SharedWishlist {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="shared_user_wishlist_id")
-    private Long sharedUserWishlistId;
+    @Column(name="shared_wishlist_id")
+    private Long sharedWishlistId;
 
     @ManyToOne
     @JoinColumn(name="shared_user_id")
@@ -19,17 +19,20 @@ public class SharedUserWishlist {
     @JoinColumn(name = "wishlist_id")
     private Wishlist sharedWishlist;
 
-    protected SharedUserWishlist() {}
+    protected SharedWishlist() {}
 
-    public SharedUserWishlist(UserAccount sharedUserAccount, Wishlist sharedWishlist) {
+    public SharedWishlist(UserAccount sharedUserAccount, Wishlist sharedWishlist) {
         this.sharedUserAccount = sharedUserAccount;
         this.sharedWishlist = sharedWishlist;
     }
 
-    public Long getSharedUserWishlistId() {
-        return sharedUserWishlistId;
+    public Long getSharedWishlistId() {
+        return sharedWishlistId;
     }
 
+    public void setSharedWishlistId(Long sharedWishlistId) {
+        this.sharedWishlistId = sharedWishlistId;
+    }
     public UserAccount getSharedUser() {
         return sharedUserAccount;
     }
@@ -46,10 +49,19 @@ public class SharedUserWishlist {
         this.sharedWishlist = sharedWishlist;
     }
 
+
+    public UserAccount getSharedUserAccount() {
+        return sharedUserAccount;
+    }
+
+    public void setSharedUserAccount(UserAccount sharedUserAccount) {
+        this.sharedUserAccount = sharedUserAccount;
+    }
+
     @Override
     public String toString() {
-        return "SharedUserWishlist{" +
-                "sharedUserWishlistId=" + sharedUserWishlistId +
+        return "SharedWishlist{" +
+                "sharedWishlistId=" + sharedWishlistId +
                 ", sharedUser=" + sharedUserAccount +
                 ", sharedWishlist=" + sharedWishlist +
                 '}';

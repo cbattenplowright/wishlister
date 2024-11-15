@@ -12,6 +12,8 @@ import com.caldev.wishlister.repositories.ProductRepository;
 import com.caldev.wishlister.repositories.UserManagementRepository;
 import com.caldev.wishlister.repositories.WishlistRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -34,28 +36,84 @@ public class UserService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public List<UserAccount> getAllUsers(){
-        return userManagementRepository.findAll();
+    public List<UserAccountDto> getAllUsers(){
+
+        List<UserAccount> userAccounts = userManagementRepository.findAll();
+        List<UserAccountDto> userAccountDtos = new ArrayList<>();
+
+        for (UserAccount userAccount : userAccounts) {
+            UserAccountDto userAccountDto = new UserAccountDto(
+                    userAccount.getUserAccountId(),
+                    userAccount.getEmail(),
+                    userAccount.getPassword(),
+                    userAccount.getName(),
+                    userAccount.getDateOfBirth(),
+                    new ArrayList<>(userAccount.getAuthorities().stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                    new ArrayList<>(userAccount.getWishlists().stream().map(Wishlist::getWishlistId).toList()),
+                    new ArrayList<>(userAccount.getProducts().stream().map(Product::getProductId).toList()
+                    ));
+            userAccountDtos.add(userAccountDto);
+        }
+
+        return userAccountDtos;
     }
 
-    public UserAccount getUserById(UUID requestedId){
-        return userManagementRepository.findById(requestedId).orElse(null);
+    public UserAccountDto getUserById(UUID requestedId){
+        UserAccount userAccount = userManagementRepository.findById(requestedId).orElse(null);
+        UserAccountDto userAccountDto;
+        if (userAccount == null){
+            throw new UserNotFoundException("User not found with id: " + requestedId);
+        } else {
+            userAccountDto= new UserAccountDto(
+                    userAccount.getUserAccountId(),
+                    userAccount.getEmail(),
+                    userAccount.getPassword(),
+                    userAccount.getName(),
+                    userAccount.getDateOfBirth(),
+                    new ArrayList<>(userAccount.getAuthorities().stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                    new ArrayList<>(userAccount.getWishlists().stream().map(Wishlist::getWishlistId).toList()),
+                    new ArrayList<>(userAccount.getProducts().stream().map(Product::getProductId).toList())
+            );
+        }
+
+        return userAccountDto;
     }
 
-    public UserAccount createUser(NewUserDto newUserDto){
+    public UserAccount getUserByEmail(String email){
+        return userManagementRepository.findByEmail(email);
+    }
+
+    public UserAccountDto createUser(NewUserDto newUserDto){
         Set<Authority> userAuthority = new HashSet<>(List.of(authorityRepository.findByAuthority("ROLE_USER")));
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         UserAccount newUserAccount = new UserAccount(
                 newUserDto.getEmail(),
-                newUserDto.getPassword(),
+                passwordEncoder.encode(newUserDto.getPassword()),
                 newUserDto.getName(),
                 newUserDto.getDateOfBirth(),
                 userAuthority
                 );
-        return userManagementRepository.save(newUserAccount);
+
+        userManagementRepository.save(newUserAccount);
+
+        UserAccountDto userAccountDto = new UserAccountDto(
+                newUserAccount.getUserAccountId(),
+                newUserAccount.getEmail(),
+                newUserAccount.getPassword(),
+                newUserAccount.getName(),
+                newUserAccount.getDateOfBirth(),
+
+                new ArrayList<>(Optional.ofNullable(newUserAccount.getAuthorities()).orElseGet(ArrayList::new).stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                new ArrayList<>(Optional.ofNullable(newUserAccount.getWishlists()).orElseGet(ArrayList::new).stream().map(Wishlist::getWishlistId).toList()),
+                new ArrayList<>(Optional.ofNullable(newUserAccount.getProducts()).orElseGet(ArrayList::new).stream().map(Product::getProductId).toList())
+        );
+
+        return userAccountDto;
     }
 
-    public UserAccount updateUser(UUID requestedId, UserAccountDto userAccountDto){
+    public UserAccountDto updateUser(UUID requestedId, UserAccountDto userAccountDto){
         UserAccount userAccountToUpdate = userManagementRepository.findById(requestedId).orElse(null);
 
         if (userAccountToUpdate == null){
@@ -114,7 +172,21 @@ public class UserService {
             userAccountToUpdate.setProducts(products);
         }
 
-        return userManagementRepository.save(userAccountToUpdate);
+        userManagementRepository.save(userAccountToUpdate);
+
+        UserAccountDto updatedUserAccountDto = new UserAccountDto(
+                userAccountToUpdate.getUserAccountId(),
+                userAccountToUpdate.getEmail(),
+                userAccountToUpdate.getPassword(),
+                userAccountToUpdate.getName(),
+                userAccountToUpdate.getDateOfBirth(),
+
+                new ArrayList<>(userAccountToUpdate.getAuthorities().stream().map(grantedAuthority -> ((Authority) grantedAuthority).getAuthorityId()).toList()),
+                new ArrayList<>(userAccountToUpdate.getWishlists().stream().map(Wishlist::getWishlistId).toList()),
+                new ArrayList<>(userAccountToUpdate.getProducts().stream().map(Product::getProductId).toList())
+        );
+
+        return updatedUserAccountDto;
     }
 
     @Transactional

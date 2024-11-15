@@ -31,7 +31,14 @@ public class ProductService {
 
     public Optional<Product> findProductById(Long requestedProductId) {
 
-        return productRepository.findById(requestedProductId);
+
+        Optional<Product> product = productRepository.findById(requestedProductId); // <Product>
+
+        if (product.isEmpty()) {
+            throw new ProductNotFoundException("Product not found");
+        }
+
+        return product;
     }
 
     public boolean existsByProductNameAndUserAccount(String productName, UserAccount userAccount) {
@@ -53,10 +60,6 @@ public class ProductService {
                 WishlistProduct wishlistProduct = wishlistProductService.getWishlistProductById(wishlistProductId);
                 wishlistProducts.add(wishlistProduct);
             }
-        }
-
-        if (newProductDto.getPrioritySelection() == null) {
-
         }
 
         Product newProduct = new Product(

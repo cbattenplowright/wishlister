@@ -4,9 +4,10 @@ import jakarta.validation.constraints.Email;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class UserAccountDto {
-
+    private UUID userAccountId;
     @Email(message = "This field must be a valid email address")
     private String email;
     private String password;
@@ -20,7 +21,8 @@ public class UserAccountDto {
 
     }
 
-    public UserAccountDto(String email, String password, String name, LocalDate dateOfBirth, ArrayList<Long> authorityIds, ArrayList<Long> wishlistIds, ArrayList<Long> productIds) {
+    public UserAccountDto(UUID userAccountId, String email, String password, String name, LocalDate dateOfBirth, ArrayList<Long> authorityIds, ArrayList<Long> wishlistIds, ArrayList<Long> productIds) {
+        this.userAccountId = userAccountId;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -28,6 +30,14 @@ public class UserAccountDto {
         this.authorityIds = authorityIds;
         this.wishlistIds = wishlistIds;
         this.productIds = productIds;
+    }
+
+    public UUID getUserAccountId() {
+        return userAccountId;
+    }
+
+    public void setUserAccountId(UUID userAccountId) {
+        this.userAccountId = userAccountId;
     }
 
     public String getEmail() {

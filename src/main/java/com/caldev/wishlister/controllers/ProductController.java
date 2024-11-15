@@ -3,6 +3,7 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
+import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.ProductNotFoundException;
 import com.caldev.wishlister.services.ProductService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,12 +39,25 @@ public class ProductController {
 
         Optional<Product> product = productService.findProductById(requestedProductId);
 
-        if (product.isEmpty()) {
-            throw new ProductNotFoundException("Product not found");
+        if (product.isPresent()) {
+
+            ProductDto productDto = new ProductDto(
+                    product.get().getProductId(),
+                    product.get().getProductName(),
+                    product.get().getUserAccount().getId(),
+                    product.get().getPrice(),
+                    product.get().getUrl(),
+                    product.get().getImageUrl(),
+                    product.get().getPriority(),
+                    product.get().getDescription(),
+                    product.get().getDateAdded(),
+                    new ArrayList<>(product.get().getWishlistProducts().stream().map(WishlistProduct::getWishlistProductId).toList())
+            );
+
+            return new ResponseEntity<>(productDto, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(product, HttpStatus.OK);
-
+        throw new ProductNotFoundException("Product not found");
     }
 
 //  CREATE Product
@@ -64,8 +79,24 @@ public class ProductController {
 
         Product newProduct = productService.createProduct(newProductDto, userAccount);
 
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+        if (newProduct != null) {
+            ProductDto productDto = new ProductDto(
+                    newProduct.getProductId(),
+                    newProduct.getProductName(),
+                    newProduct.getUserAccount().getId(),
+                    newProduct.getPrice(),
+                    newProduct.getUrl(),
+                    newProduct.getImageUrl(),
+                    newProduct.getPriority(),
+                    newProduct.getDescription(),
+                    newProduct.getDateAdded(),
+                    new ArrayList<>(newProduct.getWishlistProducts().stream().map(WishlistProduct::getWishlistProductId).toList())
+            );
 
+            return new ResponseEntity<>(productDto, HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity<>("Product not created", HttpStatus.BAD_REQUEST);
     }
 
 //    UPDATE Product
@@ -74,7 +105,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> updateProduct(@PathVariable UUID requestedUserId,
                                                 @PathVariable Long requestedProductId,
-                                                @Valid @RequestBody ProductDto updatedProductDto,
+                                                @Valid @RequestBody ProductDto productDtoToUpdate,
                                                 @AuthenticationPrincipal UserAccount userAccount) {
 /*        check if user is authenticated
             if not, return unauthenticated
@@ -87,13 +118,27 @@ public class ProductController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        Product updatedProduct = productService.updateProduct(requestedProductId, updatedProductDto, userAccount);
+        Product updatedProduct = productService.updateProduct(requestedProductId, productDtoToUpdate, userAccount);
 
-        if (updatedProduct == null) {
-            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        if (updatedProduct != null) {
+
+            ProductDto updatedProductDto = new ProductDto(
+                    updatedProduct.getProductId(),
+                    updatedProduct.getProductName(),
+                    updatedProduct.getUserAccount().getId(),
+                    updatedProduct.getPrice(),
+                    updatedProduct.getUrl(),
+                    updatedProduct.getImageUrl(),
+                    updatedProduct.getPriority(),
+                    updatedProduct.getDescription(),
+                    updatedProduct.getDateAdded(),
+                    new ArrayList<>(updatedProduct.getWishlistProducts().stream().map(WishlistProduct::getWishlistProductId).toList())
+            );
+
+            return new ResponseEntity<>(updatedProductDto, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
     }
 
 //    DELETE Product

@@ -1,5 +1,6 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.dtos.WishlistProductDto;
 import com.caldev.wishlister.entities.Product;
 import com.caldev.wishlister.entities.UserAccount;
@@ -68,7 +69,6 @@ public class WishlistProductService {
        }
 
        throw new WishlistProductNotCreatedException("WishlistProduct not created");
-
     }
 
     public WishlistProduct updateWishlistProduct(Long requestedWishlistProductId, WishlistProductDto updatedWishlistProductDto, UserAccount userAccount) {
