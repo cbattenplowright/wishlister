@@ -32,6 +32,16 @@ public class UserAccountDto {
         this.productIds = productIds;
     }
 
+    public UserAccountDto(String email, String password, String name, LocalDate dateOfBirth, ArrayList<Long> authorityIds, ArrayList<Long> wishlistIds, ArrayList<Long> productIds) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.authorityIds = authorityIds;
+        this.wishlistIds = wishlistIds;
+        this.productIds = productIds;
+    }
+
     public UUID getUserAccountId() {
         return userAccountId;
     }

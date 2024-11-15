@@ -13,19 +13,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SharedWishlistUnitTestsAccount {
 
     private UserAccount sharedUserAccount;
-    private Wishlist sharedWishlist;
+    private Wishlist wishlist;
     private SharedWishlist sharedWishlist;
 
     @BeforeEach
     public void setUp(){
         sharedUserAccount = new UserAccount("sharedUser@email.com", "testPassword", "testName", LocalDate.of(2000, 1, 1), null);
-        sharedWishlist = new Wishlist("testWishlist", sharedUserAccount, null);
-        sharedWishlist = new SharedWishlist(sharedUserAccount, sharedWishlist);
+        wishlist = new Wishlist("testWishlist", sharedUserAccount, null);
+        sharedWishlist = new SharedWishlist(sharedUserAccount, wishlist);
     }
 
     @Test
     public void shouldGetSharedWishlistIdTest(){
-        assertThat(sharedWishlist.getSharedUserWishlistId()).isNull();
+        assertThat(sharedWishlist.getSharedWishlistId()).isNull();
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SharedWishlistUnitTestsAccount {
 
     @Test
     public void shouldGetSharedWishlistTest(){
-        assertThat(sharedWishlist.getSharedWishlist()).isEqualTo(sharedWishlist);
+        assertThat(sharedWishlist.getSharedWishlist()).isEqualTo(wishlist);
     }
 
     @Test
@@ -55,6 +55,6 @@ public class SharedWishlistUnitTestsAccount {
 
     @Test
     public void shouldToStringTest(){
-        assertThat(sharedWishlist.toString()).isEqualTo("SharedUserWishlist{sharedUserWishlistId=null, sharedUser=" + sharedUserAccount + ", sharedWishlist=" + sharedWishlist +"}");
+        assertThat(wishlist.toString()).isEqualTo("SharedUserWishlist{sharedUserWishlistId=null, sharedUser=" + sharedUserAccount + ", sharedWishlist=" + wishlist +"}");
     }
 }

@@ -18,7 +18,7 @@ public class AuthorityUnitTests {
 
     @Test
     public void shouldGetIdTest(){
-        assertNull(authority.getId());
+        assertNull(authority.getAuthorityId());
     }
 
     @Test

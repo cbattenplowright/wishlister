@@ -87,7 +87,9 @@ public class UserAccountControllerPatchTests {
 
         String jsonRequest = objectMapper.writeValueAsString(updatedUserInfo);
 
-        when(userService.updateUser(any(UUID.class), any(UserAccountDto.class))).thenReturn(testUserAccount);
+        UserAccountDto returnedUserAccountDto = new UserAccountDto("updatedTestUser@email.com", "updatedPassword", "updatedTestUserName", LocalDate.of(2000, 1, 1), authorityIds, null, null);
+
+        when(userService.updateUser(any(UUID.class), any(UserAccountDto.class))).thenReturn(returnedUserAccountDto);
 //        doReturn(testUserAccount).when(userService).updateUser(testUserId, updateUser);
 
         this.mockMvc.perform(patch("/api/users/{requestedId}", testUserId)

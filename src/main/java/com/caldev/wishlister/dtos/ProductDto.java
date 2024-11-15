@@ -39,6 +39,18 @@ public class ProductDto {
         this.wishlistProductIds = wishlistProductIds;
     }
 
+    public ProductDto(String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded, List<Long> wishlistProductIds) {
+        this.productName = productName;
+        this.userId = userId;
+        this.price = price;
+        this.url = url;
+        this.imageUrl = imageUrl;
+        this.prioritySelection = prioritySelection;
+        this.description = description;
+        this.dateAdded = dateAdded;
+        this.wishlistProductIds = wishlistProductIds;
+    }
+
     public Long getProductId() {
         return productId;
     }

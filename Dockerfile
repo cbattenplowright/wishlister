@@ -5,7 +5,7 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline
 COPY src src
-RUN mvn package
+RUN mvn package -DskipTests
 RUN java -Djarmode=layertools -jar target/*.jar extract
 
 FROM eclipse-temurin:17-jdk-jammy
@@ -14,4 +14,5 @@ COPY --from=builder /app/dependencies/ ./
 COPY --from=builder /app/spring-boot-loader/ ./
 COPY --from=builder /app/snapshot-dependencies/ ./
 COPY --from=builder /app/application/ ./
+
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

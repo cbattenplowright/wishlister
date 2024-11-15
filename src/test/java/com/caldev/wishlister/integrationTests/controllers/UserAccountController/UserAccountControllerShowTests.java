@@ -1,6 +1,7 @@
 package com.caldev.wishlister.integrationTests.controllers.UserAccountController;
 
 import com.caldev.wishlister.controllers.UserController;
+import com.caldev.wishlister.dtos.UserAccountDto;
 import com.caldev.wishlister.entities.Authority;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.security.CustomUserDetailsService;
@@ -17,6 +18,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -42,9 +44,12 @@ public class UserAccountControllerShowTests {
     @MockBean
     UserAccount userAccount;
 
+    @MockBean
+    UserAccountDto userAccountDto;
+
     @BeforeEach
     void setUp(){
-        when(userService.getUserById(UUID.randomUUID())).thenReturn(userAccount);
+        when(userService.getUserById(UUID.randomUUID())).thenReturn(userAccountDto);
     }
 
     @Test
@@ -72,7 +77,10 @@ public class UserAccountControllerShowTests {
 
         UserAccount testUserAccount = new UserAccount("user@email.com","password", "user", LocalDate.of(2022, 10, 10), new HashSet<>(List.of(new Authority("ROLE_USER"))));
         testUserAccount.setId(UUID.randomUUID());
-        when(userService.getUserById(testUserAccount.getId())).thenReturn(testUserAccount);
+
+        UserAccountDto testUserAccountDto = new UserAccountDto(testUserAccount.getId(), "user@email.com","password", "user", LocalDate.of(2022, 10, 10), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userService.getUserById(testUserAccount.getId())).thenReturn(testUserAccountDto);
 
         this.mockMvc.perform(get("/api/users/{id}", testUserAccount.getId())
                         .with(user(testUserAccount))
