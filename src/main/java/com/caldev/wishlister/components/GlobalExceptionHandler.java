@@ -63,4 +63,9 @@ public class GlobalExceptionHandler {
     private ResponseEntity<String> handleWishlistProductNotOwnedByUserAccountException(WishlistProductNotOwnedByUserAccountException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(SharedWishlistsNotFoundException.class)
+    private ResponseEntity<String> handleSharedWishlistsNotFoundException(SharedWishlistsNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

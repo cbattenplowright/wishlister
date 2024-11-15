@@ -3,6 +3,7 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.dtos.SharedWishlistDto;
 import com.caldev.wishlister.entities.SharedWishlist;
 import com.caldev.wishlister.entities.UserAccount;
+import com.caldev.wishlister.exceptions.SharedWishlistsNotFoundException;
 import com.caldev.wishlister.services.SharedWishlistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
