@@ -3,12 +3,20 @@ package com.caldev.wishlister.services;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
 @Service
 public class EmailService {
+
+    @Value("${EMAIL_USERNAME}")
+    private String emailUsername;
+
+    @Value("${EMAIL_PASSWORD}")
+    private String emailPassword;
 
     public void sendEmail(String recipientUserEmail, String subject, String message) {
         Properties props = new Properties();
@@ -20,8 +28,8 @@ public class EmailService {
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("mailtest111999@gmail.com",
-                        "egsa iajz uycr evah");
+                return new PasswordAuthentication(emailUsername,
+                        emailPassword);
             }
         });
 
