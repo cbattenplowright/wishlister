@@ -8,7 +8,7 @@ COPY src src
 RUN mvn package -DskipTests
 RUN java -Djarmode=layertools -jar target/*.jar extract
 
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:17-jdk-jammy AS runner
 WORKDIR /app
 COPY --from=builder /app/dependencies/ ./
 COPY --from=builder /app/spring-boot-loader/ ./

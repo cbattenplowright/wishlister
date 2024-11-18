@@ -1,0 +1,13 @@
+services:
+  backend:
+    image: caldev/wishlister:latest
+    pull_policy: never
+    container_name: wishlister-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    ports:
+      - '8080:8080'
+    env_file:
+      - ./src/main/resources/.env.development.local
