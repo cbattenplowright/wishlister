@@ -45,14 +45,14 @@ public class UserController {
         return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
     }
 
-//    CREATE User
-    @PostMapping("/new")
-    public ResponseEntity<UserAccountDto> createUser(@Valid @RequestBody NewUserDto newUserDto){
-        UserAccountDto newUserAccount = userService.createUser(newUserDto);
-        return new ResponseEntity<>(
-                newUserAccount,
-                HttpStatus.CREATED);
-    }
+//    CREATE User this is now in RegisterController
+//    @PostMapping("/new")
+//    public ResponseEntity<UserAccountDto> createUser(@Valid @RequestBody NewUserDto newUserDto){
+//        UserAccountDto newUserAccount = userService.createUser(newUserDto);
+//        return new ResponseEntity<>(
+//                newUserAccount,
+//                HttpStatus.CREATED);
+//    }
 
     //    UPDATE User
 

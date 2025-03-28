@@ -4,6 +4,7 @@ import com.caldev.wishlister.dtos.NewUserDto;
 import com.caldev.wishlister.dtos.UserAccountDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class RegisterController {
     private UserService userService;
 
     @PostMapping("/new")
-    public ResponseEntity<UserAccountDto> createUser(@RequestBody NewUserDto newUserDto){
+    public ResponseEntity<UserAccountDto> createUser(@Valid @RequestBody NewUserDto newUserDto){
         UserAccountDto newUserAccount = userService.createUser(newUserDto);
         return new ResponseEntity<>(
                 newUserAccount,
