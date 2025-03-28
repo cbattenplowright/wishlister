@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,14 +34,23 @@ public class UserController {
     }
 
 //    SHOW User
-    @GetMapping("/{requestedUserId}")
-    @PostAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
-    public ResponseEntity<Object> getUserById(@PathVariable UUID requestedUserId, @AuthenticationPrincipal UserAccount userAccount){
-        System.out.println(userAccount);
-        if (userAccount == null){
+    @GetMapping("/login")
+    public ResponseEntity<Object> getUserById(
+//            @AuthenticationPrincipal UserAccount userAccount
+    ){
+//        System.out.println(userAccount); // Debug purposes
+//        if (userAccount == null){
+//            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+//        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof UsernamePasswordAuthenticationToken)) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        UserAccountDto user = userService.getUserById(requestedUserId);
+
+        UserAccount userAccount = (UserAccount) authentication.getPrincipal();
+
+        UserAccountDto user = userService.getUserById(userAccount.getId());
         if (user != null){
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
