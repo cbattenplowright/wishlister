@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public class WishlistDto {
 
+    private Long wishlistId;
+
     @NotNull(message = "The userId field cannot be empty")
     private UUID userId;
 
@@ -19,6 +21,20 @@ public class WishlistDto {
     public WishlistDto(UUID userId, String wishlistName) {
         this.userId = userId;
         this.wishlistName = wishlistName;
+    }
+
+    public WishlistDto(Long wishlistId, UUID userId, String wishlistName) {
+        this.wishlistId = wishlistId;
+        this.userId = userId;
+        this.wishlistName = wishlistName;
+    }
+
+    public Long getWishlistId() {
+        return wishlistId;
+    }
+
+    public void setWishlistId(Long wishlistId) {
+        this.wishlistId = wishlistId;
     }
 
     public UUID getUserId() {
@@ -40,6 +56,7 @@ public class WishlistDto {
     @Override
     public String toString() {
         return "WishlistDto{" +
+                "wishlistId=" + wishlistId +
                 "userId=" + userId +
                 ", wishlistName='" + wishlistName + '\'' +
                 '}';

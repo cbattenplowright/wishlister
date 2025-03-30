@@ -99,6 +99,7 @@ public class WishlistController {
         if (wishlist.isPresent()) {
 
             WishlistDto wishlistDto = new WishlistDto(
+                    wishlist.get().getWishlistId(),
                     wishlist.get().getUserAccount().getId(),
                     wishlist.get().getWishlistName()
             );
