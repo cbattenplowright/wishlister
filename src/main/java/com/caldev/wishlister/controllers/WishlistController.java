@@ -44,6 +44,7 @@ public class WishlistController {
             List<WishlistDto> wishlistDtoList = wishlistList
                     .stream()
                     .map(wishlist -> new WishlistDto(
+                            wishlist.getWishlistId(),
                             wishlist.getUserAccount().getId(),
                             wishlist.getWishlistName()
                     )).toList();
@@ -135,6 +136,7 @@ public class WishlistController {
         if (newWishlist != null) {
 
             WishlistDto createdWishlistDto = new WishlistDto(
+                    newWishlist.getWishlistId(),
                     newWishlist.getUserAccount().getId(),
                     newWishlist.getWishlistName()
             );
@@ -174,6 +176,7 @@ public class WishlistController {
         if (updatedWishlist != null) {
 
             WishlistDto wishlistDtoToReturn = new WishlistDto(
+                    updatedWishlist.getWishlistId(),
                     updatedWishlist.getUserAccount().getId(),
                     updatedWishlist.getWishlistName()
             );
