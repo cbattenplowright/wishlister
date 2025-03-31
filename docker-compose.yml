@@ -10,4 +10,4 @@ services:
     ports:
       - '8080:8080'
     env_file:
-      - ./src/main/resources/.env.development.local
+      - ./src/main/resources/.env.development.test

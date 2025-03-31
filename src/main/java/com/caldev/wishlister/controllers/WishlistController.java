@@ -72,6 +72,7 @@ public class WishlistController {
             List<WishlistDto> wishlistDtoList = wishlistList
                     .stream()
                     .map(wishlist -> new WishlistDto(
+                            wishlist.getWishlistId(),
                             wishlist.getUserAccount().getId(),
                             wishlist.getWishlistName()
                     )).toList();
