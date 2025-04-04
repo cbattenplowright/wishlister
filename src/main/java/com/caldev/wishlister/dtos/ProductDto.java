@@ -26,6 +26,13 @@ public class ProductDto {
     public ProductDto() {
     }
 
+    public ProductDto(Long productId, String productName, int price) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+    }
+
+
     public ProductDto(Long productId, String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded, List<Long> wishlistProductIds) {
         this.productId = productId;
         this.productName = productName;

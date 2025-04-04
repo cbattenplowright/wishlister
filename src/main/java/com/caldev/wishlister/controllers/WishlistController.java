@@ -3,9 +3,11 @@ package com.caldev.wishlister.controllers;
 import com.caldev.wishlister.dtos.WishlistDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
+import com.caldev.wishlister.entities.WishlistProduct;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
 import com.caldev.wishlister.services.EmailService;
 import com.caldev.wishlister.services.UserService;
+import com.caldev.wishlister.services.WishlistProductService;
 import com.caldev.wishlister.services.WishlistService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,6 +32,9 @@ public class WishlistController {
 
     @Autowired
     private WishlistService wishlistService;
+
+    @Autowired
+    private WishlistProductService wishlistProductService;
 
     @Autowired
     private EmailService emailService;
@@ -96,22 +102,26 @@ public class WishlistController {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<Wishlist> wishlist = wishlistService.findWishlistById(requestedWishlistId);
+//        Optional<Wishlist> wishlist = wishlistService.findWishlistById(requestedWishlistId);
+//        System.out.println(wishlist);
+//
+//        if (wishlist.isPresent()) {
+//            List<WishlistProduct> wishlistProductsList = wishlistProductService.getAllWishlistProductsByWishlistId(requestedWishlistId);
+//
+//
+//            WishlistDto wishlistDto = new WishlistDto(
+//                    wishlist.get().getWishlistId(),
+//                    wishlist.get().getUserAccount().getId(),
+//                    wishlist.get().getWishlistName()
+//            );
 
-        if (wishlist.isPresent()) {
+//            return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
 
-            WishlistDto wishlistDto = new WishlistDto(
-                    wishlist.get().getWishlistId(),
-                    wishlist.get().getUserAccount().getId(),
-                    wishlist.get().getWishlistName()
-            );
-
-            return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
-        }
-
-        throw new WishlistsNotFoundException("Wishlist not found");
-
+        return wishlistService.findWishlistByIdWithProducts(requestedWishlistId)
+                .map(wishlistDto -> new ResponseEntity<Object>(wishlistDto, HttpStatus.OK))
+                .orElseThrow(() -> new WishlistsNotFoundException("Wishlist not found"));
     }
+
 
 
     // CREATE Wishlist

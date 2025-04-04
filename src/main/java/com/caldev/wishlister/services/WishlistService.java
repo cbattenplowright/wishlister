@@ -1,5 +1,6 @@
 package com.caldev.wishlister.services;
 
+import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.dtos.WishlistDto;
 import com.caldev.wishlister.entities.*;
 import com.caldev.wishlister.exceptions.WishlistsNotFoundException;
@@ -47,6 +48,23 @@ public class WishlistService {
     public List<Wishlist> findAllUserWishlists(UUID requestedId) {
         List<Wishlist> wishlistList = wishlistRepository.findAllByUserAccount_Id(requestedId);
         return wishlistList;
+    }
+
+//    Added this method to get all wishlists for a user account using stream and map
+    public Optional<WishlistDto> findWishlistByIdWithProducts(Long wishlistId) {
+        return wishlistRepository.findByIdWithProducts(wishlistId)
+                .map(wishlist -> new WishlistDto (
+                        wishlist.getWishlistId(),
+                        wishlist.getUserAccount().getId(),
+                        wishlist.getWishlistName(),
+                        wishlist.getWishlistProducts().stream()
+                                .map(wp -> new ProductDto(
+                                        wp.getProduct().getProductId(),
+                                        wp.getProduct().getProductName(),
+                                        wp.getProduct().getPrice()
+                                ))
+                                .toList()
+                ));
     }
 
     public Wishlist createWishlist(WishlistDto wishlistDto, UserAccount userAccount) {

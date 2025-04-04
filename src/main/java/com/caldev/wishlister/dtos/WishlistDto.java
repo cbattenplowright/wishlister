@@ -3,6 +3,7 @@ package com.caldev.wishlister.dtos;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class WishlistDto {
@@ -14,6 +15,8 @@ public class WishlistDto {
 
     @NotNull(message = "The wishlistName cannot be empty")
     private String wishlistName;
+
+    private List<ProductDto> products = new ArrayList<>();
 
     public WishlistDto() {
     }
@@ -27,6 +30,13 @@ public class WishlistDto {
         this.wishlistId = wishlistId;
         this.userId = userId;
         this.wishlistName = wishlistName;
+    }
+
+    public WishlistDto(Long wishlistId, UUID userId, String wishlistName, List<ProductDto> products) {
+        this.wishlistId = wishlistId;
+        this.userId = userId;
+        this.wishlistName = wishlistName;
+        this.products = products;
     }
 
     public Long getWishlistId() {
@@ -51,6 +61,14 @@ public class WishlistDto {
 
     public void setWishlistName(String wishlistName) {
         this.wishlistName = wishlistName;
+    }
+
+    public List<ProductDto> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductDto> products) {
+        this.products = products;
     }
 
     @Override
