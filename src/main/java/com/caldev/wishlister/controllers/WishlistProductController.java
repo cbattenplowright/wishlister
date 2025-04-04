@@ -58,6 +58,34 @@ public class WishlistProductController {
         throw new WishlistProductsNotFoundException("WishlistProducts not found");
     }
 
+//    INDEX User WishlistProducts
+    @GetMapping("/{requestedUserId}/{requestedWishlistId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
+    public ResponseEntity<Object> getUserWishlistProducts(@PathVariable UUID requestedUserId,
+                                                          @PathVariable UUID requestedWishlistId,
+                                                          @AuthenticationPrincipal UserAccount userAccount){
+        if(userAccount == null){
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        List<WishlistProduct> wishlistProducts = wishlistProductService.getUserWishlistProducts(requestedWishlistId);
+
+        if(wishlistProducts != null){
+
+            List<WishlistProductDto> wishlistProductDtos = wishlistProducts
+                    .stream()
+                    .map(wishlistProduct -> new WishlistProductDto(
+                            wishlistProduct.getWishlistProductId(),
+                            wishlistProduct.getWishlist().getWishlistId(),
+                            wishlistProduct.getProduct().getProductId(),
+                            wishlistProduct.isPurchased())).toList();
+
+            return new ResponseEntity<>(wishlistProductDtos, HttpStatus.OK);
+        }
+
+        throw new WishlistProductsNotFoundException("WishlistProducts not found");
+    }
+
 //    SHOW WishlistProduct
     @GetMapping("/{requestedUserId}/{requestedWishlistProductId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
