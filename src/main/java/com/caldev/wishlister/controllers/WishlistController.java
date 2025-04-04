@@ -1,5 +1,6 @@
 package com.caldev.wishlister.controllers;
 
+import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.dtos.WishlistDto;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping(value = "/api/wishlists")
@@ -118,10 +121,27 @@ public class WishlistController {
 //            return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
 
         return wishlistService.findWishlistByIdWithProducts(requestedWishlistId)
-                .map(wishlistDto -> new ResponseEntity<Object>(wishlistDto, HttpStatus.OK))
-                .orElseThrow(() -> new WishlistsNotFoundException("Wishlist not found"));
-    }
+                .map(wishlistDto -> {
+                    List<ProductDto> products = wishlistDto.getProducts().stream()
+                            .map(product -> new ProductDto(
+                                    product.getProductId(),
+                                    product.getProductName(),
+                                    product.getPrice()
+                            )).toList();
 
+                    WishlistDto response = new WishlistDto(
+                            wishlistDto.getWishlistId(),
+                            wishlistDto.getUserId(),
+                            wishlistDto.getWishlistName(),
+                            products
+                    );
+
+                    return new ResponseEntity<Object>(response, HttpStatus.OK);
+                }).orElseThrow(()->
+                        new WishlistsNotFoundException("Wishlist not found"));
+//                        new ResponseEntity<Object>(wishlistDto, HttpStatus.OK))
+//                .orElseThrow(() -> new WishlistsNotFoundException("Wishlist not found"));
+    }
 
 
     // CREATE Wishlist
