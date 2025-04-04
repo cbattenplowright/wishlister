@@ -59,16 +59,16 @@ public class WishlistProductController {
     }
 
 //    INDEX User WishlistProducts
-    @GetMapping("/{requestedUserId}/{requestedWishlistId}")
+    @GetMapping("/user/{requestedUserId}/{requestedWishlistId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getUserWishlistProducts(@PathVariable UUID requestedUserId,
-                                                          @PathVariable UUID requestedWishlistId,
+                                                          @PathVariable Long requestedWishlistId,
                                                           @AuthenticationPrincipal UserAccount userAccount){
         if(userAccount == null){
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
 
-        List<WishlistProduct> wishlistProducts = wishlistProductService.getUserWishlistProducts(requestedWishlistId);
+        List<WishlistProduct> wishlistProducts = wishlistProductService.getAllWishlistProductsByWishlistId(requestedWishlistId);
 
         if(wishlistProducts != null){
 
@@ -87,7 +87,7 @@ public class WishlistProductController {
     }
 
 //    SHOW WishlistProduct
-    @GetMapping("/{requestedUserId}/{requestedWishlistProductId}")
+    @GetMapping("/product/{requestedUserId}/{requestedWishlistProductId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getWishlistProductById(@PathVariable UUID requestedUserId,
                                                          @PathVariable Long requestedWishlistProductId,
