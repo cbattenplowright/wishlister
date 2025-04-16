@@ -35,4 +35,5 @@ build/
 .env.development.test
 .env.test.local
 .env.development.local
+.env.development.cloud
 
