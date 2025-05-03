@@ -42,15 +42,15 @@ public class PendingShareDto {
         return wishlistId;
     }
 
-    public void setWishlistId(String wishlistId) {
+    public void setWishlistId(Long wishlistId) {
         this.wishlistId = wishlistId;
     }
 
-    public String getSenderUserId() {
+    public UUID getSenderUserId() {
         return senderUserId;
     }
 
-    public void setSenderUserId(String senderUserId) {
+    public void setSenderUserId(UUID senderUserId) {
         this.senderUserId = senderUserId;
     }
 
