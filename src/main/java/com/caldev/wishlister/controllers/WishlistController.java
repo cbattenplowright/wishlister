@@ -241,6 +241,8 @@ public class WishlistController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+//    Share Wishlist endpoint
+
     @PostMapping("/{requestedUserId}/{requestedWishlistId}/share")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> shareWishlist(
@@ -264,6 +266,8 @@ public class WishlistController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+//    Confirm share wishlist endpoint
 
     @PostMapping("/confirm-share")
     @PreAuthorize("isAuthenticated()")
