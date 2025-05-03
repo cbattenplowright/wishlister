@@ -294,14 +294,15 @@ public class WishlistController {
 
 //    INDEX User Pending Shares endpoint
 
-    @GetMapping("/pending-shares")
-    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/pending-shares/{requestedUserId}")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getPendingShares(
+            @PathVariable UUID requestedUserId,
             @AuthenticationPrincipal UserAccount userAccount) {
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        List<PendingShare> pendingShares = wishlistService.findPendingSharesByRecipientEmail(userAccount);
+        List<PendingShare> pendingShares = wishlistService.findPendingSharesByRecipientEmail(userAccount.getEmail());
         if (pendingShares.isEmpty()) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }

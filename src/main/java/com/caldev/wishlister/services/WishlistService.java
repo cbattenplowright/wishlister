@@ -223,4 +223,8 @@ public class WishlistService {
         pendingShareRepository.delete(pendingShare);
 
     }
+
+    public List<PendingShare> findPendingSharesByRecipientEmail(String recipientEmail) {
+        return pendingShareRepository.findAllByRecipientEmail(recipientEmail);
+    }
 }
