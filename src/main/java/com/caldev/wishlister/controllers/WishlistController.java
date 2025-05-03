@@ -1,7 +1,9 @@
 package com.caldev.wishlister.controllers;
 
+import com.caldev.wishlister.dtos.PendingShareDto;
 import com.caldev.wishlister.dtos.ProductDto;
 import com.caldev.wishlister.dtos.WishlistDto;
+import com.caldev.wishlister.entities.PendingShare;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.entities.Wishlist;
 import com.caldev.wishlister.entities.WishlistProduct;
@@ -299,7 +301,7 @@ public class WishlistController {
         if (userAccount == null) {
             return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
-        List<Wishlist> pendingShares = wishlistService.findPendingSharesByRecipientEmail(userAccount);
+        List<PendingShare> pendingShares = wishlistService.findPendingSharesByRecipientEmail(userAccount);
         if (pendingShares.isEmpty()) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
@@ -307,9 +309,9 @@ public class WishlistController {
         List <PendingShareDto> pendingShareDtos = pendingShares.stream()
                 .map(pendingShare -> new PendingShareDto(
                         pendingShare.getPendingShareId(),
+                        pendingShare.getToken(),
                         pendingShare.getWishlistId(),
-                        pendingShare.getSendUserId(),
-                        pendingShare.wishlistId(),
+                        pendingShare.getSenderUserId(),
                         pendingShare.getRecipientEmail()
                 ))
                 .toList();
