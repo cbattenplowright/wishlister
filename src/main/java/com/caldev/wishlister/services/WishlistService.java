@@ -157,7 +157,6 @@ public class WishlistService {
         else {
             sendRegisterUserEmail(sendUserAccount.getName(), recipientUserEmail, shareToken);
         }
-//        TODO add send email to join wishlister
     }
 
     public String initiateShare(Wishlist wishlistToShare, UserAccount sendUserAccount, String recipientEmail) {
@@ -190,7 +189,7 @@ public class WishlistService {
     public void sendRegisterUserEmail(String name, String recipientUserEmail, String shareToken) {
 
 //        TODO need to add the front end url to the sendRegisterUserEmail to navigate to the account creation page
-        String confirmationUrl = "http://{{front-end-url}}/register?shareToken=" + shareToken;
+        String confirmationUrl = "http://localhost:8080/register?shareToken=" + shareToken;
         emailService.sendEmail(recipientUserEmail,
                 "Your friend %s wants to share their wishlist with you!".formatted(name),
                 "Click the link below to join Wishlister and access their wishlist: " + confirmationUrl
