@@ -19,12 +19,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @RestController
 @RequestMapping(value = "/api/wishlists")
@@ -290,6 +288,33 @@ public class WishlistController {
             return new ResponseEntity<>("Share token not valid", HttpStatus.NOT_FOUND);
         }
 
+    }
+
+//    INDEX User Pending Shares endpoint
+
+    @GetMapping("/pending-shares")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Object> getPendingShares(
+            @AuthenticationPrincipal UserAccount userAccount) {
+        if (userAccount == null) {
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        List<Wishlist> pendingShares = wishlistService.findPendingSharesByRecipientEmail(userAccount);
+        if (pendingShares.isEmpty()) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+        }
+
+        List <PendingShareDto> pendingShareDtos = pendingShares.stream()
+                .map(pendingShare -> new PendingShareDto(
+                        pendingShare.getPendingShareId(),
+                        pendingShare.getWishlistId(),
+                        pendingShare.getSendUserId(),
+                        pendingShare.wishlistId(),
+                        pendingShare.getRecipientEmail()
+                ))
+                .toList();
+
+        return new ResponseEntity<>(pendingShareDtos, HttpStatus.OK);
     }
 
 }
