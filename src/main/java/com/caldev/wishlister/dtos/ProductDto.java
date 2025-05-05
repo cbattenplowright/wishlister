@@ -24,8 +24,16 @@ public class ProductDto {
     private String description;
     private LocalDate dateAdded;
     private List<Long> wishlistProductIds;
+    private boolean isPurchased;
 
     public ProductDto() {
+    }
+
+    public ProductDto(Long productId, String productName, int price, boolean isPurchased) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.isPurchased = isPurchased;
     }
 
     public ProductDto(Long productId, String productName, int price) {
@@ -33,7 +41,6 @@ public class ProductDto {
         this.productName = productName;
         this.price = price;
     }
-
 
     public ProductDto(Long productId, String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded, List<Long> wishlistProductIds) {
         this.productId = productId;
@@ -138,6 +145,14 @@ public class ProductDto {
 
     public void setWishlistProductIds(List<Long> wishlistProductIds) {
         this.wishlistProductIds = wishlistProductIds;
+    }
+
+    public boolean isPurchased() {
+        return isPurchased;
+    }
+
+    public void setPurchased(boolean purchased) {
+        isPurchased = purchased;
     }
 
     @Override

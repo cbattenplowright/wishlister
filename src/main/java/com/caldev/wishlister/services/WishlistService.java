@@ -50,7 +50,7 @@ public class WishlistService {
         return wishlistList;
     }
 
-//    Added this method to get all wishlists for a user account using stream and map
+//    Added this method to get all wishlists for a user account and products in those wishlists
     public Optional<WishlistDto> findWishlistByIdWithProducts(Long wishlistId) {
         return wishlistRepository.findByIdWithProducts(wishlistId)
                 .map(wishlist -> new WishlistDto (
@@ -61,7 +61,8 @@ public class WishlistService {
                                 .map(wp -> new ProductDto(
                                         wp.getProduct().getProductId(),
                                         wp.getProduct().getProductName(),
-                                        wp.getProduct().getPrice()
+                                        wp.getProduct().getPrice(),
+                                        wp.isPurchased()
                                 ))
                                 .toList()
                 ));

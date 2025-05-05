@@ -66,9 +66,6 @@ public class WishlistProduct {
         isPurchased = purchased;
     }
 
-    public void setPurchased(boolean purchased) {
-        isPurchased = purchased;
-    }
 
     @Override
     public String toString() {
