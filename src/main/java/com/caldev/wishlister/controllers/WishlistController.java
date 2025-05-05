@@ -123,10 +123,12 @@ public class WishlistController {
         return wishlistService.findWishlistByIdWithProducts(requestedWishlistId)
                 .map(wishlistDto -> {
                     List<ProductDto> products = wishlistDto.getProducts().stream()
-                            .map(product -> new ProductDto(
-                                    product.getProductId(),
-                                    product.getProductName(),
-                                    product.getPrice()
+                            .map(productDto -> new ProductDto(
+                                    productDto.getProductId(),
+                                    productDto.getProductName(),
+                                    productDto.getPrice(),
+                                    productDto.isPurchased(),
+                                    productDto.getWishlistProductId()
                             )).toList();
 
                     WishlistDto response = new WishlistDto(

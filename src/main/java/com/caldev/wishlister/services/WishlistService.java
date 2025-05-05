@@ -62,7 +62,8 @@ public class WishlistService {
                                         wp.getProduct().getProductId(),
                                         wp.getProduct().getProductName(),
                                         wp.getProduct().getPrice(),
-                                        wp.isPurchased()
+                                        wp.isPurchased(),
+                                        wp.getWishlistProductId()
                                 ))
                                 .toList()
                 ));

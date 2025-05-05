@@ -25,15 +25,9 @@ public class ProductDto {
     private LocalDate dateAdded;
     private List<Long> wishlistProductIds;
     private boolean isPurchased;
+    private Long wishlistProductId;
 
     public ProductDto() {
-    }
-
-    public ProductDto(Long productId, String productName, int price, boolean isPurchased) {
-        this.productId = productId;
-        this.productName = productName;
-        this.price = price;
-        this.isPurchased = isPurchased;
     }
 
     public ProductDto(Long productId, String productName, int price) {
@@ -41,6 +35,15 @@ public class ProductDto {
         this.productName = productName;
         this.price = price;
     }
+
+    public ProductDto(Long productId, String productName, int price, boolean isPurchased, Long wishlistProductId) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.isPurchased = isPurchased;
+        this.wishlistProductId = wishlistProductId;
+    }
+
 
     public ProductDto(Long productId, String productName, UUID userId, int price, URL url, URL imageUrl, PrioritySelection prioritySelection, String description, LocalDate dateAdded, List<Long> wishlistProductIds) {
         this.productId = productId;
@@ -153,6 +156,14 @@ public class ProductDto {
 
     public void setPurchased(boolean purchased) {
         isPurchased = purchased;
+    }
+
+    public Long getWishlistProductId() {
+        return wishlistProductId;
+    }
+
+    public void setWishlistProductId(Long wishlistProductId) {
+        this.wishlistProductId = wishlistProductId;
     }
 
     @Override
