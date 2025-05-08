@@ -59,7 +59,7 @@ public class WishlistProductController {
     }
 
 //    SHOW WishlistProduct
-    @GetMapping("/product/{requestedUserId}/{requestedWishlistProductId}")
+    @GetMapping("/{requestedUserId}/{requestedWishlistProductId}")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER') && #userAccount.id == #requestedUserId")
     public ResponseEntity<Object> getWishlistProductById(@PathVariable UUID requestedUserId,
                                                          @PathVariable Long requestedWishlistProductId,

@@ -41,7 +41,8 @@ public class SharedWishlistController {
                     .map(sharedWishlist -> new SharedWishlistDto(
                             sharedWishlist.getSharedWishlistId(),
                             sharedWishlist.getSharedUser().getUserAccountId(),
-                            sharedWishlist.getSharedWishlist().getWishlistId())
+                            sharedWishlist.getSharedWishlist().getWishlistId(),
+                            sharedWishlist.getOwnerUser().getId())
                     ).toList();
 
             return new ResponseEntity<>(sharedWishlistDtoList, HttpStatus.OK);
@@ -70,7 +71,8 @@ public class SharedWishlistController {
                     .map(sharedWishlist -> new SharedWishlistDto(
                             sharedWishlist.getSharedWishlistId(),
                             sharedWishlist.getSharedUser().getUserAccountId(),
-                            sharedWishlist.getSharedWishlist().getWishlistId())
+                            sharedWishlist.getSharedWishlist().getWishlistId(),
+                            sharedWishlist.getOwnerUser().getId())
                     ).toList();
 
             return new ResponseEntity<>(sharedWishlistDtoList, HttpStatus.OK);
@@ -99,7 +101,8 @@ public class SharedWishlistController {
             SharedWishlistDto sharedWishlistDto = new SharedWishlistDto(
                     sharedWishlist.get().getSharedWishlistId(),
                     sharedWishlist.get().getSharedUser().getUserAccountId(),
-                    sharedWishlist.get().getSharedWishlist().getWishlistId());
+                    sharedWishlist.get().getSharedWishlist().getWishlistId(),
+                    sharedWishlist.get().getOwnerUser().getId());
 
             return new ResponseEntity<>(sharedWishlistDto, HttpStatus.OK);
         }

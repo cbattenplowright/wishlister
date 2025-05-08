@@ -12,11 +12,12 @@ public class SharedWishlistDtoUnitTestsAccount {
 
     private SharedWishlistDto sharedWishlistDto;
     private UUID userId;
+    private UUID ownerUserId;
 
     @BeforeEach
     public void setUp(){
         userId = UUID.randomUUID();
-        sharedWishlistDto = new SharedWishlistDto(1L, userId, 1L);
+        sharedWishlistDto = new SharedWishlistDto(1L, userId, 1L, ownerUserId);
     }
 
     @Test
@@ -26,7 +27,7 @@ public class SharedWishlistDtoUnitTestsAccount {
 
     @Test
     public void shouldGetUserId() {
-        assertThat(sharedWishlistDto.getUserId()).isEqualTo(this.userId);
+        assertThat(sharedWishlistDto.getSharedUserId()).isEqualTo(this.userId);
     }
 
     @Test
@@ -43,8 +44,8 @@ public class SharedWishlistDtoUnitTestsAccount {
     @Test
     public void shouldSetUserId(){
         UUID newUserId = UUID.randomUUID();
-        sharedWishlistDto.setUserId(newUserId);
-        assertThat(sharedWishlistDto.getUserId()).isEqualTo(newUserId);
+        sharedWishlistDto.setSharedUserId(newUserId);
+        assertThat(sharedWishlistDto.getSharedUserId()).isEqualTo(newUserId);
     }
 
     @Test

@@ -126,7 +126,7 @@ public class ProductControllerPatchProductIntegrationTests {
         String invalidJsonRequest = """
                 {
                     "productName": null,
-                    "userId": 1,
+                    "sharedUserId": 1,
                     "price": 1599,
                     "url": "https://www.testUrl.com",
                     "imageUrl": "https://www.testImageUrl.com",

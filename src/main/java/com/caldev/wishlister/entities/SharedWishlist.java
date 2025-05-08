@@ -16,6 +16,10 @@ public class SharedWishlist {
     private UserAccount sharedUserAccount;
 
     @ManyToOne
+    @JoinColumn(name="owner_user_id")
+    private UserAccount ownerUserAccount;
+
+    @ManyToOne
     @JoinColumn(name = "wishlist_id")
     private Wishlist sharedWishlist;
 
@@ -24,6 +28,12 @@ public class SharedWishlist {
     public SharedWishlist(UserAccount sharedUserAccount, Wishlist sharedWishlist) {
         this.sharedUserAccount = sharedUserAccount;
         this.sharedWishlist = sharedWishlist;
+    }
+
+    public SharedWishlist(UserAccount sharedUserAccount, Wishlist sharedWishlist, UserAccount ownerUserAccount) {
+        this.sharedUserAccount = sharedUserAccount;
+        this.sharedWishlist = sharedWishlist;
+        this.ownerUserAccount = ownerUserAccount;
     }
 
     public Long getSharedWishlistId() {
@@ -49,13 +59,12 @@ public class SharedWishlist {
         this.sharedWishlist = sharedWishlist;
     }
 
-
-    public UserAccount getSharedUserAccount() {
-        return sharedUserAccount;
+    public UserAccount getOwnerUser() {
+        return ownerUserAccount;
     }
 
-    public void setSharedUserAccount(UserAccount sharedUserAccount) {
-        this.sharedUserAccount = sharedUserAccount;
+    public void setOwnerUser(UserAccount ownerUserAccount) {
+        this.ownerUserAccount = ownerUserAccount;
     }
 
     @Override

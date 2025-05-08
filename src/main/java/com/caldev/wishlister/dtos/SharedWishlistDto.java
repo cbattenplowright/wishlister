@@ -5,17 +5,19 @@ import java.util.UUID;
 public class SharedWishlistDto {
 
     private Long sharedUserWishlistId;
-    private UUID userId;
+    private UUID sharedUserId;
     private Long wishlistId;
+    private UUID ownerUserId;
 
     public SharedWishlistDto(){
 
     }
 
-    public SharedWishlistDto(Long sharedUserWishlistId, UUID userId, Long wishlistId){
+    public SharedWishlistDto(Long sharedUserWishlistId, UUID sharedUserId, Long wishlistId, UUID ownerUserId){
       this.sharedUserWishlistId = sharedUserWishlistId;
-      this.userId = userId;
+      this.sharedUserId = sharedUserId;
       this.wishlistId = wishlistId;
+      this.ownerUserId = ownerUserId;
     }
 
     public Long getSharedUserWishlistId() {
@@ -26,12 +28,12 @@ public class SharedWishlistDto {
         this.sharedUserWishlistId = sharedUserWishlistId;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public UUID getSharedUserId() {
+        return sharedUserId;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setSharedUserId(UUID sharedUserId) {
+        this.sharedUserId = sharedUserId;
     }
 
     public Long getWishlistId() {
@@ -42,12 +44,21 @@ public class SharedWishlistDto {
         this.wishlistId = wishlistId;
     }
 
+    public UUID getOwnerUserId() {
+        return ownerUserId;
+    }
+
+    public void setOwnerUserId(UUID ownerUserId) {
+        this.ownerUserId = ownerUserId;
+    }
+
     @Override
     public String toString() {
         return "SharedUserWishlistDto{" +
                 "sharedUserWishlistId=" + sharedUserWishlistId +
-                ", userId=" + userId +
+                ", sharedUserId=" + sharedUserId +
                 ", wishlistId=" + wishlistId +
+                ", ownerUserId=" + ownerUserId +
                 '}';
     }
 }
