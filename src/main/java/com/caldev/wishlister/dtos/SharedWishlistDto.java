@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class SharedWishlistDto {
 
+    private String wishlistName;
     private Long sharedUserWishlistId;
     private UUID sharedUserId;
     private Long wishlistId;
@@ -13,11 +14,20 @@ public class SharedWishlistDto {
 
     }
 
-    public SharedWishlistDto(Long sharedUserWishlistId, UUID sharedUserId, Long wishlistId, UUID ownerUserId){
+    public SharedWishlistDto(String wishlistName, Long sharedUserWishlistId, UUID sharedUserId, Long wishlistId, UUID ownerUserId){
+      this.wishlistName = wishlistName;
       this.sharedUserWishlistId = sharedUserWishlistId;
       this.sharedUserId = sharedUserId;
       this.wishlistId = wishlistId;
       this.ownerUserId = ownerUserId;
+    }
+
+    public String getWishlistName() {
+        return wishlistName;
+    }
+
+    public void setWishlistName(String wishlistName) {
+        this.wishlistName = wishlistName;
     }
 
     public Long getSharedUserWishlistId() {
@@ -51,6 +61,8 @@ public class SharedWishlistDto {
     public void setOwnerUserId(UUID ownerUserId) {
         this.ownerUserId = ownerUserId;
     }
+
+
 
     @Override
     public String toString() {

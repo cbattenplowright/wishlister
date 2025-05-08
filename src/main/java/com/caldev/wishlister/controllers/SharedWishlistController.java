@@ -39,6 +39,7 @@ public class SharedWishlistController {
             List<SharedWishlistDto> sharedWishlistDtoList = sharedWishlistList
                     .stream()
                     .map(sharedWishlist -> new SharedWishlistDto(
+                            sharedWishlist.getWishlistName(),
                             sharedWishlist.getSharedWishlistId(),
                             sharedWishlist.getSharedUser().getUserAccountId(),
                             sharedWishlist.getSharedWishlist().getWishlistId(),
@@ -69,6 +70,7 @@ public class SharedWishlistController {
             List<SharedWishlistDto> sharedWishlistDtoList = sharedWishlistList
                     .stream()
                     .map(sharedWishlist -> new SharedWishlistDto(
+                            sharedWishlist.getWishlistName(),
                             sharedWishlist.getSharedWishlistId(),
                             sharedWishlist.getSharedUser().getUserAccountId(),
                             sharedWishlist.getSharedWishlist().getWishlistId(),
@@ -99,6 +101,7 @@ public class SharedWishlistController {
         if (sharedWishlist.isPresent()) {
 
             SharedWishlistDto sharedWishlistDto = new SharedWishlistDto(
+                    sharedWishlist.get().getWishlistName(),
                     sharedWishlist.get().getSharedWishlistId(),
                     sharedWishlist.get().getSharedUser().getUserAccountId(),
                     sharedWishlist.get().getSharedWishlist().getWishlistId(),

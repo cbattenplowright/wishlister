@@ -13,11 +13,12 @@ public class SharedWishlistDtoUnitTestsAccount {
     private SharedWishlistDto sharedWishlistDto;
     private UUID userId;
     private UUID ownerUserId;
+    private String wishlistName;
 
     @BeforeEach
     public void setUp(){
         userId = UUID.randomUUID();
-        sharedWishlistDto = new SharedWishlistDto(1L, userId, 1L, ownerUserId);
+        sharedWishlistDto = new SharedWishlistDto(wishlistName, 1L, userId, 1L, ownerUserId);
     }
 
     @Test
