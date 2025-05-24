@@ -11,10 +11,6 @@ public class SharedWishlist {
     @Column(name="shared_wishlist_id")
     private Long sharedWishlistId;
 
-//    TODO add join column to wishlist_name
-    @Column(name = "wishlist_name")
-    private String wishlistName;
-
     @ManyToOne
     @JoinColumn(name="shared_user_id")
     private UserAccount sharedUserAccount;
@@ -34,8 +30,7 @@ public class SharedWishlist {
         this.sharedWishlist = sharedWishlist;
     }
 
-    public SharedWishlist(String wishlistName, UserAccount sharedUserAccount, Wishlist sharedWishlist, UserAccount ownerUserAccount) {
-        this.wishlistName = wishlistName;
+    public SharedWishlist(UserAccount sharedUserAccount, Wishlist sharedWishlist, UserAccount ownerUserAccount) {
         this.sharedUserAccount = sharedUserAccount;
         this.sharedWishlist = sharedWishlist;
         this.ownerUserAccount = ownerUserAccount;
@@ -47,14 +42,6 @@ public class SharedWishlist {
 
     public void setSharedWishlistId(Long sharedWishlistId) {
         this.sharedWishlistId = sharedWishlistId;
-    }
-
-    public String getWishlistName() {
-        return wishlistName;
-    }
-
-    public void setWishlistName(String wishlistName) {
-        this.wishlistName = wishlistName;
     }
 
     public UserAccount getSharedUser() {

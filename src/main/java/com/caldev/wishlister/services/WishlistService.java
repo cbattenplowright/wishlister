@@ -91,6 +91,10 @@ public class WishlistService {
         return wishlistRepository.findById(requestedWishlistId);
     }
 
+    public String getWishlistNameById(Long requestedWishlistId) {
+        return wishlistRepository.findWishlistNameById(requestedWishlistId);
+    }
+
     public Wishlist updateWishlist(Long requestedWishlistId, WishlistDto wishlistDto, UserAccount userAccount) {
 
 /*

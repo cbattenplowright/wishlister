@@ -5,6 +5,7 @@ import com.caldev.wishlister.entities.SharedWishlist;
 import com.caldev.wishlister.entities.UserAccount;
 import com.caldev.wishlister.exceptions.SharedWishlistsNotFoundException;
 import com.caldev.wishlister.services.SharedWishlistService;
+import com.caldev.wishlister.services.WishlistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,8 +25,11 @@ public class SharedWishlistController {
 
     private final SharedWishlistService sharedWishlistService;
 
-    public SharedWishlistController(SharedWishlistService sharedWishlistService) {
+    private final WishlistService wishlistService;
+
+    public SharedWishlistController(SharedWishlistService sharedWishlistService, WishlistService wishlistService) {
         this.sharedWishlistService = sharedWishlistService;
+        this.wishlistService = wishlistService;
     }
 
     // INDEX Shared Wishlists
@@ -39,7 +43,7 @@ public class SharedWishlistController {
             List<SharedWishlistDto> sharedWishlistDtoList = sharedWishlistList
                     .stream()
                     .map(sharedWishlist -> new SharedWishlistDto(
-                            sharedWishlist.getWishlistName(),
+                            wishlistService.getWishlistNameById(sharedWishlist.getSharedWishlist().getWishlistId()),
                             sharedWishlist.getSharedWishlistId(),
                             sharedWishlist.getSharedUser().getUserAccountId(),
                             sharedWishlist.getSharedWishlist().getWishlistId(),
@@ -70,13 +74,14 @@ public class SharedWishlistController {
             List<SharedWishlistDto> sharedWishlistDtoList = sharedWishlistList
                     .stream()
                     .map(sharedWishlist -> new SharedWishlistDto(
-                            sharedWishlist.getWishlistName(),
+                            wishlistService.getWishlistNameById(sharedWishlist.getSharedWishlist().getWishlistId()),
                             sharedWishlist.getSharedWishlistId(),
                             sharedWishlist.getSharedUser().getUserAccountId(),
                             sharedWishlist.getSharedWishlist().getWishlistId(),
                             sharedWishlist.getOwnerUser().getId())
                     ).toList();
 
+            System.out.println("Shared Wishlist DTO List: " + sharedWishlistDtoList);
             return new ResponseEntity<>(sharedWishlistDtoList, HttpStatus.OK);
         }
 
@@ -101,7 +106,7 @@ public class SharedWishlistController {
         if (sharedWishlist.isPresent()) {
 
             SharedWishlistDto sharedWishlistDto = new SharedWishlistDto(
-                    sharedWishlist.get().getWishlistName(),
+                    wishlistService.getWishlistNameById(sharedWishlist.get().getSharedWishlist().getWishlistId()),
                     sharedWishlist.get().getSharedWishlistId(),
                     sharedWishlist.get().getSharedUser().getUserAccountId(),
                     sharedWishlist.get().getSharedWishlist().getWishlistId(),

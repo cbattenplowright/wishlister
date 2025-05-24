@@ -21,6 +21,9 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
     boolean existsByWishlistIdAndUserAccount(Long wishlistId, UserAccount userAccount);
     boolean existsByWishlistNameAndUserAccount(String wishlistName, UserAccount userAccount);
 
+    @Query("SELECT w.wishlistName FROM Wishlist w WHERE w.wishlistId = :requestedWishlistId")
+    String findWishlistNameById(@Param("requestedWishlistId") Long requestedWishlistId);
+
     @Modifying
     @Query("DELETE FROM Wishlist w WHERE w.wishlistId = :wishlistId")
     void deleteByWishlistId(Long wishlistId);
@@ -30,4 +33,5 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
             "LEFT JOIN FETCH wp.product p " +
             "WHERE w.wishlistId = :wishlistId")
     Optional<Wishlist> findByIdWithProducts(@Param("wishlistId") Long wishlistId);
+
 }
