@@ -263,7 +263,7 @@ public class WishlistController {
 //            emailService.sendEmail();
             wishlistService.shareWishlist(existingWishlist.get(), userAccount, email);
 
-            return new ResponseEntity<>("Wishlist shared!", HttpStatus.OK);
+            return new ResponseEntity<>(Map.of("message", "Wishlist shared!"), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
